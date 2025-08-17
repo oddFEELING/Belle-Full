@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "./app"),
+      "db.types": path.resolve(__dirname, "./db.types.ts"),
     },
   },
 });

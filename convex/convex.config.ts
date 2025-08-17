@@ -6,6 +6,7 @@ import rag from "@convex-dev/rag/convex.config";
 import r2 from "@convex-dev/r2/convex.config";
 import twilio from "@convex-dev/twilio/convex.config";
 import resend from "@convex-dev/resend/convex.config";
+import geospatial from "@convex-dev/geospatial/convex.config";
 
 const app = defineApp();
 
@@ -16,5 +17,6 @@ app.use(rag);
 app.use(r2);
 app.use(twilio);
 app.use(resend);
+app.use(geospatial);
 
 export default app;
