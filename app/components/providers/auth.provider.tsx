@@ -1,10 +1,13 @@
 import React from "react";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
-import { convexClient } from "./convex.provider";
+import { ConvexReactClient } from "convex/react";
 
 type AuthProviderProps = {
   children: React.ReactNode;
 };
+export const convexClient = new ConvexReactClient(
+  import.meta.env.VITE_CONVEX_URL,
+);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return (

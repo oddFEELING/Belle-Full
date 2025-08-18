@@ -8,13 +8,16 @@
  * @module
  */
 
-import type * as _custom_authenticated_query from "../_custom/authenticated_query.js";
+import type * as _custom_mutation from "../_custom/mutation.js";
+import type * as _custom_query from "../_custom/query.js";
 import type * as auth from "../auth.js";
+import type * as brands_functions from "../brands/functions.js";
 import type * as enums from "../enums.js";
 import type * as http from "../http.js";
 import type * as password from "../password.js";
 import type * as schemas_index from "../schemas/index.js";
 import type * as shared from "../shared.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -31,13 +34,16 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  "_custom/authenticated_query": typeof _custom_authenticated_query;
+  "_custom/mutation": typeof _custom_mutation;
+  "_custom/query": typeof _custom_query;
   auth: typeof auth;
+  "brands/functions": typeof brands_functions;
   enums: typeof enums;
   http: typeof http;
   password: typeof password;
   "schemas/index": typeof schemas_index;
   shared: typeof shared;
+  users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

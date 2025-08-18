@@ -4,7 +4,8 @@ import React from "react";
 import AuthProvider from "./auth.provider";
 import ThemeProvider from "./theme.provider";
 import NuqsProvider from "./nuqs.provider";
-import ConvexAppProvider from "./convex.provider";
+import CacheProvider from "./cache.provider";
+import AppSessionProvider from "./session.provider";
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -12,13 +13,17 @@ type AppProviderProps = {
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <ConvexAppProvider>
-      <AuthProvider>
-        <ThemeProvider>
-          <NuqsProvider>{children}</NuqsProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </ConvexAppProvider>
+    <AuthProvider>
+      <AppSessionProvider>
+        <CacheProvider>
+          <NuqsProvider>
+            <ThemeProvider>
+              <NuqsProvider>{children}</NuqsProvider>
+            </ThemeProvider>
+          </NuqsProvider>
+        </CacheProvider>
+      </AppSessionProvider>
+    </AuthProvider>
   );
 };
 

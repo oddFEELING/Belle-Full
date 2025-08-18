@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,6 +15,8 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Separator } from "~/components/ui/separator";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useSessionId } from "convex-helpers/react/sessions";
 
 const formSchema = z.object({
   firstName: z.string(),
@@ -27,7 +29,9 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
+  const { signIn } = useAuthActions();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [_, refreshSession] = useSessionId();
 
   // ~ ======= Form instance ======= ~
   const form = useForm<FormSchema>({
@@ -43,17 +47,18 @@ const RegisterPage = () => {
 
   // ~ ======= Submit handler ======= ~
   const onSubmit = async (data: FormSchema) => {
-    console.log(data);
+    await signIn("password", data);
+    refreshSession();
   };
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center p-20">
+    <div className="relative flex h-full w-full items-center justify-center p-5 lg:p-20">
       <Button variant="ghost" className="absolute top-4 right-20">
         <span>Login</span>
       </Button>
-      <div className="flex h-max w-full max-w-lg flex-col items-center gap-y-3">
+      <div className="flex h-max w-full max-w-md flex-col items-center gap-y-3">
         <h2 className="text-2xl font-semibold">Create an account</h2>
-        <p className="text-muted-foreground -mt-2">
+        <p className="text-muted-foreground -mt-2 text-center">
           Enter your email below to create an account.
         </p>
         <Form {...form}>
@@ -154,8 +159,8 @@ const RegisterPage = () => {
 
               <div className="flex w-full items-center justify-center gap-5 overflow-hidden">
                 <Separator className="max-w-25" />
-                <span className="text-muted-foreground text-sm">
-                  Or continue with
+                <span className="text-muted-foreground text-center text-sm">
+                  OR
                 </span>
                 <Separator className="max-w-25" />
               </div>
