@@ -26,7 +26,7 @@ export const generateBrandSlug = mutation({
   args: { brandName: v.string(), currentSlug: v.optional(v.string()) },
   handler: async (
     ctx,
-    { brandName, currentSlug },
+    { brandName },
   ): Promise<{ data?: string; error?: string }> => {
     if (brandName.length < 3) return { error: "Name too short." };
 

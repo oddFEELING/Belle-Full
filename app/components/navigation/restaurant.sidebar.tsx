@@ -22,10 +22,14 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import {
+  IconArrowLeft,
   IconBowlChopsticks,
+  IconBuildingArch,
+  IconBuildingStore,
   IconCheck,
   IconClipboardText,
   IconGhost2,
+  IconHome,
   IconLayoutDashboard,
   IconPlus,
   IconUsers,
@@ -71,7 +75,7 @@ const RestaurantSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <IconLayoutDashboard strokeWidth={2} size={20} />
+                  <IconBuildingStore size={20} strokeWidth={1.5} />
                   {restaurantIsPending ? (
                     <span>Loading...</span>
                   ) : (
@@ -155,9 +159,7 @@ const RestaurantSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
         <SidebarSeparator />
-
         <SidebarGroup>
           <SidebarGroupLabel>Restaurant</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -185,6 +187,22 @@ const RestaurantSidebar = () => {
                 <SidebarMenuBadge>
                   <span className="bg-destructive h-2 w-2 rounded-full" />
                 </SidebarMenuBadge>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarSeparator />
+        <SidebarGroup>
+          <SidebarGroupLabel>Brand</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={() => navigate(`/brands/${brandId}/hub`)}
+                >
+                  <IconArrowLeft size={20} strokeWidth={1.5} />
+                  <span>Brand Hub</span>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

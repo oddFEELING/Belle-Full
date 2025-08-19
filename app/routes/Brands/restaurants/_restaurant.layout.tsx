@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
+import RestaurantNavbar from "~/components/navigation/restaurant.navbar";
 import RestaurantSidebar from "~/components/navigation/restaurant.sidebar";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 
@@ -9,6 +10,7 @@ const RestaurantLayout = () => {
       <RestaurantSidebar />
       <SidebarInset>
         <main>
+          <RestaurantNavbar />
           <Outlet />
         </main>
       </SidebarInset>

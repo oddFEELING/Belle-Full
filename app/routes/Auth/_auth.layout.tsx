@@ -8,7 +8,7 @@ const AuthLayout = () => {
       {/* -- Side Contetn -- */}
       {/* ~ =================================== ~ */}
       <aside className="hidden items-center justify-center p-5 lg:flex">
-        <div className="bg-muted flex h-full w-full flex-col justify-between rounded-3xl p-5">
+        <div className="bg-muted dark:bg-muted/40 flex h-full w-full flex-col justify-between rounded-3xl p-5">
           <Link to="/">
             <span className="cursor-pointer text-lg font-medium underline-offset-2 hover:underline">
               BelleFull

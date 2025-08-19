@@ -74,7 +74,9 @@ const CreateBrandPage = () => {
   return (
     <div className="no-scroll-full-page mt-20 flex justify-center md:mt-0 md:items-center">
       <div className="flex h-max w-full max-w-xl flex-col items-center gap-y-3 px-5 md:px-8">
-        <h2 className="text-2xl font-semibold">Create your Brand</h2>
+        <h2 className="text-2xl font-semibold">
+          Create your <span className="text-primary">Brand</span>
+        </h2>
         <p className="text-muted-foreground -mt-2 text-center">
           Create your brand first and then add restaurants to it.
         </p>
