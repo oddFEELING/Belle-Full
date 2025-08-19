@@ -18,7 +18,6 @@ import type { PanelContentProps, PanelProviderProps } from "./panel.typs";
 import { useIsMobile } from "~/hooks/use-mobile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { logger } from "~/lib/logger";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   Form,
@@ -30,6 +29,11 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useNavigate, useParams } from "react-router";
+import { useMutation } from "convex/react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { Textarea } from "../ui/textarea";
 
 // ~ =============================================>
 // ~ ======= Panel provider
@@ -76,9 +80,9 @@ const CreateRestaurantPanelProvider: React.FC<PanelProviderProps> = ({
 // ~ ======= Form types
 // ~ =============================================>
 const createRestaurantSchema = z.object({
-  name: z.string(),
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().optional(),
 });
-
 type CreateRestaurantSchema = z.infer<typeof createRestaurantSchema>;
 
 // ~ =============================================>
@@ -88,26 +92,34 @@ const CreateRestaurantPanel: React.FC<PanelContentProps> = ({
   open,
   onOpenChange,
 }) => {
+  const brandId = useParams().brandId as Id<"brands">;
+  const navigate = useNavigate();
+  const createRestaurant = useMutation(api.restaurants.functions.create);
+
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateRestaurantSchema>({
     resolver: zodResolver(createRestaurantSchema),
     defaultValues: {
       name: "",
+      description: "",
     },
   });
 
   // ~ ======= Handle submit  ======= ~
   const onSubmit = async (data: CreateRestaurantSchema) => {
-    logger.debug(data);
+    const restaurantId = await createRestaurant({ brand: brandId, ...data });
+    navigate(`/brands/${brandId}/restaurants/${restaurantId}`);
   };
+
   return (
     <CreateRestaurantPanelProvider open={open} onOpenChange={onOpenChange}>
-      <div className="flex h-40 w-full items-center justify-center px-4 py-3 md:px-0">
+      <div className="flex h-max w-full items-center justify-center px-4 pt-5 pb-5 md:px-0 md:pb-0">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid w-full max-w-md gap-y-3"
+            className="grid w-full max-w-md gap-y-5"
           >
+            {/* ~ ======= Name field ======= ~ */}
             <FormField
               name="name"
               control={form.control}
@@ -122,7 +134,22 @@ const CreateRestaurantPanel: React.FC<PanelContentProps> = ({
               )}
             />
 
-            <Button>Create</Button>
+            {/* ~ ======= Description field ======= ~ */}
+            <FormField
+              name="description"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} placeholder="e.g. London branch" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button className="mt-5">Create</Button>
           </form>
         </Form>
       </div>

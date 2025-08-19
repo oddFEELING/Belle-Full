@@ -16,12 +16,12 @@ export default [
     ]),
 
     // ~ ======= Brand routes ======= ~
-    ...prefix("/brands", [
+    ...prefix("/brands/:brandId", [
       layout("routes/Brands/_brand.layout.tsx", [
         route("/create", "routes/Brands/brand.create.tsx"),
 
         // ~ ======= Brand hub ======= ~
-        ...prefix("/hub/:brandId", [
+        ...prefix("/hub", [
           layout("routes/Brands/brand-hub/_brand.hub.layout.tsx", [
             index("routes/Brands/brand-hub/index.tsx"),
             route(
@@ -33,6 +33,20 @@ export default [
             route(
               "/ai-description",
               "routes/Brands/brand-hub/brand.ai-description.tsx",
+            ),
+          ]),
+        ]),
+
+        // ~ ======= Restaurant routes ======= ~
+        ...prefix("/restaurants/:restaurantId", [
+          layout("routes/Brands/restaurants/_restaurant.layout.tsx", [
+            index("routes/Brands/restaurants/restaurant.overview.tsx"),
+            route("/menu", "routes/Brands/restaurants/restaurant.menu.tsx"),
+            route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
+            route("/staff", "routes/Brands/restaurants/restaurant.staff.tsx"),
+            route(
+              "/bellebot",
+              "routes/Brands/restaurants/restaurant.bellebot.tsx",
             ),
           ]),
         ]),

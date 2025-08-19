@@ -66,10 +66,7 @@ export const getBrand = authenticatedQuery({
     if (!id && !slug) throw new Error("Either id or slug is required");
     let brand: Doc<"brands"> | null = null;
 
-    // ~ ======= By id ======= ~
     if (id) brand = await ctx.db.get(id);
-
-    // ~ ======= By slug ======= ~
     if (slug)
       brand = await ctx.db
         .query("brands")
@@ -77,18 +74,5 @@ export const getBrand = authenticatedQuery({
         .first();
 
     return brand;
-  },
-});
-
-// ~ =============================================>
-// ~ ======= Get brand restaurants
-// ~ =============================================>
-export const getRestaurants = authenticatedQuery({
-  args: { brandId: v.id("brands") },
-  handler: async (ctx, { brandId }): Promise<Doc<"restaurants">[]> => {
-    return ctx.db
-      .query("restaurants")
-      .withIndex("by_brand", (q) => q.eq("brand", brandId))
-      .collect();
   },
 });

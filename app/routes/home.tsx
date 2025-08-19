@@ -57,7 +57,7 @@ export default function Home() {
                       strokeWidth={1.5}
                       className="text-muted-foreground"
                     />
-                    <span>History</span>
+                    <span>Most liked</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">

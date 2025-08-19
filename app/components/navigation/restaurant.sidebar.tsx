@@ -22,14 +22,12 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import {
-  IconBuildingStore,
-  IconBurger,
-  IconChefHat,
+  IconBowlChopsticks,
+  IconCheck,
+  IconClipboardText,
+  IconGhost2,
   IconLayoutDashboard,
   IconPlus,
-  IconSettings,
-  IconSofa,
-  IconSparkles,
   IconUsers,
 } from "@tabler/icons-react";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -37,21 +35,29 @@ import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 
-const BrandHubSidebar = () => {
+const RestaurantSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { brandId } = useParams();
-  const { data: brand, isPending: brandIsPending } = useCachedQuery(
-    api.brands.functions.getBrand,
-    brandId ? { id: brandId as Id<"brands"> } : "skip",
+  const { brandId, restaurantId } = useParams();
+
+  // ~ ======= Queries ======= ~
+  const { data: brandRestaurants, isPending: brandRestaurantsIsPending } =
+    useCachedQuery(
+      api.restaurants.functions.getBrandRestaurants,
+      brandId ? { brandId: brandId as Id<"brands"> } : "skip",
+    );
+  const { data: restaurant, isPending: restaurantIsPending } = useCachedQuery(
+    api.restaurants.functions.getRestaurant,
+    restaurantId ? { id: restaurantId as Id<"restaurants"> } : "skip",
   );
 
+  // ~ ======= Nav paths ======= ~
   const paths = {
-    hub: `/brands/${brandId}/hub`,
-    restaurants: `/brands/${brandId}/hub/restaurants`,
-    people: `/brands/${brandId}/hub/people`,
-    manage: `/brands/${brandId}/hub/manage`,
-    aiDescription: `/brands/${brandId}/hub/ai-description`,
+    overview: `/brands/${brandId}/restaurants/${restaurantId}`,
+    orders: `/brands/${brandId}/restaurants/${restaurantId}/orders`,
+    staff: `/brands/${brandId}/restaurants/${restaurantId}/staff`,
+    menu: `/brands/${brandId}/restaurants/${restaurantId}/menu`,
+    bellebot: `/brands/${brandId}/restaurants/${restaurantId}/bellebot`,
   };
 
   return (
@@ -66,27 +72,40 @@ const BrandHubSidebar = () => {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
                   <IconLayoutDashboard strokeWidth={2} size={20} />
-                  {brandIsPending ? (
+                  {restaurantIsPending ? (
                     <span>Loading...</span>
                   ) : (
-                    <span>{brand?.name}</span>
+                    <span>{restaurant?.name}</span>
                   )}
 
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[var(--radix-popper-anchor-width)]">
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Acme Corp.</span>
-                </DropdownMenuItem>
+                {brandRestaurants?.map((restaurant) => (
+                  <DropdownMenuItem
+                    key={restaurant._id}
+                    onClick={() =>
+                      navigate(
+                        `/brands/${brandId}/restaurants/${restaurant._id}`,
+                      )
+                    }
+                  >
+                    <span>{restaurant.name}</span>
+                    {restaurant._id === restaurantId && (
+                      <IconCheck
+                        size={18}
+                        strokeWidth={1.5}
+                        className="ml-auto"
+                      />
+                    )}
+                  </DropdownMenuItem>
+                ))}
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <IconPlus size={18} strokeWidth={1.5} />
-                  <span>Create Brand</span>
+                  <span>Create Restaurant</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -101,36 +120,36 @@ const BrandHubSidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {/* ~ ======= Hub ======= ~ */}
+              {/* ~ ======= Overview ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={location.pathname === paths.hub}
-                  onClick={() => navigate(paths.hub)}
+                  isActive={location.pathname === paths.overview}
+                  onClick={() => navigate(paths.overview)}
                 >
-                  <IconSofa size={20} strokeWidth={1.5} />
-                  <span>Hub</span>
+                  <IconLayoutDashboard size={20} strokeWidth={1.5} />
+                  <span>Overview</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               {/* ~ ======= Restaurants ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={location.pathname.includes(paths.restaurants)}
-                  onClick={() => navigate(paths.restaurants)}
+                  isActive={location.pathname.includes(paths.orders)}
+                  onClick={() => navigate(paths.orders)}
                 >
-                  <IconBuildingStore size={20} strokeWidth={1.5} />
-                  <span>Restaurants</span>
+                  <IconClipboardText size={20} strokeWidth={1.5} />
+                  <span>Orders</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* ~ ======= People  ======= ~ */}
+              {/* ~ ======= Staff  ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={location.pathname.includes(paths.people)}
-                  onClick={() => navigate(paths.people)}
+                  isActive={location.pathname.includes(paths.staff)}
+                  onClick={() => navigate(paths.staff)}
                 >
                   <IconUsers size={20} strokeWidth={1.5} />
-                  <span>People</span>
+                  <span>Staff</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -140,28 +159,28 @@ const BrandHubSidebar = () => {
         <SidebarSeparator />
 
         <SidebarGroup>
-          <SidebarGroupLabel>Manage</SidebarGroupLabel>
+          <SidebarGroupLabel>Restaurant</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {/* ~ ======= Manage ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={location.pathname.includes(paths.manage)}
-                  onClick={() => navigate(paths.manage)}
+                  isActive={location.pathname.includes(paths.menu)}
+                  onClick={() => navigate(paths.menu)}
                 >
-                  <IconSettings size={20} strokeWidth={1.5} />
-                  <span>Manage</span>
+                  <IconBowlChopsticks size={20} strokeWidth={1.5} />
+                  <span>Menu</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               {/* ~ ======= AI description ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={location.pathname.includes(paths.aiDescription)}
-                  onClick={() => navigate(paths.aiDescription)}
+                  isActive={location.pathname.includes(paths.bellebot)}
+                  onClick={() => navigate(paths.bellebot)}
                 >
-                  <IconSparkles />
-                  <span>AI Description</span>
+                  <IconGhost2 />
+                  <span>Bellebot</span>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>
                   <span className="bg-destructive h-2 w-2 rounded-full" />
@@ -180,4 +199,4 @@ const BrandHubSidebar = () => {
   );
 };
 
-export default BrandHubSidebar;
+export default RestaurantSidebar;

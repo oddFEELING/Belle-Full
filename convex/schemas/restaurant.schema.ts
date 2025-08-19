@@ -5,8 +5,10 @@ import { DeliveryZone, Money } from "../shared";
 
 export const restaurants = defineTable({
   brand: v.id("brands"),
+  slug: v.string(),
 
   name: v.string(),
+  description: v.optional(v.string()),
   address: v.optional(v.id("addresses")),
   code: v.optional(v.string()),
   status: RestaurantStatus,
@@ -30,5 +32,7 @@ export const restaurants = defineTable({
   deliveryZones: v.optional(v.array(DeliveryZone)),
 })
   .index("by_brand", ["brand"])
+  .index("by_brand_name", ["brand", "name"])
   .index("by_code", ["code"])
-  .index("by_status", ["status"]);
+  .index("by_status", ["status"])
+  .index("by_slug", ["slug"]);
