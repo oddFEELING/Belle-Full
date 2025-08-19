@@ -12,10 +12,11 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import InputWithAddon from "~/components/custom-ui/input-with-addon";
 import { Button } from "~/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
+import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 const brandSchema = z.object({
   name: z.string(),
@@ -28,7 +29,9 @@ const brandSchema = z.object({
 type BrandSchema = z.infer<typeof brandSchema>;
 
 const CreateBrandPage = () => {
+  const navigate = useNavigate();
   const createBrand = useMutation(api.brands.functions.createBrand);
+  const generateBrandSlug = useMutation(api.brands.functions.generateBrandSlug);
 
   // ~ ======= Form instance ======= ~
   const form = useForm<BrandSchema>({
@@ -44,8 +47,29 @@ const CreateBrandPage = () => {
 
   // ~ ======= Handle submit ======= ~
   const onSubmit = async (data: BrandSchema) => {
-    logger.info({ data });
+    const brandId = await createBrand(data);
+    logger.debug({ brandId });
+    navigate(`/brands/hub/${brandId}`);
   };
+
+  const generaeSlug = useCallback(async () => {
+    if (form.getValues("name").length !== 3) return;
+    const slug = await generateBrandSlug({
+      brandName: form.getValues("name"),
+      currentSlug: form.getValues("slug"),
+    });
+    logger.debug({ slug });
+    if (slug?.data) {
+      form.setValue("slug", slug.data);
+      form.clearErrors("slug");
+    } else if (slug?.error) {
+      form.setValue("slug", slug?.error);
+    }
+  }, [form.watch("name")]);
+
+  useEffect(() => {
+    generaeSlug();
+  });
 
   return (
     <div className="no-scroll-full-page mt-20 flex justify-center md:mt-0 md:items-center">

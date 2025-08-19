@@ -11,13 +11,13 @@ import { useQuery } from "convex/react";
 const useAnonUserCheck = () => {
   const { signIn } = useAuthActions();
   const [sessionId, refreshSession] = useSessionId();
-  const data = useQuery(api.users.getUserSession);
+  const data = useQuery(api.users.functions.getUserSession);
 
   const anonCheck = useCallback(async () => {
     console.log(data, sessionId);
     if (data === null) {
       await signIn("anonymous").then(async () => {
-        logger.info("New Anonymous user created.");
+        logger.debug("New Anonymous user created.");
       });
     }
   }, [data, signIn, refreshSession]);

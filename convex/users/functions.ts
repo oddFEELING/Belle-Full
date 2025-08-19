@@ -1,6 +1,6 @@
 import { getAuthSessionId } from "@convex-dev/auth/server";
-import type { Doc } from "./_generated/dataModel";
-import { query } from "./_generated/server";
+import type { Doc } from "../_generated/dataModel";
+import { query } from "../_generated/server";
 import { v } from "convex/values";
 
 export const getUserSession = query({

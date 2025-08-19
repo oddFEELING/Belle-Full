@@ -3,7 +3,8 @@ import { defineTable } from "convex/server";
 import { CuisineTag, DietaryTag } from "../enums";
 
 export const brands = defineTable({
-  owner: v.id("users"),
+  primaryOwner: v.id("users"),
+  secondaryOwners: v.optional(v.array(v.id("users"))),
 
   name: v.string(),
   slug: v.string(),
@@ -17,4 +18,9 @@ export const brands = defineTable({
   heroImage: v.optional(v.string()),
   supportEmail: v.optional(v.string()),
   supportPhone: v.optional(v.string()),
-});
+})
+  .index("by_slug", ["slug"])
+  .index("by_cuisines", ["cuisines"])
+  .index("by_dietary_tags", ["dietaryTags"])
+  .index("by_primary_owner", ["primaryOwner"])
+  .index("by_bellefull_domain", ["bellefullDomain"]);
