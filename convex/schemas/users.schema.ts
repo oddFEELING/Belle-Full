@@ -10,4 +10,6 @@ export const users = defineTable({
   phoneVerificationTime: v.optional(v.number()),
   isAnonymous: v.optional(v.boolean()),
   isActive: v.optional(v.boolean()),
+
+  restaurantId: v.optional(v.id("restaurants")),
 }).index("by_email", ["email"]);

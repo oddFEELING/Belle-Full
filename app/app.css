@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Fredoka:wght@300..700&family=Geist:wght@100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -8,13 +8,13 @@
   --font-sans:
     "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: "Cormorant", serif;
+  --font-serif: "Poppins", serif;
   --font-mono: "Poppins", monospace;
 }
 
 html,
 body {
-  @apply bg-white font-mono dark:bg-gray-950;
+  @apply bg-white font-serif dark:bg-gray-950;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
@@ -79,6 +79,15 @@ body {
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+
+  /* custom css variables */
+  --header-height: 3.5rem;
+  --inset-padding: 1rem; /* 16px total (8px top + 8px bottom) */
+  --panel-body-height: calc(
+    100vh - var(--header-height) - var(--inset-padding)
+  );
+  --page-title-height: 3rem;
+  --content-height: calc(var(--panel-body-height) - var(--page-title-height));
 }
 
 :root {
@@ -88,36 +97,36 @@ body {
   --card-foreground: oklch(0.2101 0.0318 264.6645);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2101 0.0318 264.6645);
-  --primary: oklch(0.5771 0.2152 27.325);
+  --primary: oklch(0.6461 0.1943 41.1158);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.967 0.0029 264.5419);
   --secondary-foreground: oklch(0.2101 0.0318 264.6645);
-  --muted: oklch(0.967 0.0029 264.5419);
-  --muted-foreground: oklch(0.551 0.0234 264.3637);
+  --muted: oklch(0.975 0.003 264.5419);
+  --muted-foreground: oklch(0.58 0.015 264.6645);
   --accent: oklch(0.967 0.0029 264.5419);
-  --accent-foreground: oklch(0.2101 0.0318 264.6645);
+  --accent-foreground: oklch(0.551 0.0234 264.3637);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.9276 0.0058 264.5313);
   --input: oklch(0.9276 0.0058 264.5313);
-  --ring: oklch(0.5771 0.2152 27.325);
-  --chart-1: oklch(0.6368 0.2078 25.3313);
-  --chart-2: oklch(0.7049 0.1867 47.6044);
-  --chart-3: oklch(0.8369 0.1644 84.4286);
-  --chart-4: oklch(0.7227 0.192 149.5793);
-  --chart-5: oklch(0.6231 0.188 259.8145);
+  --ring: oklch(0.6461 0.1943 41.1158);
+  --chart-1: oklch(0.6461 0.1943 41.1158);
+  --chart-2: oklch(0.8369 0.1644 84.4286);
+  --chart-3: oklch(0.7227 0.192 149.5793);
+  --chart-4: oklch(0.6231 0.188 259.8145);
+  --chart-5: oklch(0.6368 0.2078 25.3313);
   --sidebar: oklch(0.9846 0.0017 247.8389);
   --sidebar-foreground: oklch(0.551 0.0234 264.3637);
-  --sidebar-primary: oklch(0.5771 0.2152 27.325);
+  --sidebar-primary: oklch(0.6461 0.1943 41.1158);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.967 0.0029 264.5419);
   --sidebar-accent-foreground: oklch(0.2101 0.0318 264.6645);
   --sidebar-border: oklch(0.9276 0.0058 264.5313);
-  --sidebar-ring: oklch(0.5771 0.2152 27.325);
+  --sidebar-ring: oklch(0.6461 0.1943 41.1158);
   --font-sans: Inter;
-  --font-mono: "Poppins", monospace;
-  --font-serif: "Cormorant", serif;
-  --radius: 0.65rem;
+  --font-serif: "Poppins", serif;
+  --font-mono: monospace;
+  --radius: 0.5rem;
   --shadow-2xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
@@ -142,36 +151,36 @@ body {
   --card-foreground: oklch(0.9846 0.0017 247.8389);
   --popover: oklch(0.2103 0.0059 285.8852);
   --popover-foreground: oklch(0.9846 0.0017 247.8389);
-  --primary: oklch(0.5771 0.2152 27.325);
+  --primary: oklch(0.6461 0.1943 41.1158);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.3729 0.0306 259.7328);
   --secondary-foreground: oklch(0.9846 0.0017 247.8389);
-  --muted: oklch(0.2739 0.0055 286.0326);
-  --muted-foreground: oklch(0.7118 0.0129 286.0665);
-  --accent: oklch(0.3729 0.0306 259.7328);
-  --accent-foreground: oklch(0.9846 0.0017 247.8389);
+  --muted: oklch(0.42 0.003 285.8852);
+  --muted-foreground: oklch(0.62 0.008 247.8389);
+  --accent: oklch(0.2739 0.0055 286.0326);
+  --accent-foreground: oklch(0.7118 0.0129 286.0665);
   --destructive: oklch(0.3958 0.1331 25.723);
   --destructive-foreground: oklch(0.9846 0.0017 247.8389);
   --border: oklch(0.2739 0.0055 286.0326);
   --input: oklch(0.2739 0.0055 286.0326);
-  --ring: oklch(0.6368 0.2078 25.3313);
-  --chart-1: oklch(0.5771 0.2152 27.325);
-  --chart-2: oklch(0.7049 0.1867 47.6044);
-  --chart-3: oklch(0.8369 0.1644 84.4286);
-  --chart-4: oklch(0.7227 0.192 149.5793);
-  --chart-5: oklch(0.6231 0.188 259.8145);
+  --ring: oklch(0.7049 0.1867 47.6044);
+  --chart-1: oklch(0.6461 0.1943 41.1158);
+  --chart-2: oklch(0.8369 0.1644 84.4286);
+  --chart-3: oklch(0.7227 0.192 149.5793);
+  --chart-4: oklch(0.6231 0.188 259.8145);
+  --chart-5: oklch(0.6368 0.2078 25.3313);
   --sidebar: oklch(0.2103 0.0059 285.8852);
   --sidebar-foreground: oklch(0.7118 0.0129 286.0665);
-  --sidebar-primary: oklch(0.5771 0.2152 27.325);
+  --sidebar-primary: oklch(0.6461 0.1943 41.1158);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.3729 0.0306 259.7328);
   --sidebar-accent-foreground: oklch(0.9846 0.0017 247.8389);
   --sidebar-border: oklch(0.2739 0.0055 286.0326);
-  --sidebar-ring: oklch(0.6368 0.2078 25.3313);
+  --sidebar-ring: oklch(0.7049 0.1867 47.6044);
   --font-sans: Inter;
-  --font-mono: "Poppins", monospace;
-  --font-serif: "Cormorant", serif;
-  --radius: 0.65rem;
+  --font-serif: "Poppins", serif;
+  --font-mono: monospace;
+  --radius: 0.5rem;
   --shadow-2xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
@@ -200,5 +209,9 @@ body {
 @layer components {
   .no-scroll-full-page {
     @apply relative h-[100dvh] w-full overflow-hidden;
+  }
+
+  .brand-hub--page {
+    @apply mx-auto max-w-7xl p-4 md:p-6;
   }
 }

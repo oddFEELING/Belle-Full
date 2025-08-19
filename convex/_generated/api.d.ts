@@ -12,12 +12,14 @@ import type * as _custom_mutation from "../_custom/mutation.js";
 import type * as _custom_query from "../_custom/query.js";
 import type * as auth from "../auth.js";
 import type * as brands_functions from "../brands/functions.js";
+import type * as components_r2 from "../components/r2.js";
 import type * as enums from "../enums.js";
 import type * as http from "../http.js";
 import type * as password from "../password.js";
+import type * as reataurants_functions from "../reataurants/functions.js";
 import type * as schemas_index from "../schemas/index.js";
 import type * as shared from "../shared.js";
-import type * as users from "../users.js";
+import type * as users_functions from "../users/functions.js";
 
 import type {
   ApiFromModules,
@@ -38,12 +40,14 @@ declare const fullApi: ApiFromModules<{
   "_custom/query": typeof _custom_query;
   auth: typeof auth;
   "brands/functions": typeof brands_functions;
+  "components/r2": typeof components_r2;
   enums: typeof enums;
   http: typeof http;
   password: typeof password;
+  "reataurants/functions": typeof reataurants_functions;
   "schemas/index": typeof schemas_index;
   shared: typeof shared;
-  users: typeof users;
+  "users/functions": typeof users_functions;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { LucideIcon } from "lucide-react";
-import LandingNavbar from "~/components/navigation/landing-navbar";
+import LandingNavbar from "~/components/navigation/landing.navbar";
 import { useIsMobile } from "~/hooks/use-mobile";
 
 export function meta({}: Route.MetaArgs) {
