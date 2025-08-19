@@ -16,7 +16,7 @@ import type * as components_r2 from "../components/r2.js";
 import type * as enums from "../enums.js";
 import type * as http from "../http.js";
 import type * as password from "../password.js";
-import type * as reataurants_functions from "../reataurants/functions.js";
+import type * as restaurants_functions from "../restaurants/functions.js";
 import type * as schemas_index from "../schemas/index.js";
 import type * as shared from "../shared.js";
 import type * as users_functions from "../users/functions.js";
@@ -44,7 +44,7 @@ declare const fullApi: ApiFromModules<{
   enums: typeof enums;
   http: typeof http;
   password: typeof password;
-  "reataurants/functions": typeof reataurants_functions;
+  "restaurants/functions": typeof restaurants_functions;
   "schemas/index": typeof schemas_index;
   shared: typeof shared;
   "users/functions": typeof users_functions;

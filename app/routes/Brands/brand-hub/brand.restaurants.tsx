@@ -1,16 +1,27 @@
-import { IconBuildingStore, IconChefHat } from "@tabler/icons-react";
+import { IconBuildingStore, IconChefHat, IconPlus } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { CreateRestaurantPanel } from "~/components/panels/create.restaurant.panel";
 import { Button } from "~/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 import { useCachedQuery } from "~/hooks/use-app-query";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 const BrandRestaurantsPage = () => {
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const brandId = useParams().brandId as Id<"brands">;
   const { data: restaurants, isPending: restaurantsIsPending } = useCachedQuery(
-    api.reataurants.functions.getBrandRestaurants,
+    api.restaurants.functions.getBrandRestaurants,
     { brandId },
   );
 
@@ -19,6 +30,15 @@ const BrandRestaurantsPage = () => {
 
   return (
     <div className="brand-hub--page">
+      {isMobile && (
+        <Button
+          size="lg"
+          className="fixed right-4 bottom-4 z-20"
+          onClick={() => setShowCreateRestaurantPanel(true)}
+        >
+          <IconPlus size={20} strokeWidth={2.5} />
+        </Button>
+      )}
       <CreateRestaurantPanel
         open={showCreateRestaurantPanel}
         onOpenChange={setShowCreateRestaurantPanel}
@@ -33,22 +53,25 @@ const BrandRestaurantsPage = () => {
             Manage your restaurants and their details.
           </span>
 
-          {restaurants && restaurants.length > 0 && (
+          {restaurants && restaurants.length > 0 && !isMobile && (
             <Button onClick={() => setShowCreateRestaurantPanel(true)}>
               <span> Add Restaurant</span>
             </Button>
           )}
         </div>
       </div>
+
       {/* ~ =================================== ~ */}
       {/* -- Loading State -- */}
       {/* ~ =================================== ~ */}
       {restaurantsIsPending && (
-        <div className="mt-10 flex h-48 w-full items-center justify-center rounded-xl border-2 border-dashed">
-          <div className="text-muted-foreground flex animate-pulse items-center gap-2">
-            <IconChefHat size={20} strokeWidth={1.5} />
-            <span>Loading...</span>
-          </div>
+        <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {new Array(6).fill(0).map((_, idk: number) => (
+            <Skeleton
+              key={idk}
+              className="bg-muted-foreground/10 h-20 w-full animate-pulse rounded-xl"
+            />
+          ))}
         </div>
       )}
 
@@ -78,6 +101,33 @@ const BrandRestaurantsPage = () => {
       {/* ~ =================================== ~ */}
       {/* -- Restaurant list -- */}
       {/* ~ =================================== ~ */}
+      {restaurants && restaurants.length > 0 && (
+        <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {restaurants.map((restaurant) => (
+            <Card
+              key={restaurant._id}
+              onClick={() =>
+                navigate(`/brands/${brandId}/restaurants/${restaurant._id}`)
+              }
+              className="ring-primary/40 cursor-pointer transition-all duration-200 ease-out hover:ring-1"
+            >
+              <CardHeader>
+                <div className="flex items-center justify-between gap-3">
+                  <CardTitle className="text-lg font-semibold">
+                    {restaurant.name}
+                  </CardTitle>
+                  <span className="text-muted-foreground text-xs">
+                    {restaurant.status}
+                  </span>
+                </div>
+                <CardDescription className="line-clamp-2">
+                  {restaurant?.description ?? "No description."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

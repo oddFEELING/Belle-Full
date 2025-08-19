@@ -13,6 +13,7 @@ import {
   IconMapPinBolt,
   IconSearch,
   IconSend,
+  IconSparkles,
   type Icon,
 } from "@tabler/icons-react";
 import {
@@ -35,37 +36,67 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   const isMobile = useIsMobile();
   return (
-    <div className="no-scroll-full-page flex items-center justify-center px-5">
+    <div className="no-scroll-full-page bg-background flex items-center justify-center px-5">
       <LandingNavbar />
       <div className="flex w-full max-w-2xl flex-col items-center justify-center">
-        <h1 className="text-2xl font-semibold">
-          Get Your food with <span className="text-primary">BelleFull</span>
+        <h1 className="text-2xl font-medium md:text-3xl">
+          Best African Cuisines with{" "}
+          <span className="text-primary">BelleFull</span>
         </h1>
 
-        <PromptInput className="mt-10 w-full">
-          <PromptInputTextarea placeholder="What do you want to eat today?" />
+        <PromptInput className="mt-10 w-full bg-transparent">
+          <PromptInputTextarea
+            placeholder="What do you want to eat today?"
+            className="bg-transparent"
+          />
           <PromptInputActions className="items-center justify-between pt-2">
-            <PromptInputAction tooltip="History">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-muted-foreground hover:bg-muted/50 rounded-full"
-                  >
-                    <IconChefHat
-                      size={18}
-                      strokeWidth={1.5}
-                      className="text-muted-foreground"
-                    />
-                    <span>History</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="bottom" align="start">
-                  <DropdownMenuItem>Manjaros</DropdownMenuItem>
-                  <DropdownMenuItem>Babul's</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </PromptInputAction>
+            <div className="flex items-center gap-3">
+              {/* ~ ======= Popular restaurants ======= ~ */}
+              <PromptInputAction tooltip="Popular meals">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-muted-foreground hover:bg-muted/50 rounded-full"
+                    >
+                      <IconChefHat
+                        size={18}
+                        strokeWidth={1.5}
+                        className="text-muted-foreground"
+                      />
+                      <span>Popular</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="bottom" align="start">
+                    <DropdownMenuItem>Manjaros</DropdownMenuItem>
+                    <DropdownMenuItem>Babul's</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </PromptInputAction>
+
+              {/* ~ ======= Featured restaurants ======= ~ */}
+              <PromptInputAction tooltip="Featured restaurants">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-muted-foreground hover:bg-muted/50 rounded-full"
+                    >
+                      <IconSparkles
+                        size={18}
+                        strokeWidth={1.5}
+                        className="text-muted-foreground"
+                      />
+                      <span>featured</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="bottom" align="start">
+                    <DropdownMenuItem>Manjaros</DropdownMenuItem>
+                    <DropdownMenuItem>Babul's</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </PromptInputAction>
+            </div>
 
             <PromptInputAction tooltip="Send">
               <Button

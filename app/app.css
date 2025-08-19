@@ -212,6 +212,10 @@ body {
   }
 
   .brand-hub--page {
-    @apply mx-auto max-w-7xl p-4 md:p-6;
+    @apply relative mx-auto max-w-7xl p-4 md:p-6;
+  }
+
+  .restaurant-dashboard--page {
+    @apply relative mx-auto max-w-7xl p-4 md:p-6;
   }
 }

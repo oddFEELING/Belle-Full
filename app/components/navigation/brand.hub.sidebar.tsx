@@ -47,11 +47,11 @@ const BrandHubSidebar = () => {
   );
 
   const paths = {
-    hub: `/brands/hub/${brandId}`,
-    restaurants: `/brands/hub/${brandId}/restaurants`,
-    people: `/brands/hub/${brandId}/people`,
-    manage: `/brands/hub/${brandId}/manage`,
-    aiDescription: `/brands/hub/${brandId}/ai-description`,
+    hub: `/brands/${brandId}/hub`,
+    restaurants: `/brands/${brandId}/hub/restaurants`,
+    people: `/brands/${brandId}/hub/people`,
+    manage: `/brands/${brandId}/hub/manage`,
+    aiDescription: `/brands/${brandId}/hub/ai-description`,
   };
 
   return (

@@ -5,9 +5,9 @@ const RootLayout = () => {
   useAnonUserCheck();
 
   return (
-    <>
+    <div className="bg-background h-[100dvh] w-full overflow-hidden">
       <Outlet />
-    </>
+    </div>
   );
 };
 
