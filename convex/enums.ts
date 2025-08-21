@@ -129,7 +129,7 @@ export const RestaurantLegalDocuments = v.union(
   v.literal("ALCOHOL_LIQUOR_LICENSE"),
 );
 
-export const ReastaurantDocumentType = v.union(
+export const DocumentType = v.union(
   v.literal("IMAGE"),
   v.literal("PDF"),
   v.literal("VIDEO"),
