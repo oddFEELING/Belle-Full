@@ -30,6 +30,8 @@ export const restaurants = defineTable({
   ),
 
   deliveryZones: v.optional(v.array(DeliveryZone)),
+
+  flaggedForShutdown: v.optional(v.boolean()),
 })
   .index("by_brand", ["brand"])
   .index("by_brand_name", ["brand", "name"])

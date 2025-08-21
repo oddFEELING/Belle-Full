@@ -13,7 +13,7 @@ import {
 
 import { formatBytes, useFileUpload } from "~/hooks/use-file-upload";
 import { Button } from "~/components/ui/button";
-import { getFileIcon } from "~/lib/get-file-icon";
+import { getFileIcon } from "~/helpers/get-file-icon";
 
 // Create some dummy initial files
 const initialFiles = [
