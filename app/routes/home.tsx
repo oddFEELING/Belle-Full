@@ -114,9 +114,9 @@ export default function Home() {
           {buttonActions.map((action) => (
             <div
               key={action.text}
-              className="text-muted-foreground hover:border-primary/40 hover:text-primary flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border p-4 transition-all duration-300 ease-out hover:font-medium"
+              className="text-muted-foreground hover:border-primary/40 hover:text-primary flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border p-3 transition-all duration-300 ease-out hover:font-medium"
             >
-              <action.Icon size={24} strokeWidth={1.3} />
+              <action.Icon size={20} strokeWidth={1.3} />
               <span className="text-sm">{action.text}</span>
             </div>
           ))}

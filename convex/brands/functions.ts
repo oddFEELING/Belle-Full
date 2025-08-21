@@ -4,6 +4,8 @@ import { createBrandDto } from "./brands.dto";
 import { Doc, Id } from "../_generated/dataModel";
 import { v } from "convex/values";
 import { authenticatedQuery } from "../_custom/query";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import { getManyFrom, getAll } from "convex-helpers/server/relationships";
 
 // ~ =============================================>
 // ~ ======= Create a brand
@@ -14,6 +16,12 @@ export const createBrand = authenticatedMutation({
     const brand = await ctx.db.insert("brands", {
       ...args,
       primaryOwner: ctx.user.id,
+    });
+    ctx.db.patch(ctx.user.id, { hasBrand: true });
+    ctx.db.insert("users_x_brands", {
+      user: ctx.user.id,
+      brand: brand,
+      role: "PRIMARY_OWNER",
     });
     return brand;
   },
@@ -74,5 +82,27 @@ export const getBrand = authenticatedQuery({
         .first();
 
     return brand;
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Get users brands
+// ~ =============================================>
+export const getUserBrands = authenticatedQuery({
+  args: {},
+  handler: async (ctx): Promise<(Doc<"brands"> | null)[]> => {
+    const brandAffiliations = await getManyFrom(
+      ctx.db,
+      "users_x_brands",
+      "by_user",
+      ctx.user.id,
+    );
+
+    const brands = await getAll(
+      ctx.db,
+      brandAffiliations.map((affiliation) => affiliation.brand),
+    );
+
+    return brands;
   },
 });

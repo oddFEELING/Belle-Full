@@ -5,6 +5,7 @@ import type { Id } from "../_generated/dataModel";
 import { mutation } from "../_generated/server";
 import type { Doc } from "../_generated/dataModel";
 import { api } from "../_generated/api";
+import { getAll, getManyFrom } from "convex-helpers/server/relationships";
 
 // ~ =============================================>
 // ~ ======= Get brand restaurants
@@ -12,11 +13,7 @@ import { api } from "../_generated/api";
 export const getBrandRestaurants = authenticatedQuery({
   args: { brandId: v.id("brands") },
   handler: async (ctx, { brandId }): Promise<Doc<"restaurants">[]> => {
-    return ctx.db
-      .query("restaurants")
-      .withIndex("by_brand_name", (q) => q.eq("brand", brandId))
-      .order("asc")
-      .collect();
+    return await getManyFrom(ctx.db, "restaurants", "by_brand", brandId);
   },
 });
 

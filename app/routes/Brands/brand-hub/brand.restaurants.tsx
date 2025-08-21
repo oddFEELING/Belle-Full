@@ -1,9 +1,16 @@
-import { IconBuildingStore, IconChefHat, IconPlus } from "@tabler/icons-react";
+import {
+  IconAffiliate,
+  IconBuildingStore,
+  IconChefHat,
+  IconLockBolt,
+  IconPlus,
+} from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CreateRestaurantPanel } from "~/components/panels/create.restaurant.panel";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -109,11 +116,11 @@ const BrandRestaurantsPage = () => {
               onClick={() =>
                 navigate(`/brands/${brandId}/restaurants/${restaurant._id}`)
               }
-              className="ring-primary/40 cursor-pointer transition-all duration-200 ease-out hover:ring-1"
+              className="ring-primary/40 cursor-pointer justify-between transition-all duration-200 ease-out hover:ring-1"
             >
               <CardHeader>
                 <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-lg font-semibold">
+                  <CardTitle className="line-clamp-1 text-lg font-semibold">
                     {restaurant.name}
                   </CardTitle>
                   <span className="text-muted-foreground text-xs">
@@ -124,6 +131,20 @@ const BrandRestaurantsPage = () => {
                   {restaurant?.description ?? "No description."}
                 </CardDescription>
               </CardHeader>
+
+              <CardFooter>
+                <div className="text-muted-foreground flex items-center space-x-2 text-sm">
+                  <IconLockBolt
+                    size={16}
+                    strokeWidth={1.5}
+                    className="text-muted-foreground"
+                  />
+
+                  <span className="hover:text-primary/70 cursor-pointer underline-offset-4 transition-all duration-100 ease-out hover:underline">
+                    {restaurant.slug}
+                  </span>
+                </div>
+              </CardFooter>
             </Card>
           ))}
         </div>

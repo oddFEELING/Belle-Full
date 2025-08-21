@@ -28,16 +28,23 @@ import {
   IconBuildingStore,
   IconCheck,
   IconClipboardText,
+  IconCoinPound,
+  IconGavel,
   IconGhost2,
   IconHome,
   IconLayoutDashboard,
+  IconMapCheck,
   IconPlus,
+  IconSettings,
+  IconTransactionPound,
   IconUsers,
+  IconWallet,
 } from "@tabler/icons-react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { CardCoin } from "iconsax-reactjs";
 
 const RestaurantSidebar = () => {
   const navigate = useNavigate();
@@ -62,6 +69,9 @@ const RestaurantSidebar = () => {
     staff: `/brands/${brandId}/restaurants/${restaurantId}/staff`,
     menu: `/brands/${brandId}/restaurants/${restaurantId}/menu`,
     bellebot: `/brands/${brandId}/restaurants/${restaurantId}/bellebot`,
+    billing: `/brands/${brandId}/restaurants/${restaurantId}/billing`,
+    legalDocuments: `/brands/${brandId}/restaurants/${restaurantId}/legal-documents`,
+    transactions: `/brands/${brandId}/restaurants/${restaurantId}/transactions`,
   };
 
   return (
@@ -135,7 +145,7 @@ const RestaurantSidebar = () => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* ~ ======= Restaurants ======= ~ */}
+              {/* ~ ======= Orders ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
                   isActive={location.pathname.includes(paths.orders)}
@@ -143,6 +153,17 @@ const RestaurantSidebar = () => {
                 >
                   <IconClipboardText size={20} strokeWidth={1.5} />
                   <span>Orders</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* ~ ======= Transactions ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.transactions)}
+                  onClick={() => navigate(paths.transactions)}
+                >
+                  <CardCoin size={20} strokeWidth={1.5} />
+                  <span>Transactions</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
@@ -156,26 +177,8 @@ const RestaurantSidebar = () => {
                   <span>Staff</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarSeparator />
-        <SidebarGroup>
-          <SidebarGroupLabel>Restaurant</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {/* ~ ======= Manage ======= ~ */}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={location.pathname.includes(paths.menu)}
-                  onClick={() => navigate(paths.menu)}
-                >
-                  <IconBowlChopsticks size={20} strokeWidth={1.5} />
-                  <span>Menu</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
 
-              {/* ~ ======= AI description ======= ~ */}
+              {/* ~ ======= Bellebot ======= ~ */}
               <SidebarMenuItem>
                 <SidebarMenuButton
                   isActive={location.pathname.includes(paths.bellebot)}
@@ -187,6 +190,53 @@ const RestaurantSidebar = () => {
                 <SidebarMenuBadge>
                   <span className="bg-destructive h-2 w-2 rounded-full" />
                 </SidebarMenuBadge>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarSeparator />
+        <SidebarGroup>
+          <SidebarGroupLabel>Restaurant</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {/* ~ ======= Menu ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.menu)}
+                  onClick={() => navigate(paths.menu)}
+                >
+                  <IconBowlChopsticks size={20} strokeWidth={1.5} />
+                  <span>Menu</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              {/* ~ ======= Manage ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.billing)}
+                  onClick={() => navigate(paths.billing)}
+                >
+                  <IconWallet size={20} strokeWidth={1.5} />
+                  <span>Billing</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* ~ ======= Delivery zones ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <IconMapCheck size={20} strokeWidth={1.5} />
+                  <span>Delivery Zones</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* ~ ======= Legal documents ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.legalDocuments)}
+                  onClick={() => navigate(paths.legalDocuments)}
+                >
+                  <IconGavel size={20} strokeWidth={1.5} />
+                  <span>Legal Documents</span>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

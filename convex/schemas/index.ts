@@ -4,5 +4,7 @@ export * from "./menu.item.schema";
 export * from "./menu.schema";
 export * from "./order.items.schema";
 export * from "./order.schema";
+export * from "./restaurant.document.schema";
 export * from "./restaurant.schema";
 export * from "./users.schema";
+export * from "./users_x_brands.schema";

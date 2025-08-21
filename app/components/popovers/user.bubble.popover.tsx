@@ -1,13 +1,19 @@
-import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Authenticated, Unauthenticated } from "convex/react";
-import { Popover, PopoverContent } from "../ui/popover";
-import { PopoverTrigger } from "@radix-ui/react-popover";
-import { useUser } from "~/hooks/use-user/use-user";
-import { IconUser } from "@tabler/icons-react";
-import { Button } from "../ui/button";
+import { IconLogout2, IconSettings, IconUser } from "@tabler/icons-react";
 import { cn } from "~/lib/utils";
 import { useNavigate } from "react-router";
+import { useConvexAuth } from "convex/react";
+import { useUser } from "~/hooks/use-user/use-user";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { Like1 } from "iconsax-reactjs";
 
 type UserBubbleProps = {
   side?: "top" | "bottom" | "left" | "right";
@@ -20,37 +26,70 @@ const UserBubble = ({
   align = "end",
   className,
 }: UserBubbleProps) => {
-  const { user, session, isLoading } = useUser();
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { signOut } = useAuthActions();
+  const { user } = useUser();
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Avatar
           className="ring-muted-foreground/50 cursor-pointer transition-all duration-200 ease-out hover:ring"
           onClick={(event) => {
-            if (user?.isAnonymous) {
+            if (!isAuthenticated) {
               event.stopPropagation();
               navigate("/register");
             }
           }}
         >
-          <AvatarImage src={user?.image}></AvatarImage>
-          <AvatarFallback>
+          <AvatarImage src={user?.image} />
+          <AvatarFallback className="bg-muted text-muted-foreground">
             <IconUser size={16} strokeWidth={1.5} />
           </AvatarFallback>
         </Avatar>
-      </PopoverTrigger>
+      </DropdownMenuTrigger>
 
-      {/* ~ ======= Anonymous user ======= ~ */}
-      {!user?.isAnonymous && (
-        <PopoverContent
+      {isAuthenticated && (
+        <DropdownMenuContent
           align={align}
           side={side}
-          className={cn("w-48", className)}
-        ></PopoverContent>
+          className={cn("w-56", className)}
+        >
+          <DropdownMenuLabel>
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm leading-none font-medium">
+                {user?.name || "User"}
+              </p>
+              <p className="text-muted-foreground text-xs leading-none">
+                {user?.email}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem className="cursor-pointer">
+            <IconSettings size={16} />
+            <span>Settings</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="cursor-pointer">
+            <Like1 size={16} />
+            <span>Feedback</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            onClick={() => signOut()}
+            className="cursor-pointer text-red-600 focus:text-red-600"
+          >
+            <IconLogout2 size={16} />
+            <span>Sign out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
       )}
-    </Popover>
+    </DropdownMenu>
   );
 };
 
