@@ -136,3 +136,9 @@ export const DocumentType = v.union(
   v.literal("AUDIO"),
   v.literal("OTHER"),
 );
+
+export const RestaurantDocumentStatus = v.union(
+  v.literal("IN_REVIEW"),
+  v.literal("APPROVED"),
+  v.literal("REJECTED"),
+);

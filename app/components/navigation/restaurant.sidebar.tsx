@@ -95,7 +95,7 @@ const RestaurantSidebar = () => {
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[var(--radix-popper-anchor-width)]">
+              <DropdownMenuContent className="ring-muted/50 w-[var(--radix-popper-anchor-width)] ring-1">
                 {brandRestaurants?.map((restaurant) => (
                   <DropdownMenuItem
                     key={restaurant._id}
