@@ -23,4 +23,5 @@ export const brands = defineTable({
   .index("by_cuisines", ["cuisines"])
   .index("by_dietary_tags", ["dietaryTags"])
   .index("by_primary_owner", ["primaryOwner"])
+  .index("by_secondary_owners", ["secondaryOwners"])
   .index("by_bellefull_domain", ["bellefullDomain"]);

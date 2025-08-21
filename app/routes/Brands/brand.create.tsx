@@ -49,7 +49,7 @@ const CreateBrandPage = () => {
   const onSubmit = async (data: BrandSchema) => {
     const brandId = await createBrand(data);
     logger.debug({ brandId });
-    navigate(`/brands/hub/${brandId}`);
+    navigate(`/brands/${brandId}/hub`);
   };
 
   const generaeSlug = useCallback(async () => {
@@ -94,7 +94,7 @@ const CreateBrandPage = () => {
                 <FormItem className="">
                   <FormLabel>Brand name</FormLabel>
                   <FormControl>
-                    <Input required {...field} />
+                    <Input required {...field} autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

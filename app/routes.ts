@@ -48,6 +48,18 @@ export default [
               "/bellebot",
               "routes/Brands/restaurants/restaurant.bellebot.tsx",
             ),
+            route(
+              "/transactions",
+              "routes/Brands/restaurants/restaurant.transactions.tsx",
+            ),
+            route(
+              "/billing",
+              "routes/Brands/restaurants/restaurant.billing.tsx",
+            ),
+            route(
+              "/legal-documents",
+              "routes/Brands/restaurants/restaurant.manage/restaurant.legal-documents.tsx",
+            ),
           ]),
         ]),
       ]),

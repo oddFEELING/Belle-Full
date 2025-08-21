@@ -3,7 +3,7 @@ import { defineTable } from "convex/server";
 import { MenuItemOption, Money } from "../shared";
 import { Allergen, DietaryTag } from "../enums";
 
-export const orderItems = defineTable({
+export const order_items = defineTable({
   order: v.id("orders"),
   menuItem: v.id("menu_items"),
 

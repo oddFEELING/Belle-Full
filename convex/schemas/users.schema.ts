@@ -11,5 +11,6 @@ export const users = defineTable({
   isAnonymous: v.optional(v.boolean()),
   isActive: v.optional(v.boolean()),
 
-  restaurantId: v.optional(v.id("restaurants")),
+  hasBrand: v.optional(v.boolean()),
+  recentRestaurantId: v.optional(v.id("restaurants")),
 }).index("by_email", ["email"]);

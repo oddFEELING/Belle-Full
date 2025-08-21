@@ -9,6 +9,11 @@ This prevents circular dependencies.
 
 import { v } from "convex/values";
 
+export const BrandRole = v.union(
+  v.literal("PRIMARY_OWNER"),
+  v.literal("SECONDARY_OWNER"),
+);
+
 export const WeekDay = v.union(
   v.literal("Monday"),
   v.literal("Tuesday"),
@@ -113,4 +118,21 @@ export const OrderStatus = v.union(
   v.literal("CANCELLED"),
   v.literal("PENDING_REFUND"),
   v.literal("REFUNDED"),
+);
+
+export const RestaurantLegalDocuments = v.union(
+  v.literal("FOOD_BUSINESS_REGISTRATION_CONFIRMATION"),
+  v.literal("FOOD_HYGIENE_CERTIFICATE"),
+  v.literal("FOOD_SAFETY_MANAGEMENT"),
+  v.literal("ALLERGEN_COMPLIANCE"),
+  v.literal("PREMISIS_LICENSE"),
+  v.literal("ALCOHOL_LIQUOR_LICENSE"),
+);
+
+export const ReastaurantDocumentType = v.union(
+  v.literal("IMAGE"),
+  v.literal("PDF"),
+  v.literal("VIDEO"),
+  v.literal("AUDIO"),
+  v.literal("OTHER"),
 );

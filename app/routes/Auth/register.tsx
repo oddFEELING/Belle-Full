@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,12 +11,12 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { useNavigate } from "react-router";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Separator } from "~/components/ui/separator";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useSessionId } from "convex-helpers/react/sessions";
 
 const formSchema = z.object({
   firstName: z.string(),
@@ -29,9 +29,9 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const { signIn } = useAuthActions();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [_, refreshSession] = useSessionId();
 
   // ~ ======= Form instance ======= ~
   const form = useForm<FormSchema>({
@@ -47,8 +47,14 @@ const RegisterPage = () => {
 
   // ~ ======= Submit handler ======= ~
   const onSubmit = async (data: FormSchema) => {
-    await signIn("password", data);
-    refreshSession();
+    await signIn("password", {
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      password: data.password,
+      flow: data.flow,
+    });
+
+    navigate("/");
   };
 
   return (
