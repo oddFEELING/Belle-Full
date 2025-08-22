@@ -2,7 +2,7 @@ import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import UploadFileComponent from "~/components/comp-549";
+import UploadFileComponent from "~/components/origin-upload";
 import {
   RestaurantDocumentDataTable,
   RestaurantDocumentTableColumns,

@@ -12,7 +12,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "../ui/drawer";
-import type { PanelContentProps, PanelProviderProps } from "./panel.typs";
+import type { PanelContentProps, PanelProviderProps } from "./panel.types";
 import { useIsMobile } from "~/hooks/use-mobile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

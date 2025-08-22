@@ -41,7 +41,10 @@ export default [
         ...prefix("/restaurants/:restaurantId", [
           layout("routes/Brands/restaurants/_restaurant.layout.tsx", [
             index("routes/Brands/restaurants/restaurant.overview.tsx"),
-            route("/menu", "routes/Brands/restaurants/restaurant.menu.tsx"),
+            route(
+              "/menu",
+              "routes/Brands/restaurants/restaurant.menu/index.tsx",
+            ),
             route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
             route("/staff", "routes/Brands/restaurants/restaurant.staff.tsx"),
             route(
@@ -58,7 +61,7 @@ export default [
             ),
             route(
               "/legal-documents",
-              "routes/Brands/restaurants/restaurant.manage/restaurant.legal-documents.tsx",
+              "routes/Brands/restaurants/restaurant.legal-documents.tsx",
             ),
           ]),
         ]),
