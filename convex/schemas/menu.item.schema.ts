@@ -10,13 +10,12 @@ export const menu_items = defineTable({
 
   name: v.string(),
   description: v.string(),
-  menuCategory: v.string(),
   image: v.string(),
   allergens: v.optional(v.array(Allergen)),
   mayContain: v.optional(v.array(Allergen)),
   calories: v.optional(v.number()),
   isAvailable: v.boolean(),
-  options: v.optional(v.array(MenuItemOption)),
+  options: v.array(MenuItemOption),
 
   basePrice: Money,
   promotionalPrice: Money,

@@ -6,7 +6,6 @@ import { Id } from "../_generated/dataModel";
 import { authenticatedQuery } from "../_custom/query";
 import {
   getManyFrom,
-  getOneFrom,
   getOneFromOrThrow,
 } from "convex-helpers/server/relationships";
 

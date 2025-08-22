@@ -7,19 +7,22 @@ This prevents circular dependencies.
 🌹 Cheers.
 */
 
-import { v } from "convex/values";
+import { Infer, v } from "convex/values";
 import { Allergen, Currency, DietaryTag } from "./enums";
 
 export const Money = v.object({
   currency: Currency,
   amount: v.number(),
 });
+export type Money = Infer<typeof Money>;
 
 export const DeliveryZone = v.object({
   postcode: v.string(),
   deliveryFee: Money,
   minOrderSubTotal: Money,
 });
+
+export type DeliveryZone = Infer<typeof DeliveryZone>;
 
 export const MenuItemOption = v.object({
   name: v.string(),
@@ -32,8 +35,11 @@ export const MenuItemOption = v.object({
   isAvailable: v.boolean(),
 });
 
+export type MenuItemOption = Infer<typeof MenuItemOption>;
+
 export const DateTime = v.object({
   ms: v.number(),
   timeText: v.string(),
   isoString: v.string(),
 });
+export type DateTime = Infer<typeof DateTime>;

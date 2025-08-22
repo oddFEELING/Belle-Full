@@ -18,6 +18,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import {
   IconMenu4,
+  IconNotesOff,
   IconPencilMinus,
   IconPennant,
   IconPlus,
@@ -27,6 +28,7 @@ import {
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
 import CreateMenuPanel from "~/components/panels/create.menu.panel";
+import { useNavigate } from "react-router";
 
 interface MenusTabProps {
   restaurantId: Id<"restaurants">;
@@ -38,6 +40,7 @@ export const MenusTab: React.FC<MenusTabProps> = ({
   brandId,
 }) => {
   const [createMenuOpen, setCreateMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { data: menus, isPending: menusIsPending } = useCachedQuery(
     api.menus.functions.getMenuByRestaurant,
@@ -73,7 +76,9 @@ export const MenusTab: React.FC<MenusTabProps> = ({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          disabled={menu.approvalStatus !== "APPROVED"}
+                        >
                           <IconPennant
                             size={16}
                             strokeWidth={1.5}
@@ -133,15 +138,15 @@ export const MenusTab: React.FC<MenusTabProps> = ({
         ) : (
           /* Empty State */
           <div className="flex flex-col items-center rounded-xl border-2 border-dashed px-4 py-10">
-            <IconSoup
+            <IconNotesOff
               size={40}
               strokeWidth={1.5}
               className="mb-b text-muted-foreground"
             />
             <h3 className="mb-2 text-lg font-medium">No menus created yet</h3>
             <p className="text-muted-foreground mb-6 max-w-sm text-center">
-              Get started by creating your first menu. You can add and customise
-              menu items, and add images to your menu.
+              Get started by creating your first menu. You can add menu items
+              after creating a menu.
             </p>
             <Button size="lg" onClick={() => setCreateMenuOpen(true)}>
               <IconPlus size={16} />

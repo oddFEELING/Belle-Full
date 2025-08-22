@@ -45,6 +45,10 @@ export default [
               "/menu",
               "routes/Brands/restaurants/restaurant.menu/index.tsx",
             ),
+            route(
+              "/menu/add-menu-item",
+              "routes/Brands/restaurants/restaurant.menu/add.menu.item.tsx",
+            ),
             route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
             route("/staff", "routes/Brands/restaurants/restaurant.staff.tsx"),
             route(

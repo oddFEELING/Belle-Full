@@ -3,6 +3,7 @@ export * from "./brand.schema";
 export * from "./category.schema";
 export * from "./menu.item.schema";
 export * from "./menu.schema";
+export * from "./menu_x_category.schema";
 export * from "./menu_x_item.schema";
 export * from "./order.items.schema";
 export * from "./order.schema";

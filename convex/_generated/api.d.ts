@@ -18,6 +18,8 @@ import type * as http from "../http.js";
 import type * as menus_aggregate from "../menus/aggregate.js";
 import type * as menus_categories_functions from "../menus/categories/functions.js";
 import type * as menus_functions from "../menus/functions.js";
+import type * as menus_items_functions from "../menus/items/functions.js";
+import type * as menus_items_media from "../menus/items/media.js";
 import type * as password from "../password.js";
 import type * as restaurants_documents from "../restaurants/documents.js";
 import type * as restaurants_functions from "../restaurants/functions.js";
@@ -51,6 +53,8 @@ declare const fullApi: ApiFromModules<{
   "menus/aggregate": typeof menus_aggregate;
   "menus/categories/functions": typeof menus_categories_functions;
   "menus/functions": typeof menus_functions;
+  "menus/items/functions": typeof menus_items_functions;
+  "menus/items/media": typeof menus_items_media;
   password: typeof password;
   "restaurants/documents": typeof restaurants_documents;
   "restaurants/functions": typeof restaurants_functions;

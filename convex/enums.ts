@@ -7,12 +7,13 @@ This prevents circular dependencies.
 🌹 Cheers.
 */
 
-import { v } from "convex/values";
+import { v, Infer } from "convex/values";
 
 export const BrandRole = v.union(
   v.literal("PRIMARY_OWNER"),
   v.literal("SECONDARY_OWNER"),
 );
+export type BrandRole = Infer<typeof BrandRole>;
 
 export const WeekDay = v.union(
   v.literal("Monday"),
@@ -23,6 +24,7 @@ export const WeekDay = v.union(
   v.literal("Saturday"),
   v.literal("Sunday"),
 );
+export type WeekDay = Infer<typeof WeekDay>;
 
 export const RestaurantStatus = v.union(
   v.literal("DRAFT"),
@@ -31,6 +33,7 @@ export const RestaurantStatus = v.union(
   v.literal("SUSPENDED"),
   v.literal("CLOSED"),
 );
+export type RestaurantStatus = Infer<typeof RestaurantStatus>;
 
 export const DietaryTag = v.union(
   v.literal("Vegan"),
@@ -44,6 +47,7 @@ export const DietaryTag = v.union(
   v.literal("Paleo"),
   v.literal("Keto"),
 );
+export type DietaryTag = Infer<typeof DietaryTag>;
 
 export const CuisineTag = v.union(
   v.literal("Nigerian"),
@@ -67,6 +71,7 @@ export const CuisineTag = v.union(
   v.literal("Namibian"),
   v.literal("Botswana"),
 );
+export type CuisineTag = Infer<typeof CuisineTag>;
 
 export const Allergen = v.union(
   v.literal("Celery"),
@@ -86,11 +91,13 @@ export const Allergen = v.union(
   v.literal("Wheat"),
   v.literal("Other"),
 );
+export type Allergen = Infer<typeof Allergen>;
 
 export const AddressType = v.union(
   v.literal("Restaurant"),
   v.literal("Customer"),
 );
+export type AddressType = Infer<typeof AddressType>;
 
 export const Currency = v.union(
   v.literal("GBP"),
@@ -102,11 +109,13 @@ export const Currency = v.union(
   v.literal("UGX"),
   v.literal("RWF"),
 );
+export type Currency = Infer<typeof Currency>;
 
 export const FulfilmentType = v.union(
   v.literal("DELIVERY"),
   v.literal("PICKUP"),
 );
+export type FulfilmentType = Infer<typeof FulfilmentType>;
 
 export const OrderStatus = v.union(
   v.literal("PENDING"),
@@ -119,6 +128,7 @@ export const OrderStatus = v.union(
   v.literal("PENDING_REFUND"),
   v.literal("REFUNDED"),
 );
+export type OrderStatus = Infer<typeof OrderStatus>;
 
 export const RestaurantLegalDocuments = v.union(
   v.literal("FOOD_BUSINESS_REGISTRATION_CONFIRMATION"),
@@ -128,6 +138,7 @@ export const RestaurantLegalDocuments = v.union(
   v.literal("PREMISIS_LICENSE"),
   v.literal("ALCOHOL_LIQUOR_LICENSE"),
 );
+export type RestaurantLegalDocuments = Infer<typeof RestaurantLegalDocuments>;
 
 export const DocumentType = v.union(
   v.literal("IMAGE"),
@@ -136,6 +147,7 @@ export const DocumentType = v.union(
   v.literal("AUDIO"),
   v.literal("OTHER"),
 );
+export type DocumentType = Infer<typeof DocumentType>;
 
 export const ReviewableItemStatus = v.union(
   v.literal("IN_REVIEW"),
@@ -143,3 +155,4 @@ export const ReviewableItemStatus = v.union(
   v.literal("APPROVED"),
   v.literal("REJECTED"),
 );
+export type ReviewableItemStatus = Infer<typeof ReviewableItemStatus>;

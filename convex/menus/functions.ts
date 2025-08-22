@@ -39,20 +39,6 @@ export const deleteMenu = authenticatedMutation({
 });
 
 // ~ =============================================>
-// ~ ======= Update Menu
-// ~ =============================================>
-export const update = authenticatedMutation({
-  args: {
-    id: v.id("menus"),
-    updateData: partial(vv.doc("menus")),
-  },
-  handler: async (ctx, args): Promise<{ success: boolean }> => {
-    ctx.db.patch(args.id, args.updateData);
-    return { success: true };
-  },
-});
-
-// ~ =============================================>
 // ~ ======= Get Restaurant menus
 // ~ =============================================>
 export const getMenuByRestaurant = authenticatedQuery({

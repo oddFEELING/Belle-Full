@@ -6,19 +6,21 @@ import {
   PanelContent,
   PanelTitle,
   PanelFooter,
+  PanelCancelButton,
+  PanelActionButton,
 } from "../ui/panel";
 import type { Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { logger } from "~/lib/logger";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { IconClipboard, IconClipboardText } from "@tabler/icons-react";
+import { IconClipboardText } from "@tabler/icons-react";
 import { useEffect } from "react";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 interface CreateMenuProviderProps extends PanelContentProps {
   brand: Id<"brands">;
@@ -39,6 +41,7 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
   restaurant,
   onOpenChange,
 }) => {
+  const isMobile = useIsMobile();
   const createMenu = useMutation(api.menus.functions.create);
 
   // ~ ======= Form instance ======= ~
@@ -109,15 +112,11 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
               )}
             />
 
-            <PanelFooter className="mt-4 flex justify-end gap-2">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => onOpenChange(false)}
-              >
+            <PanelFooter>
+              <PanelCancelButton onClick={() => onOpenChange(false)}>
                 Cancel
-              </Button>
-              <Button type="submit">Create Menu</Button>
+              </PanelCancelButton>
+              <PanelActionButton type="submit">Create Menu</PanelActionButton>
             </PanelFooter>
           </form>
         </Form>
