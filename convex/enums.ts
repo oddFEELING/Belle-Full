@@ -137,8 +137,9 @@ export const DocumentType = v.union(
   v.literal("OTHER"),
 );
 
-export const RestaurantDocumentStatus = v.union(
+export const ReviewableItemStatus = v.union(
   v.literal("IN_REVIEW"),
+  v.literal("ACTION_REQUIRED"),
   v.literal("APPROVED"),
   v.literal("REJECTED"),
 );

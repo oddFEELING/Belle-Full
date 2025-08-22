@@ -58,7 +58,7 @@ export default [
             ),
             route(
               "/legal-documents",
-              "routes/Brands/restaurants/restaurant.manage/restaurant.legal-documents.tsx",
+              "routes/Brands/restaurants/restaurant.legal-documents.tsx",
             ),
           ]),
         ]),

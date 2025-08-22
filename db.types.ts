@@ -5,8 +5,10 @@ import { type Infer } from "convex/values";
 
 import { addresses } from "./convex/schemas/address.schema";
 import { brands } from "./convex/schemas/brand.schema";
+import { categories } from "./convex/schemas/category.schema";
 import { menu_items } from "./convex/schemas/menu.item.schema";
 import { menus } from "./convex/schemas/menu.schema";
+import { menu_x_item } from "./convex/schemas/menu_x_item.schema";
 import { order_items } from "./convex/schemas/order.items.schema";
 import { orders } from "./convex/schemas/order.schema";
 import { restaurant_documents } from "./convex/schemas/restaurant.document.schema";
@@ -16,8 +18,10 @@ import { users_x_brands } from "./convex/schemas/users_x_brands.schema";
 
 export type Addresses = Infer<typeof addresses.validator>;
 export type Brands = Infer<typeof brands.validator>;
+export type Categories = Infer<typeof categories.validator>;
 export type MenuItems = Infer<typeof menu_items.validator>;
 export type Menus = Infer<typeof menus.validator>;
+export type MenuXItem = Infer<typeof menu_x_item.validator>;
 export type OrderItems = Infer<typeof order_items.validator>;
 export type Orders = Infer<typeof orders.validator>;
 export type RestaurantDocuments = Infer<typeof restaurant_documents.validator>;

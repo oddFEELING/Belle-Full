@@ -33,12 +33,14 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import UploadRestaurantDocumentsPanel from "~/components/panels/upload.restaurant.documents.panel";
 import { useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 type FileDataTableFilterProps = {
   table: Table<Doc<"restaurant_documents">>;
 };
 
 const FileDataTableFilter = ({ table }: FileDataTableFilterProps) => {
+  const isMobile = useIsMobile();
   const { user } = useUser();
   const [openUploadPanel, setOpenUploadPanel] = useState<boolean>(false);
   const selectedCount = table.getSelectedRowModel().rows.length;
@@ -54,8 +56,13 @@ const FileDataTableFilter = ({ table }: FileDataTableFilterProps) => {
   };
 
   return (
-    <div className="mt-2 flex w-full items-center justify-between px-0.5 py-2">
-      <div className="flex w-full items-center gap-2">
+    <div
+      className={cn(
+        "mt-2 flex w-full items-center justify-between px-0.5 py-2",
+        isMobile ? "flex-col" : "flex-row",
+      )}
+    >
+      <div className={cn("flex w-full items-center gap-2")}>
         <div className="relative flex w-full max-w-sm items-center">
           <Search size={16} className="text-muted-foreground absolute left-2" />
           <Input
@@ -102,7 +109,12 @@ const FileDataTableFilter = ({ table }: FileDataTableFilterProps) => {
         </DropdownMenu>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div
+        className={cn(
+          "mt-4 flex items-center justify-between space-x-4",
+          isMobile ? "w-full" : "w-max",
+        )}
+      >
         {/* ~ =================================== ~ */}
         {/* -- Column visibility -- */}
         {/* ~ =================================== ~ */}
@@ -110,10 +122,13 @@ const FileDataTableFilter = ({ table }: FileDataTableFilterProps) => {
           <PopoverTrigger asChild>
             <Button role="combobox" variant="ghost" size="sm">
               <LayoutList size={15} strokeWidth={1.5} />
-              <span>View</span>
+              {!isMobile && <span>View</span>}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-48 p-0" align="end">
+          <PopoverContent
+            className="w-48 p-0"
+            align={isMobile ? "start" : "end"}
+          >
             <Command>
               <CommandInput placeholder="Search columns..." />
               <CommandList>
@@ -158,7 +173,7 @@ const FileDataTableFilter = ({ table }: FileDataTableFilterProps) => {
 
         <Button size="sm" onClick={() => setOpenUploadPanel(true)}>
           <IconPlus strokeWidth={1.5} />
-          <span>Upload Documents</span>
+          {isMobile ? <span>Upload</span> : <span>Upload Documents</span>}
         </Button>
       </div>
       <UploadRestaurantDocumentsPanel

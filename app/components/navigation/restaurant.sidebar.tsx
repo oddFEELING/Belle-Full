@@ -23,12 +23,14 @@ import {
 import { ChevronDown } from "lucide-react";
 import {
   IconArrowLeft,
+  IconBasket,
   IconBowlChopsticks,
   IconBuildingArch,
   IconBuildingStore,
   IconCheck,
   IconClipboardText,
   IconCoinPound,
+  IconCooker,
   IconGavel,
   IconGhost2,
   IconHome,
@@ -207,6 +209,17 @@ const RestaurantSidebar = () => {
                 >
                   <IconBowlChopsticks size={20} strokeWidth={1.5} />
                   <span>Menu</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* ~ ======= Transactions ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.transactions)}
+                  onClick={() => navigate(paths.transactions)}
+                >
+                  <IconBasket size={20} strokeWidth={1.5} />
+                  <span>Meal prep</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               {/* ~ ======= Manage ======= ~ */}

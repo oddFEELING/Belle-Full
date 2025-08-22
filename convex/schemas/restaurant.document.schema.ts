@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { defineTable } from "convex/server";
 import {
   DocumentType,
-  RestaurantDocumentStatus,
+  ReviewableItemStatus,
   RestaurantLegalDocuments,
 } from "../enums";
 
@@ -15,5 +15,5 @@ export const restaurant_documents = defineTable({
   key: v.string(),
   type: DocumentType,
   category: RestaurantLegalDocuments,
-  status: RestaurantDocumentStatus,
+  status: ReviewableItemStatus,
 }).index("by_restaurant", ["restaurant"]);
