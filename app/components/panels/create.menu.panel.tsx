@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { PanelContentProps } from "./panel.typs";
+import type { PanelContentProps } from "./panel.types";
 import {
   Panel,
   PanelHeader,

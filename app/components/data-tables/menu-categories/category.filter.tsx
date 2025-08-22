@@ -1,7 +1,7 @@
-import React, { type FormEvent, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { type Table } from "@tanstack/react-table";
-import { ArchiveBox, SearchStatus, Trash } from "iconsax-reactjs";
-import { ChevronDown, Download, LayoutList, Search, Share } from "lucide-react";
+import { ArchiveBox, Trash } from "iconsax-reactjs";
+import { ChevronDown, LayoutList, Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import {
@@ -24,35 +24,34 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import type { Doc } from "convex/_generated/dataModel";
-import { useUser } from "~/hooks/use-user/use-user";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
-import UploadRestaurantDocumentsPanel from "~/components/panels/upload.restaurant.documents.panel";
+import type { Doc, Id } from "convex/_generated/dataModel";
+import { IconPlus } from "@tabler/icons-react";
 import { useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
 import { useIsMobile } from "~/hooks/use-mobile";
+import { CreateMenuCategoryPanel } from "~/components/panels/create.menu.category.panel";
+import { useParams } from "react-router";
 
 type FileDataTableFilterProps = {
-  table: Table<Doc<"restaurant_documents">>;
+  table: Table<Doc<"categories">>;
 };
 
-const RestaurantDocumentDataTableFilter = ({
-  table,
-}: FileDataTableFilterProps) => {
+const MenuCategoryDataTableFilter = ({ table }: FileDataTableFilterProps) => {
   const isMobile = useIsMobile();
-  const { user } = useUser();
-  const [openUploadPanel, setOpenUploadPanel] = useState<boolean>(false);
+  const { restaurantId, brandId } = useParams();
+  const [openCreatePanel, setOpenCreatePanel] = useState<boolean>(false);
   const selectedCount = table.getSelectedRowModel().rows.length;
-  const deleteDocument = useMutation(api.restaurants.documents.deleteDocument);
+  const deleteCategory = useMutation(
+    api.menus.categories.functions.deleteCategory,
+  );
 
   // ~ ======= Handle delete documents ======= ~
-  const handleDeleteDocuments = async () => {
+  const handleDeleteCategories = async () => {
     table.getSelectedRowModel().rows.forEach(async (row) => {
-      await deleteDocument({
-        document: row.original._id,
+      await deleteCategory({
+        id: row.original._id,
       });
     });
   };
@@ -91,19 +90,10 @@ const RestaurantDocumentDataTableFilter = ({
           )}
           <DropdownMenuContent className="w-44" align="start" side="bottom">
             <DropdownMenuItem>
-              <Download size={15} strokeWidth={1.5} />
-              <span>Download</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Share size={15} strokeWidth={1.5} />
-              <span>Share</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
               <ArchiveBox size={15} strokeWidth={1.5} />
               <span>Archive</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDeleteDocuments}>
+            <DropdownMenuItem onClick={handleDeleteCategories}>
               <Trash size={15} strokeWidth={1.5} />
               <span>Delete</span>
             </DropdownMenuItem>
@@ -173,17 +163,20 @@ const RestaurantDocumentDataTableFilter = ({
           </PopoverContent>
         </Popover>
 
-        <Button size="sm" onClick={() => setOpenUploadPanel(true)}>
+        <Button size="sm" onClick={() => setOpenCreatePanel(true)}>
           <IconPlus strokeWidth={1.5} />
-          {isMobile ? <span>Upload</span> : <span>Upload Documents</span>}
+          {isMobile ? <span>New</span> : <span>New Category</span>}
         </Button>
       </div>
-      <UploadRestaurantDocumentsPanel
-        open={openUploadPanel}
-        onOpenChange={setOpenUploadPanel}
+
+      <CreateMenuCategoryPanel
+        open={openCreatePanel}
+        onOpenChange={setOpenCreatePanel}
+        restaurant={restaurantId as Id<"restaurants">}
+        brand={brandId as Id<"brands">}
       />
     </div>
   );
 };
 
-export default RestaurantDocumentDataTableFilter;
+export default MenuCategoryDataTableFilter;

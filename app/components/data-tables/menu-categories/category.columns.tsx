@@ -2,11 +2,18 @@ import { type ColumnDef } from "@tanstack/react-table";
 import type { Doc } from "convex/_generated/dataModel";
 import { Checkbox } from "~/components/ui/checkbox";
 import { format } from "date-fns";
-import { formatFileSize } from "~/helpers/format-file-size";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
+import {
+  CursorFollow,
+  CursorProvider,
+} from "~/components/custom-ui/animated.cursor";
 
-export const RestaurantDocumentTableColumns: ColumnDef<
-  Doc<"restaurant_documents">
->[] = [
+export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -35,7 +42,7 @@ export const RestaurantDocumentTableColumns: ColumnDef<
   // ~ ======= File _id ======= ~
   {
     accessorKey: "_id",
-    header: "File ref",
+    header: "Category ref",
     enableHiding: true,
     cell: ({ row }) => <span>{row.original._id}</span>,
   },
@@ -52,59 +59,24 @@ export const RestaurantDocumentTableColumns: ColumnDef<
     ),
   },
 
-  // ~ ======= File type ======= ~
+  // ~ ======= Description ======= ~
   {
-    accessorKey: "type",
-    header: "Type",
-    cell: ({ row }) => {
-      return (
-        <span className="text-muted-foreground text-xs">
-          {row.original.type}
+    accessorKey: "description",
+    header: "Description",
+    enableHiding: true,
+    cell: ({ row }) => (
+      <div className="w-max max-w-44">
+        <span className="line-clamp-1 truncate underline-offset-4 hover:underline">
+          {row.original.description}
         </span>
-      );
-    },
+      </div>
+    ),
   },
 
-  // ~ ======= Category ======= ~
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => {
-      return (
-        <span className="text-muted-foreground text-xs">
-          {row.original.category.replaceAll("_", " ")}
-        </span>
-      );
-    },
-  },
-
-  // ~ ======= Status ======= ~
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      return (
-        <span className="text-muted-foreground text-xs">
-          {row.original.status}
-        </span>
-      );
-    },
-  },
-
-  // ~ ======= Size ======= ~
-  {
-    accessorKey: "size",
-    header: "Size",
-    cell: ({ row }) => {
-      const size = formatFileSize(row.original.size);
-      return <span>{size}</span>;
-    },
-  },
-
-  // ~ ======= creation Time ======= ~
+  // ~ ======= Creation Time ======= ~
   {
     accessorKey: "_creationTime",
-    header: "Uploaded on",
+    header: "Created on",
     cell: ({ row }) => (
       <span>{format(row.original._creationTime, "MMM d, yyyy")}</span>
     ),

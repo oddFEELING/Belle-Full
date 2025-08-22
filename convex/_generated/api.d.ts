@@ -16,6 +16,7 @@ import type * as components_r2 from "../components/r2.js";
 import type * as enums from "../enums.js";
 import type * as http from "../http.js";
 import type * as menus_aggregate from "../menus/aggregate.js";
+import type * as menus_categories_functions from "../menus/categories/functions.js";
 import type * as menus_functions from "../menus/functions.js";
 import type * as password from "../password.js";
 import type * as restaurants_documents from "../restaurants/documents.js";
@@ -48,6 +49,7 @@ declare const fullApi: ApiFromModules<{
   enums: typeof enums;
   http: typeof http;
   "menus/aggregate": typeof menus_aggregate;
+  "menus/categories/functions": typeof menus_categories_functions;
   "menus/functions": typeof menus_functions;
   password: typeof password;
   "restaurants/documents": typeof restaurants_documents;

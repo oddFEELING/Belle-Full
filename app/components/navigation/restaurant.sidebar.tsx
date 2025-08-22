@@ -187,7 +187,7 @@ const RestaurantSidebar = () => {
                   onClick={() => navigate(paths.bellebot)}
                 >
                   <IconGhost2 />
-                  <span>Bellebot</span>
+                  <span>Belle bot</span>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>
                   <span className="bg-destructive h-2 w-2 rounded-full" />
