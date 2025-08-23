@@ -26,13 +26,18 @@ export type DeliveryZone = Infer<typeof DeliveryZone>;
 
 export const MenuItemOption = v.object({
   name: v.string(),
-  price: Money,
-  calories: v.optional(v.number()),
-  allergens: v.optional(v.array(Allergen)),
-  dietaryTags: v.optional(v.array(DietaryTag)),
   description: v.string(),
-  picks: v.array(v.object({ name: v.string(), price: Money })),
+  picks: v.array(
+    v.object({
+      name: v.string(),
+      price: Money,
+      calories: v.optional(v.number()),
+      allergens: v.optional(v.array(Allergen)),
+      dietaryTags: v.optional(v.array(DietaryTag)),
+    }),
+  ),
   isAvailable: v.boolean(),
+  position: v.number(),
 });
 
 export type MenuItemOption = Infer<typeof MenuItemOption>;

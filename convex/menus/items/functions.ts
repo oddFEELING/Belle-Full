@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { authenticatedMutation } from "../../_custom/mutation";
-import { Allergen } from "../../enums";
+import { Allergen, DietaryTag } from "../../enums";
 import { MenuItemOption, Money } from "../../shared";
 import { authenticatedQuery } from "../../_custom/query";
 import { getManyFrom } from "convex-helpers/server/relationships";
@@ -11,20 +11,22 @@ import type { Doc } from "../../_generated/dataModel";
 // ~ =============================================>
 export const create = authenticatedMutation({
   args: {
-    menu: v.id("menus"),
     brand: v.id("brands"),
     restaurant: v.id("restaurants"),
     name: v.string(),
     description: v.string(),
     image: v.optional(v.string()),
-    mayContain: v.optional(v.array(Allergen)),
+    allergens: v.array(Allergen),
+    mayContain: v.array(Allergen),
+    dietaryTags: v.array(DietaryTag),
     calories: v.optional(v.number()),
     isAvailable: v.boolean(),
-    options: v.optional(v.array(MenuItemOption)),
+    options: v.array(MenuItemOption),
     basePrice: Money,
+    promotionalPrice: Money,
   },
   handler: async (ctx, args) => {
-    return {};
+    return await ctx.db.insert("menu_items", args);
   },
 });
 

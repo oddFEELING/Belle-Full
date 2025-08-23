@@ -46,8 +46,32 @@ export const DietaryTag = v.union(
   v.literal("Pescetarian"),
   v.literal("Paleo"),
   v.literal("Keto"),
+  v.literal("GlutenFreeVegetarian"),
+  v.literal("DiaryFreeVegetarian"),
+  v.literal("NutFreeVegetarian"),
+  v.literal("GlutenFreeVegan"),
+  v.literal("DiaryFreeVegan"),
+  v.literal("NutFreeVegan"),
 );
 export type DietaryTag = Infer<typeof DietaryTag>;
+export enum DietaryTagEnum {
+  KETO = "Keto",
+  SPICY = "Spicy",
+  PALEO = "Paleo",
+  VEGAN = "Vegan",
+  HALAL = "Halal",
+  DIARY_FREE = "DiaryFree",
+  NUT_FREE = "NutFree",
+  GLUTEN_FREE = "GlutenFree",
+  VEGETARIAN = "Vegetarian",
+  PESCETARIAN = "Pescetarian",
+  DIARY_FREE_VEGAN = "DiaryFreeVegan",
+  NUT_FREE_VEGAN = "NutFreeVegan",
+  GLUTEN_FREE_VEGAN = "GlutenFreeVegan",
+  DIARY_FREE_VEGETARIAN = "DiaryFreeVegetarian",
+  NUT_FREE_VEGETARIAN = "NutFreeVegetarian",
+  GLUTEN_FREE_VEGETARIAN = "GlutenFreeVegetarian",
+}
 
 export const CuisineTag = v.union(
   v.literal("Nigerian"),
@@ -92,6 +116,25 @@ export const Allergen = v.union(
   v.literal("Other"),
 );
 export type Allergen = Infer<typeof Allergen>;
+
+export enum AllergenEnum {
+  CELERY = "Celery",
+  CEREALS_CONTAINING_GLUTEN = "CerealsContainingGluten",
+  CRUSTACEANS = "Crustaceans",
+  EGGS = "Eggs",
+  FISH = "Fish",
+  LUPIN = "Lupin",
+  MILK = "Milk",
+  HOLLUSCS = "Holluscs",
+  MUSTARD = "Mustard",
+  PEANUTS = "Peanuts",
+  SESAME = "Sesame",
+  SOYBEANS = "Soybeans",
+  SULPHOR_DIOXIDE_AND_SULPHITES = "SulphorDioxideAndSulphites",
+  TREE_NUTS = "TreeNuts",
+  WHEAT = "Wheat",
+  OTHER = "Other",
+}
 
 export const AddressType = v.union(
   v.literal("Restaurant"),

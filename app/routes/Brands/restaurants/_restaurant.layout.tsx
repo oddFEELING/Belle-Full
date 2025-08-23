@@ -9,7 +9,7 @@ const RestaurantLayout = () => {
     <SidebarProvider>
       <RestaurantSidebar />
       <SidebarInset>
-        <main>
+        <main className="h-[var(--panel-body-height)] w-full">
           <RestaurantNavbar />
           <Outlet />
         </main>

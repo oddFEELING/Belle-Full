@@ -78,17 +78,17 @@ function PanelFooter(props: React.ComponentProps<"div">) {
 
   return (
     <div
-      className={
+      className={cn(
         isMobile
           ? "bg-background/95 supports-[backdrop-filter]:bg-background/60 flex-shrink-0 border-t p-4 backdrop-blur"
-          : "mt-5 flex justify-end gap-2"
-      }
+          : "mt-5 flex justify-end gap-2",
+        props.className,
+      )}
     >
       <div
         data-slot="panel-footer"
         className={cn(
           isMobile ? "flex w-full gap-2" : "flex justify-end gap-2",
-          props.className,
         )}
         {...props}
       />
