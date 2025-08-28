@@ -2,11 +2,7 @@ import { authenticatedMutation } from "../_custom/mutation";
 import { authenticatedQuery } from "../_custom/query";
 import { v } from "convex/values";
 import type { Doc, Id } from "../_generated/dataModel";
-import { partial, typedV } from "convex-helpers/validators";
-import schema from "../schema";
 import { getManyFrom } from "convex-helpers/server/relationships";
-
-const vv = typedV(schema);
 
 // ~ =============================================>
 // ~ ======= Create Menu

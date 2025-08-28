@@ -91,11 +91,12 @@ export const getBrand = authenticatedQuery({
 export const getUserBrands = authenticatedQuery({
   args: {},
   handler: async (ctx): Promise<(Doc<"brands"> | null)[]> => {
+    if (!ctx.user?.id) return [];
     const brandAffiliations = await getManyFrom(
       ctx.db,
       "users_x_brands",
       "by_user",
-      ctx.user.id,
+      ctx.user?.id,
     );
 
     const brands = await getAll(

@@ -38,6 +38,7 @@ import {
   IconLayoutDashboard,
   IconMapCheck,
   IconPlus,
+  IconRobot,
   IconSettings,
   IconTransactionPound,
   IconUsers,
@@ -81,6 +82,7 @@ const RestaurantSidebar = () => {
     staff: `/brands/${brandId}/restaurants/${restaurantId}/staff`,
     menu: `/brands/${brandId}/restaurants/${restaurantId}/menu`,
     bellebot: `/brands/${brandId}/restaurants/${restaurantId}/bellebot`,
+    agents: `/brands/${brandId}/restaurants/${restaurantId}/agents`,
     billing: `/brands/${brandId}/restaurants/${restaurantId}/billing`,
     legalDocuments: `/brands/${brandId}/restaurants/${restaurantId}/legal-documents`,
     transactions: `/brands/${brandId}/restaurants/${restaurantId}/transactions`,
@@ -217,6 +219,20 @@ const RestaurantSidebar = () => {
                 <SidebarMenuBadge>
                   <span className="bg-destructive h-2 w-2 rounded-full" />
                 </SidebarMenuBadge>
+              </SidebarMenuItem>
+
+              {/* ~ ======= Agents ======= ~ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={location.pathname.includes(paths.agents)}
+                  onClick={() => {
+                    handleToggleSidebar();
+                    navigate(paths.agents);
+                  }}
+                >
+                  <IconRobot />
+                  <span>Agents</span>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

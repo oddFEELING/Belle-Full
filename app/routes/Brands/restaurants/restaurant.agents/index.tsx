@@ -1,0 +1,112 @@
+import {
+  IconChevronDown,
+  IconChefHat,
+  IconPlus,
+  IconRobot,
+  IconSettings,
+  IconSoup,
+  IconTrash,
+  IconDeviceDesktopAnalytics,
+  IconBrandWhatsapp,
+  IconBrandInstagram,
+} from "@tabler/icons-react";
+import { Chart } from "iconsax-reactjs";
+import { parseAsString, useQueryState } from "nuqs";
+import React from "react";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Tabs, TabsTrigger, TabsList } from "~/components/ui/tabs";
+import { RestaurantAgentsOverviewTab } from "./partials/overview.tab";
+import { useParams } from "react-router";
+import type { Id } from "convex/_generated/dataModel";
+import { RestaurantAgentsTab } from "./partials/agents.tab";
+
+const RestaurantAgents = () => {
+  const restaurantId = useParams().restaurantId as Id<"restaurants">;
+  const [activeTab, setActiveTab] = useQueryState(
+    "activeTab",
+    parseAsString.withDefault("overview"),
+  );
+  return (
+    <div className="restaurant-dashboard--page">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-semibold">Agents</h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Manage the agents for your restaurant. Create, edit, and organize
+            your agents.
+          </p>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" variant="ghost">
+              <span>Actions</span>
+              <IconChevronDown size={16} strokeWidth={1.5} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="bottom" className="w-48">
+            <DropdownMenuItem>
+              <IconRobot size={18} strokeWidth={1.5} />
+              <span>Create Agent</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">
+              <IconTrash size={18} strokeWidth={1.5} />
+              <span>Deactivate All</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* ~ =================================== ~ */}
+      {/* -- Page tabs  -- */}
+      {/* ~ =================================== ~ */}
+      <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
+        <div className="mt-2 mb-3 w-full max-w-sm">
+          <TabsList className="bg-muted h-max w-full">
+            <TabsTrigger
+              value="overview"
+              className="dark:data-[state=active]:bg-accent"
+            >
+              <Chart
+                size={16}
+                strokeWidth={1.5}
+                className="dark:text-foreground/60 mr-1"
+              />
+              <span className="dark:text-foreground/60 hidden sm:block">
+                Overview
+              </span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="agents"
+              className="dark:data-[state=active]:bg-accent"
+            >
+              <IconRobot
+                size={16}
+                strokeWidth={1.5}
+                className="dark:text-foreground/60 mr-1"
+              />
+              <span className="dark:text-foreground/60 hidden sm:block">
+                Agents
+              </span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        <RestaurantAgentsOverviewTab restaurantId={restaurantId} />
+        <RestaurantAgentsTab restaurantId={restaurantId} />
+      </Tabs>
+    </div>
+  );
+};
+
+export default RestaurantAgents;

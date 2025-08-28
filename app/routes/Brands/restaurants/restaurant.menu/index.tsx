@@ -22,11 +22,6 @@ import {
   IconChevronDown,
   IconClipboardText,
   IconFolders,
-  IconMenu4,
-  IconPencilMinus,
-  IconPennant,
-  IconPercentage,
-  IconPlus,
   IconSoup,
   IconSquareRoundedPercentage,
   IconTransitionRight,
@@ -57,7 +52,7 @@ const RestaurantMenu = () => {
       {/* Header Section */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Restaurant Menus</h2>
+          <h2 className="text-2xl font-semibold">My Menus</h2>
           <p className="text-muted-foreground max-w-2xl">
             Manage the menus for your restaurant. Create, edit, and organize
             your menu offerings.
@@ -93,7 +88,7 @@ const RestaurantMenu = () => {
 
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
         <div className="mt-2 mb-3 w-full max-w-2xl">
-          <TabsList className="bg-muted h-max w-full px-2">
+          <TabsList className="bg-muted h-max w-full">
             <TabsTrigger
               value="overview"
               className="dark:data-[state=active]:bg-accent"

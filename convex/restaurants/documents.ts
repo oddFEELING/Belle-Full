@@ -2,12 +2,13 @@ import { v } from "convex/values";
 import { r2 } from "../components/r2";
 import { authenticatedMutation } from "../_custom/mutation";
 import { DocumentType, RestaurantLegalDocuments } from "../enums";
-import { Id } from "../_generated/dataModel";
+import type { Doc, Id } from "../_generated/dataModel";
 import { authenticatedQuery } from "../_custom/query";
 import {
   getManyFrom,
   getOneFromOrThrow,
 } from "convex-helpers/server/relationships";
+import { query } from "../_generated/server";
 
 const PREFIX = "rst_doc";
 
@@ -54,30 +55,35 @@ export const createUploadedDocument = authenticatedMutation({
 // ~ =============================================>
 // ~ ======= List restaurant Documents
 // ~ =============================================>
-export const listDocuments = authenticatedQuery({
+export const listDocuments = query({
   args: {
     restaurant: v.object({
       id: v.optional(v.id("restaurants")),
       slug: v.optional(v.string()),
     }),
   },
-  handler: async (ctx, { restaurant }) => {
+  handler: async (
+    ctx,
+    { restaurant },
+  ): Promise<Doc<"restaurant_documents">[]> => {
     const { id, slug } = restaurant;
     let restaurantId = id;
     if (!id && slug) {
-      restaurantId = (
-        await getOneFromOrThrow(ctx.db, "restaurants", "by_slug", slug)
-      )._id;
+      const rest = await ctx.db
+        .query("restaurants")
+        .withIndex("by_slug", (q: any) => q.eq("slug", slug))
+        .first();
+      if (!rest) return [];
+      restaurantId = rest._id as Id<"restaurants">;
     }
-    if (!restaurantId) return [];
 
     // ~ ======= Get documents ======= ~
-    const documents = await getManyFrom(
-      ctx.db,
-      "restaurant_documents",
-      "by_restaurant",
-      restaurantId,
-    );
+    const documents = await ctx.db
+      .query("restaurant_documents")
+      .withIndex("by_restaurant", (q) => q.eq("restaurant", restaurantId!))
+      .collect();
+
+    if (!documents) return [];
 
     return Promise.all(
       documents.map(async (doc) => ({

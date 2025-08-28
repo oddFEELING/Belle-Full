@@ -1,59 +1,47 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { Button } from "~/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormField,
   FormItem,
   FormLabel,
+  FormControl,
+  FormField,
   FormMessage,
 } from "~/components/ui/form";
-import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Separator } from "~/components/ui/separator";
 import { useAuthActions } from "@convex-dev/auth/react";
 
 const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   password: z.string(),
-  flow: z.string(),
+  flow: z.literal("signIn"),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const RegisterPage = () => {
+const SignInPage = () => {
   const navigate = useNavigate();
   const { signIn } = useAuthActions();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // ~ ======= Form instance ======= ~
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
-      flow: "signUp",
+      flow: "signIn",
     },
   });
 
-  // ~ ======= Submit handler ======= ~
+  // ~ ======= Handler Submit ======= ~
   const onSubmit = async (data: FormSchema) => {
-    await signIn("password", {
-      name: `${data.firstName} ${data.lastName}`,
-      email: data.email,
-      password: data.password,
-      flow: data.flow,
-    });
-
+    await signIn("password", data);
     navigate("/");
   };
 
@@ -62,48 +50,22 @@ const RegisterPage = () => {
       <Button
         variant="ghost"
         className="absolute top-4 right-20"
-        onClick={() => navigate("/signin")}
+        onClick={() => navigate("/register")}
       >
-        <span>Login</span>
+        <span>Register</span>
       </Button>
+
       <div className="flex h-max w-full max-w-md flex-col items-center gap-y-3">
-        <h2 className="text-2xl font-semibold">Create an account</h2>
+        <h2 className="text-2xl font-semibold">Welcome back!</h2>
         <p className="text-muted-foreground -mt-2 text-center">
-          Enter your email below to create an account.
+          Enter your email below to sign in to your account.
         </p>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid w-full grid-cols-2 gap-x-3 gap-y-5"
           >
-            {/* ~ ======= First name field ======= ~ */}
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input required {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            {/* ~ ======= Last name field ======= ~ */}
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input required {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
             {/* ~ ======= Email field ======= ~ */}
             <FormField
               control={form.control}
@@ -164,7 +126,7 @@ const RegisterPage = () => {
 
             <div className="col-span-2 flex w-full flex-col gap-y-3">
               <Button type="submit" size="lg">
-                Create account
+                Sign in
               </Button>
 
               <div className="flex w-full items-center justify-center gap-5 overflow-hidden">
@@ -185,4 +147,5 @@ const RegisterPage = () => {
     </div>
   );
 };
-export default RegisterPage;
+
+export default SignInPage;

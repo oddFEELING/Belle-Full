@@ -5,6 +5,7 @@ import { MenuItemOption, Money } from "../../shared";
 import { authenticatedQuery } from "../../_custom/query";
 import { getManyFrom } from "convex-helpers/server/relationships";
 import type { Doc } from "../../_generated/dataModel";
+import { r2 } from "../../components/r2";
 
 // ~ =============================================>
 // ~ ======= Create Menu Item
@@ -36,6 +37,18 @@ export const create = authenticatedMutation({
 export const getMenuItemsByRestaurant = authenticatedQuery({
   args: { restaurant: v.id("restaurants") },
   handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
-    return getManyFrom(ctx.db, "menu_items", "by_restaurant", args.restaurant);
+    const menuItems = await getManyFrom(
+      ctx.db,
+      "menu_items",
+      "by_restaurant",
+      args.restaurant,
+    );
+
+    const response = menuItems.map(async (item) => ({
+      ...item,
+      image: item.image ? await r2.getUrl(item.image) : undefined,
+    }));
+
+    return await Promise.all(response);
   },
 });

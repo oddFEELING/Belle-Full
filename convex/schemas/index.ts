@@ -7,6 +7,7 @@ export * from "./menu_x_category.schema";
 export * from "./menu_x_item.schema";
 export * from "./order.items.schema";
 export * from "./order.schema";
+export * from "./restaurant.agent.schema";
 export * from "./restaurant.document.schema";
 export * from "./restaurant.schema";
 export * from "./users.schema";

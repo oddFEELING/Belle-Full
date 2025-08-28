@@ -2,7 +2,7 @@ import { authenticatedMutation } from "../_custom/mutation";
 import { authenticatedQuery } from "../_custom/query";
 import { v } from "convex/values";
 import type { Id } from "../_generated/dataModel";
-import { mutation } from "../_generated/server";
+import { mutation, query } from "../_generated/server";
 import type { Doc } from "../_generated/dataModel";
 import { api } from "../_generated/api";
 import { getAll, getManyFrom } from "convex-helpers/server/relationships";
@@ -13,7 +13,14 @@ import { getAll, getManyFrom } from "convex-helpers/server/relationships";
 export const getBrandRestaurants = authenticatedQuery({
   args: { brandId: v.id("brands") },
   handler: async (ctx, { brandId }): Promise<Doc<"restaurants">[]> => {
-    return await getManyFrom(ctx.db, "restaurants", "by_brand", brandId);
+    const restaurants = await getManyFrom(
+      ctx.db,
+      "restaurants",
+      "by_brand",
+      brandId,
+      "brand",
+    );
+    return restaurants as Doc<"restaurants">[];
   },
 });
 
@@ -88,9 +95,49 @@ export const getRestaurant = authenticatedQuery({
     if (slug)
       restaurant = await ctx.db
         .query("restaurants")
-        .withIndex("by_slug", (q) => q.eq("slug", slug))
+        .withIndex("by_slug", (q: any) => q.eq("slug", slug))
         .first();
 
     return restaurant;
+  },
+});
+
+export const getAgentRestaurant = query({
+  args: {},
+  handler: async (ctx, args): Promise<Doc<"restaurants">[]> => {
+    const restaurants = await ctx.db.query("restaurants").collect();
+    return restaurants;
+  },
+});
+
+export const getAgentMenuItemsByRestaurantId = query({
+  args: {
+    restaurantId: v.id("restaurants"),
+  },
+  handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
+    const menuItems = await ctx.db
+      .query("menu_items")
+      .withIndex("by_restaurant", (q) => q.eq("restaurant", args.restaurantId))
+      .order("desc")
+      .collect();
+    return menuItems as Doc<"menu_items">[];
+  },
+});
+
+export const getAgentRestaurantById = query({
+  args: {
+    id: v.id("restaurants"),
+  },
+  handler: async (ctx, args): Promise<Doc<"restaurants"> | null> => {
+    const restaurant = await ctx.db.get(args.id);
+    return restaurant;
+  },
+});
+
+export const getAgentGetAllFoodItems = query({
+  args: {},
+  handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
+    const menuItems = await ctx.db.query("menu_items").order("desc").collect();
+    return menuItems as Doc<"menu_items">[];
   },
 });

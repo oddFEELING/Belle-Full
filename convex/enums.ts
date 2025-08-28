@@ -199,3 +199,9 @@ export const ReviewableItemStatus = v.union(
   v.literal("REJECTED"),
 );
 export type ReviewableItemStatus = Infer<typeof ReviewableItemStatus>;
+
+export const AgentConnectionStatus = v.union(
+  v.literal("CONNECTED"),
+  v.literal("PENDING"),
+  v.literal("DISCONNECTED"),
+);
