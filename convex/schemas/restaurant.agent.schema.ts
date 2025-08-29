@@ -1,6 +1,6 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
-import { AgentConnectionStatus } from "../enums";
+import { AgentConnectionStatus } from "../types/enums";
 
 export const restaurant_agents = defineTable({
   restaurant: v.id("restaurants"),

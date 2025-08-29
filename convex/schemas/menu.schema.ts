@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { ReviewableItemStatus } from "../enums";
+import { ReviewableItemStatus } from "../types/enums";
 
 export const menus = defineTable({
   restaurant: v.id("restaurants"),

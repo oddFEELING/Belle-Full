@@ -1,8 +1,8 @@
 import { z } from "zod";
 import React, { useState } from "react";
 import type { PanelProps } from "./panel.types";
-import type { MenuItemOption, Money } from "convex/shared";
-import { AllergenEnum, DietaryTagEnum } from "convex/enums";
+import type { MenuItemOption, Money } from "convex/types/shared";
+import { AllergenEnum, DietaryTagEnum } from "convex/types/enums";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logger } from "~/lib/logger";

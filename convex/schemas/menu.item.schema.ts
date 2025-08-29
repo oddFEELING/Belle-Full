@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { MenuItemOption, Money } from "../shared";
-import { Allergen, DietaryTag } from "../enums";
+import { MenuItemOption, Money } from "../types/shared";
+import { Allergen, DietaryTag } from "../types/enums";
 
 export const menu_items = defineTable({
   brand: v.id("brands"),

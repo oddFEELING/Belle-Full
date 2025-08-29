@@ -18,7 +18,15 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./*"],
+      "@/types/*": ["./types/*"],
+      "@/features/*": ["./features/*"],
+      "@/infrastructure/*": ["./infrastructure/*"],
+      "@/webhooks/*": ["./webhooks/*"],
+      "@/components/*": ["./components/*"]
+    }
   },
   "include": ["./**/*"],
   "exclude": ["./_generated"]

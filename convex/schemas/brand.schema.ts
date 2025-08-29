@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { CuisineTag, DietaryTag } from "../enums";
+import { CuisineTag, DietaryTag } from "../types/enums";
 
 export const brands = defineTable({
   primaryOwner: v.id("users"),

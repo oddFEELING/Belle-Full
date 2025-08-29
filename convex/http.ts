@@ -1,10 +1,10 @@
 import { httpRouter } from "convex/server";
 import { auth } from "./auth";
-import twilioWebhooks from "./webhookActions/twilio.webhooks";
+import twilioWebhooks from "./infrastructure/webhooks/twilio.webhooks";
 import {
   unipileAccountsWebhooks,
   unipileMessagingWebhooks,
-} from "./webhookActions/unipileWebhook";
+} from "./infrastructure/webhooks/unipileWebhook";
 
 const http = httpRouter();
 

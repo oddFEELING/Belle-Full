@@ -1,18 +1,11 @@
 import {
   IconChevronDown,
-  IconChefHat,
-  IconPlus,
   IconRobot,
-  IconSettings,
-  IconSoup,
   IconTrash,
-  IconDeviceDesktopAnalytics,
   IconBrandWhatsapp,
-  IconBrandInstagram,
 } from "@tabler/icons-react";
 import { Chart } from "iconsax-reactjs";
 import { parseAsString, useQueryState } from "nuqs";
-import React from "react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -33,6 +26,7 @@ const RestaurantAgents = () => {
     "activeTab",
     parseAsString.withDefault("overview"),
   );
+
   return (
     <div className="restaurant-dashboard--page">
       <div className="mb-6 flex items-center justify-between">
@@ -70,7 +64,7 @@ const RestaurantAgents = () => {
       {/* -- Page tabs  -- */}
       {/* ~ =================================== ~ */}
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-        <div className="mt-2 mb-3 w-full max-w-sm">
+        <div className="mt-2 mb-3 w-full max-w-md">
           <TabsList className="bg-muted h-max w-full">
             <TabsTrigger
               value="overview"
@@ -97,6 +91,13 @@ const RestaurantAgents = () => {
               />
               <span className="dark:text-foreground/60 hidden sm:block">
                 Agents
+              </span>
+            </TabsTrigger>
+
+            <TabsTrigger value="enquiries">
+              <IconBrandWhatsapp size={16} strokeWidth={1.5} />
+              <span className="dark:text-foreground/60 hidden sm:block">
+                Enquiries
               </span>
             </TabsTrigger>
           </TabsList>

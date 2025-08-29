@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { RestaurantStatus } from "../enums";
-import { DeliveryZone, Money } from "../shared";
+import { RestaurantStatus } from "../types/enums";
+import { DeliveryZone, Money } from "../types/shared";
 
 export const restaurants = defineTable({
   brand: v.id("brands"),

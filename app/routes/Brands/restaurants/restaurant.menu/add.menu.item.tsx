@@ -23,8 +23,8 @@ import {
   DietaryTagEnum,
   type Allergen,
   type DietaryTag,
-} from "convex/enums";
-import { Money, type MenuItemOption } from "convex/shared";
+} from "convex/types/enums";
+import { Money, type MenuItemOption } from "convex/types/shared";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logger } from "~/lib/logger";
