@@ -130,9 +130,11 @@ const RestaurantAgentPage = () => {
             </Badge>
           </div>
 
-          <p className="text-muted-foreground mt-1 line-clamp-3 max-w-2xl text-sm">
+          <p className="text-muted-foreground mt-1 line-clamp-3 flex max-w-2xl flex-wrap items-center gap-1.5 text-sm">
             {agent.traits?.map((trait: string, idx: number) => (
-              <span key={idx}>{trait}</span>
+              <Badge variant="outline" key={idx}>
+                {trait}
+              </Badge>
             )) || "Agent has no traits"}
           </p>
         </div>

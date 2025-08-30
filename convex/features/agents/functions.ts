@@ -10,6 +10,7 @@ import { v } from "convex/values";
 import { partial } from "convex-helpers/validators";
 import schema, { vv } from "../../schema";
 import { action } from "../../_generated/server";
+import type { Doc } from "../../_generated/dataModel";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -51,6 +52,7 @@ export const updateAgent = authenticatedMutation({
     updateData: partial(agentSchema),
   },
   handler: async (ctx, args) => {
+    console.log("update agent", args.updateData);
     await ctx.db.patch(args.agent, args.updateData);
   },
 });
@@ -102,5 +104,17 @@ export const generateWhatsappAgentCode = authenticatedAction({
     });
 
     return { success: true };
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Update a restaurant agent
+// ~ =============================================>
+export const updateRestaurantAgent = authenticatedMutation({
+  args: { agent: v.id("restaurant_agents"), updateData: partial(agentSchema) },
+  handler: async (ctx, args): Promise<Doc<"restaurant_agents"> | null> => {
+    await ctx.db.patch(args.agent, args.updateData);
+
+    return await ctx.db.get(args.agent);
   },
 });

@@ -29,6 +29,7 @@ import type * as http from "../http.js";
 import type * as infrastructure_components_agents_restaurants_agent from "../infrastructure/components/agents/restaurants/agent.js";
 import type * as infrastructure_components_agents_restaurants_prompt from "../infrastructure/components/agents/restaurants/prompt.js";
 import type * as infrastructure_components_agents_restaurants_tools_index from "../infrastructure/components/agents/restaurants/tools/index.js";
+import type * as infrastructure_components_prosemirror from "../infrastructure/components/prosemirror.js";
 import type * as infrastructure_components_r2 from "../infrastructure/components/r2.js";
 import type * as infrastructure_services_twilio_twilio from "../infrastructure/services/twilio/twilio.js";
 import type * as infrastructure_services_unipile_functions from "../infrastructure/services/unipile/functions.js";
@@ -75,6 +76,7 @@ declare const fullApi: ApiFromModules<{
   "infrastructure/components/agents/restaurants/agent": typeof infrastructure_components_agents_restaurants_agent;
   "infrastructure/components/agents/restaurants/prompt": typeof infrastructure_components_agents_restaurants_prompt;
   "infrastructure/components/agents/restaurants/tools/index": typeof infrastructure_components_agents_restaurants_tools_index;
+  "infrastructure/components/prosemirror": typeof infrastructure_components_prosemirror;
   "infrastructure/components/r2": typeof infrastructure_components_r2;
   "infrastructure/services/twilio/twilio": typeof infrastructure_services_twilio_twilio;
   "infrastructure/services/unipile/functions": typeof infrastructure_services_unipile_functions;
@@ -4195,6 +4197,82 @@ export declare const components: {
           value: any;
         },
         any
+      >;
+    };
+  };
+  prosemirrorSync: {
+    lib: {
+      deleteDocument: FunctionReference<
+        "mutation",
+        "internal",
+        { id: string },
+        null
+      >;
+      deleteSnapshots: FunctionReference<
+        "mutation",
+        "internal",
+        { afterVersion?: number; beforeVersion?: number; id: string },
+        null
+      >;
+      deleteSteps: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          afterVersion?: number;
+          beforeTs: number;
+          deleteNewerThanLatestSnapshot?: boolean;
+          id: string;
+        },
+        null
+      >;
+      getSnapshot: FunctionReference<
+        "query",
+        "internal",
+        { id: string; version?: number },
+        { content: null } | { content: string; version: number }
+      >;
+      getSteps: FunctionReference<
+        "query",
+        "internal",
+        { id: string; version: number },
+        {
+          clientIds: Array<string | number>;
+          steps: Array<string>;
+          version: number;
+        }
+      >;
+      latestVersion: FunctionReference<
+        "query",
+        "internal",
+        { id: string },
+        null | number
+      >;
+      submitSnapshot: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          content: string;
+          id: string;
+          pruneSnapshots?: boolean;
+          version: number;
+        },
+        null
+      >;
+      submitSteps: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          clientId: string | number;
+          id: string;
+          steps: Array<string>;
+          version: number;
+        },
+        | {
+            clientIds: Array<string | number>;
+            status: "needs-rebase";
+            steps: Array<string>;
+          }
+        | { status: "synced" }
       >;
     };
   };

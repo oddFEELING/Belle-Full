@@ -3,8 +3,8 @@ import { Infer, v } from "convex/values";
 
 export const agentRestaurantReturn = v.object({
   name: v.string(),
-  address: v.string(),
-  description: v.string(),
+  address: v.optional(v.string()),
+  description: v.optional(v.string()),
   status: RestaurantStatus,
   opensAt: v.optional(v.string()),
   closesAt: v.optional(v.string()),

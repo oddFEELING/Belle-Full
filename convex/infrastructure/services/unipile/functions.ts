@@ -4,6 +4,8 @@ import { v } from "convex/values";
 import { action, internalAction } from "../../../_generated/server";
 import { UnipileClient } from "unipile-node-sdk";
 import { api } from "../../../_generated/api";
+import z from "zod";
+import { r2 } from "@/infrastructure/components/r2";
 
 const unipileClient = new UnipileClient(
   `https://${process.env.UNIPILE_DSN}`,
@@ -86,5 +88,36 @@ export const disconnectAccount = action({
     const { object } = await unipileClient.account.delete(toDelete.unipile_id);
 
     return object;
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Send Attachment
+// ~ =============================================>
+export const sendAttachment = action({
+  args: {
+    fileKey: v.string(),
+    caption: v.string(),
+    chat_id: v.string(),
+    filename: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const fileUrl = await r2.getUrl(args.fileKey);
+
+    // ~ ======= Generate buffer ======= ~
+    const res = await fetch(fileUrl, { headers: { Accept: "image/*" } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const type = res.headers.get("content-type") || "";
+    if (!type.startsWith("image/")) throw new Error(`Not an image: ${type}`);
+    const aBuffer = await res.arrayBuffer();
+    const fileBuffer = Buffer.from(aBuffer);
+
+    await unipileClient.messaging.sendMessage({
+      chat_id: args.chat_id,
+      text: args.caption,
+      attachments: [[args.filename, fileBuffer]],
+    });
+
+    return "Attachment sent";
   },
 });

@@ -45,17 +45,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "~/components/custom-ui/multi-select";
+import { ValueMultiSelector } from "~/components/custom-ui/value-multi-select";
 import { NumberField, Input as AriaInput, Group } from "react-aria-components";
 import { cn } from "~/lib/utils";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CreateMenuItemOptionPanel } from "~/components/panels/create.menu.item.option.panel";
 import {
   Collapsible,
@@ -103,6 +96,24 @@ const AddMenuItem = () => {
     { restaurant: restaurantId },
   );
 
+  // Build select options once for value-based multi selectors
+  const dietaryOptions = useMemo(
+    () =>
+      Object.entries(DietaryTagEnum).map(([label, value]) => ({
+        label,
+        value,
+      })),
+    [],
+  );
+  const allergenOptions = useMemo(
+    () =>
+      Object.entries(AllergenEnum).map(([label, value]) => ({
+        label,
+        value,
+      })),
+    [],
+  );
+
   // ~ ======= Form instance  ======= ~
   const form = useForm<CreateMenuItemSchema>({
     resolver: zodResolver(createMenuItemSchema),
@@ -129,30 +140,26 @@ const AddMenuItem = () => {
   // ~ ======= Handle Submit  ======= ~
   const onSubmit = async (data: CreateMenuItemSchema) => {
     setIsLoading(true);
-    // Extract values from MultiSelector objects
-    const extractValues = (items: any[]) => {
-      return (
-        items?.map((item) =>
-          typeof item === "object" && item.value ? item.value : item,
-        ) || []
-      );
-    };
 
     // Process menu item options to extract values from picks
     const processedOptions = menuItemOptions.map((option) => ({
       ...option,
       picks: option.picks.map((pick) => ({
         ...pick,
-        dietaryTags: extractValues(pick.dietaryTags || []),
-        allergens: extractValues(pick.allergens || []),
+        dietaryTags: (pick.dietaryTags || []).map((t: any) =>
+          typeof t === "string" ? t : t.value,
+        ),
+        allergens: (pick.allergens || []).map((a: any) =>
+          typeof a === "string" ? a : a.value,
+        ),
       })),
     }));
 
     const processedData = {
       ...data,
-      dietaryTags: extractValues(data.dietaryTags),
-      allergens: extractValues(data.allergens),
-      mayContain: extractValues(data.mayContain),
+      dietaryTags: data.dietaryTags,
+      allergens: data.allergens,
+      mayContain: data.mayContain,
     };
 
     logger.info({
@@ -427,30 +434,14 @@ const AddMenuItem = () => {
                         Dietary Tags
                       </FormLabel>
                       <FormControl>
-                        <MultiSelector
-                          values={field.value as any[]}
+                        <ValueMultiSelector
+                          values={field.value}
                           onValuesChange={field.onChange}
+                          options={dietaryOptions}
                           className="w-full"
-                        >
-                          <MultiSelectorTrigger className="focus-within:ring-primary/20 min-h-10 rounded-lg transition-all focus-within:ring-2">
-                            <MultiSelectorInput placeholder=" -> Dietary tags" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                            <MultiSelectorList>
-                              {Object.entries(DietaryTagEnum).map(
-                                ([key, value]) => (
-                                  <MultiSelectorItem
-                                    key={key}
-                                    value={value}
-                                    label={key}
-                                  >
-                                    {key}
-                                  </MultiSelectorItem>
-                                ),
-                              )}
-                            </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
+                          placeholder=" -> Dietary tags"
+                          triggerClassName="min-h-10"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -467,30 +458,14 @@ const AddMenuItem = () => {
                         Contains Allergens
                       </FormLabel>
                       <FormControl>
-                        <MultiSelector
-                          values={field.value as any[]}
+                        <ValueMultiSelector
+                          values={field.value}
                           onValuesChange={field.onChange}
+                          options={allergenOptions}
                           className="w-full"
-                        >
-                          <MultiSelectorTrigger className="focus-within:ring-primary/20 min-h-10 rounded-lg transition-all focus-within:ring-2">
-                            <MultiSelectorInput placeholder="-> Allergens in item..." />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                            <MultiSelectorList>
-                              {Object.entries(AllergenEnum).map(
-                                ([key, value]) => (
-                                  <MultiSelectorItem
-                                    key={key}
-                                    value={value}
-                                    label={key}
-                                  >
-                                    {key}
-                                  </MultiSelectorItem>
-                                ),
-                              )}
-                            </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
+                          placeholder="-> Allergens in item..."
+                          triggerClassName="min-h-10"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -507,30 +482,14 @@ const AddMenuItem = () => {
                         May Contain Traces
                       </FormLabel>
                       <FormControl>
-                        <MultiSelector
-                          values={field.value as any[]}
+                        <ValueMultiSelector
+                          values={field.value}
                           onValuesChange={field.onChange}
+                          options={allergenOptions}
                           className="w-full"
-                        >
-                          <MultiSelectorTrigger className="focus-within:ring-primary/20 min-h-10 rounded-lg transition-all focus-within:ring-2">
-                            <MultiSelectorInput placeholder="-> May contain..." />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                            <MultiSelectorList>
-                              {Object.entries(AllergenEnum).map(
-                                ([key, value]) => (
-                                  <MultiSelectorItem
-                                    key={key}
-                                    value={value}
-                                    label={key}
-                                  >
-                                    {key}
-                                  </MultiSelectorItem>
-                                ),
-                              )}
-                            </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
+                          placeholder="-> May contain..."
+                          triggerClassName="min-h-10"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -634,12 +593,12 @@ const AddMenuItem = () => {
                                       <div className="flex items-center gap-1">
                                         {pick.dietaryTags.map((tag) => (
                                           <div
-                                            key={tag.value}
+                                            key={String(tag)}
                                             className="flex items-center gap-1 rounded bg-green-100 px-2 py-1 text-green-700"
                                           >
                                             <LeafIcon className="h-3 w-3" />
                                             <span className="capitalize">
-                                              {String(tag.value)
+                                              {String(tag)
                                                 .toLowerCase()
                                                 .replace(/_/g, " ")}
                                             </span>
@@ -653,12 +612,12 @@ const AddMenuItem = () => {
                                       <div className="flex items-center gap-1">
                                         {pick.allergens.map((allergen) => (
                                           <div
-                                            key={allergen.value}
+                                            key={String(allergen)}
                                             className="flex items-center gap-1 rounded bg-amber-100 px-2 py-1 text-amber-700"
                                           >
                                             <span>⚠️</span>
                                             <span className="capitalize">
-                                              {String(allergen.value)
+                                              {String(allergen)
                                                 .toLowerCase()
                                                 .replace(/_/g, " ")}
                                             </span>

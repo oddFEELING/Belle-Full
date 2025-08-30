@@ -22,15 +22,10 @@ import {
   FormControl,
 } from "~/components/ui/form";
 import { PhoneInput } from "~/components/custom-ui/phone.input";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "~/components/custom-ui/multi-select";
+import { ValueMultiSelector } from "~/components/custom-ui/value-multi-select";
 import { Button } from "~/components/ui/button";
+import { AgentEditorPanel } from "./partials/agent.editor.panel";
+import { useMutation } from "convex/react";
 
 const agentFormSchema = z.object({
   traits: z.array(z.string()),
@@ -46,6 +41,7 @@ const RestaurantAgentEditor = () => {
     api.features.agents.functions.getSingleAgent,
     { agent: agentId },
   );
+  const updateAgent = useMutation(api.features.agents.functions.updateAgent);
 
   const form = useForm<AgentFormSchema>({
     resolver: zodResolver(agentFormSchema),
@@ -57,7 +53,16 @@ const RestaurantAgentEditor = () => {
 
   // ~ ======= Handle submit  ======= ~
   const onSubmit = async (data: AgentFormSchema) => {
-    logger.info(data);
+    console.log(data);
+    await updateAgent({
+      agent: agentId,
+      updateData: {
+        supervisor_number: data.supervisor_number,
+        traits: data.traits,
+      },
+    });
+
+    form.reset();
   };
 
   // ~ ======= Update form when agent changes ======= ~
@@ -72,7 +77,9 @@ const RestaurantAgentEditor = () => {
     <div className="h-full w-full">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel>
-          <div className="restaurant-dashboard--page h-full w-full"></div>
+          <div className="h-[var(--content-height)] w-full">
+            {agent && <AgentEditorPanel agent={agent} />}
+          </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
 
@@ -123,28 +130,14 @@ const RestaurantAgentEditor = () => {
                     <FormItem>
                       <FormLabel>Traits</FormLabel>
                       <FormControl>
-                        <MultiSelector
-                          values={field.value as any[]}
+                        <ValueMultiSelector
+                          values={field.value}
                           onValuesChange={field.onChange}
-                        >
-                          <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="-> Traits" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                            <MultiSelectorList>
-                              {AgentTraits.map((trait) => (
-                                <MultiSelectorItem
-                                  key={trait.value}
-                                  value={trait.value}
-                                  label={trait.label}
-                                >
-                                  {trait.label}
-                                </MultiSelectorItem>
-                              ))}
-                            </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
+                          options={AgentTraits}
+                          placeholder="-> Traits"
+                        />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
