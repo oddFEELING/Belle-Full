@@ -8,7 +8,7 @@ This prevents circular dependencies.
 */
 
 import { Infer, v } from "convex/values";
-import { Allergen, Currency, DietaryTag } from "./";
+import { Allergen, Currency, DietaryTag } from "./enums";
 
 export const Money = v.object({
   currency: Currency,

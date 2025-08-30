@@ -1,7 +1,7 @@
 import { authenticatedAction } from "../../_custom/action";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
-import { api } from "../../_generated/api";
+import { api, components } from "../../_generated/api";
 import {
   createAgentDto,
   createDBAgentDto,
@@ -11,6 +11,7 @@ import { partial } from "convex-helpers/validators";
 import schema, { vv } from "../../schema";
 import { action } from "../../_generated/server";
 import type { Doc } from "../../_generated/dataModel";
+import { restaurantAgent } from "@/infrastructure/components/agents/restaurants/agent";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -116,5 +117,20 @@ export const updateRestaurantAgent = authenticatedMutation({
     await ctx.db.patch(args.agent, args.updateData);
 
     return await ctx.db.get(args.agent);
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Get chats for an agent
+// ~ =============================================>
+export const getAgentThreads = authenticatedQuery({
+  args: { agent: v.id("restaurant_agents") },
+  handler: async (ctx, args) => {
+    const threads = await ctx.runQuery(
+      components.agent.threads.listThreadsByUserId,
+      { userId: args.agent },
+    );
+
+    return threads;
   },
 });

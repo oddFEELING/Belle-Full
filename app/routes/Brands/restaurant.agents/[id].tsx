@@ -26,6 +26,7 @@ import { Separator } from "~/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { AgentProfileTab } from "./partials/agent.profile.tab";
+import { AgentChatsTab } from "./partials/agent.chats.tab";
 
 const RestaurantAgentPage = () => {
   const navigate = useNavigate();
@@ -55,12 +56,17 @@ const RestaurantAgentPage = () => {
   const handleConnectAgent = async () => {
     if (!agent) return toast.error("Agent not found");
     setLoadingConnectionQRCode(true);
-    await generateWhatsappAgentCode({
-      agent: agentId,
-      restaurant: agent?.restaurant,
-    });
-    setLoadingConnectionQRCode(false);
-    setShowConnectionQRCode(true);
+    try {
+      await generateWhatsappAgentCode({
+        agent: agentId,
+        restaurant: agent?.restaurant,
+      });
+      setShowConnectionQRCode(true);
+    } catch (error) {
+      toast.error("Failed to connect agent");
+    } finally {
+      setLoadingConnectionQRCode(false);
+    }
   };
 
   // ~ ======= Loading state ======= ~
@@ -250,6 +256,7 @@ const RestaurantAgentPage = () => {
         </div>
 
         <AgentProfileTab agent={agent} />
+        <AgentChatsTab agent={agent} />
       </Tabs>
 
       <AgentConnectionQRCodePanel

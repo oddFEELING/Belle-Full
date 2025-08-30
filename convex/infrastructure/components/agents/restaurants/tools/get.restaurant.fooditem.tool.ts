@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { api } from "@/_generated/api";
+import { internal } from "@/_generated/api";
 import { createTool } from "@convex-dev/agent";
 import { RestaurantAgentCtx } from "../agent";
 import type { Doc } from "@/_generated/dataModel";
@@ -10,7 +10,8 @@ export const getRestaurantFoodItems = createTool({
   args: z.object({}),
   handler: async (ctx: RestaurantAgentCtx): Promise<Doc<"menu_items">[]> => {
     return await ctx.runQuery(
-      api.features.restaurants.agent_access.getAgentMenuItemsByRestaurantId,
+      internal.features.restaurants.agent_access
+        .getAgentMenuItemsByRestaurantId,
       { restaurantId: ctx.restaurantId },
     );
   },

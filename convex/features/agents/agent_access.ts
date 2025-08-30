@@ -14,7 +14,7 @@ const agentSchema = schema.tables.restaurant_agents.validator;
 // ~ =============================================>
 // ~ ======= Update agent by unipile id
 // ~ =============================================>
-export const updateAgentByUnipileId = mutation({
+export const updateAgentByUnipileId = internalMutation({
   args: {
     unipileId: v.string(),
     updateData: partial(agentSchema),
@@ -37,7 +37,7 @@ export const updateAgentByUnipileId = mutation({
 // ~ =============================================>
 // ~ ======= Get agent by unipile id
 // ~ =============================================>
-export const getAgentByUnipileId = query({
+export const getAgentByUnipileId = internalQuery({
   args: { unipileId: v.string() },
   handler: async (ctx, args) => {
     return await ctx.db
@@ -50,7 +50,7 @@ export const getAgentByUnipileId = query({
 // ~ =============================================>
 // ~ ======= Create agent enquiry
 // ~ =============================================>
-export const agentCreateEnquiry = mutation({
+export const agentCreateEnquiry = internalMutation({
   args: {
     threadId: v.string(),
     agentId: v.id("restaurant_agents"),
@@ -64,5 +64,20 @@ export const agentCreateEnquiry = mutation({
     });
 
     return { success: true };
+  },
+});
+
+// ~ =============================================>
+// ~ ======= get agent by agent_id
+// ~ =============================================>
+export const getAgentByAgentId = internalQuery({
+  args: { agentId: v.string() },
+  handler: async (ctx, args): Promise<Doc<"restaurant_agents"> | null> => {
+    const agentId = args.agentId.split("@")[0];
+
+    return await ctx.db
+      .query("restaurant_agents")
+      .withIndex("by_agent_id", (q) => q.eq("agent_id", `+${agentId}`))
+      .first();
   },
 });

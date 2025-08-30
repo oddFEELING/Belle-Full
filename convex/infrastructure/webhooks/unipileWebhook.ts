@@ -8,7 +8,7 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
     event: "NEW_MESSAGE",
     data: {
       message: body.message,
-      isGroup: body.is_group,
+      isGroup: Boolean(body.is_group),
       from: body.sender.attendee_provider_id,
       chatId: body.chat_id,
       agentId: body.account_id,
@@ -22,9 +22,19 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
     return new Response(null, { status: 200 });
   }
 
+  // ~ ======= Check if message is from an agent ======= ~
+  const isAgent = await ctx.runQuery(
+    internal.features.agents.agent_access.getAgentByAgentId,
+    { agentId: body.sender.attendee_provider_id },
+  );
+  if (isAgent) {
+    console.log({ event: "EARLY_RETURN", reason: "Agent response" });
+    return new Response(null, { status: 200 });
+  }
+
   // ~ ======= Get targeted agent ======= ~
   const agent = await ctx.runQuery(
-    api.features.agents.agent_access.getAgentByUnipileId,
+    internal.features.agents.agent_access.getAgentByUnipileId,
     { unipileId: body.account_id },
   );
   if (!agent) {
@@ -34,12 +44,12 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
 
   // ~ ======= Get or create thread ======= ~
   let threadId: string;
-  const threads = await ctx.runQuery(
+  const thread = await ctx.runQuery(
     api.infrastructure.components.agents.restaurants.agent
       .getRestaurantAgentThread,
     { userId: body.sender.attendee_provider_id, agentId: agent._id },
   );
-  if (threads.page.length > 0) threadId = threads.page[0]._id;
+  if (thread) threadId = thread._id;
   else {
     threadId = await ctx.runAction(
       api.infrastructure.components.agents.restaurants.agent
@@ -79,6 +89,9 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
         chat_id: body.chat_id,
       },
     );
+  } else {
+    console.log({ event: "EARLY_RETURN", reason: "Not allowed" });
+    return new Response(null, { status: 200 });
   }
   return new Response(null, { status: 200 });
 });
@@ -99,7 +112,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Connected action ======= ~
   if (action === "CREATION_SUCCESS") {
     await ctx.runMutation(
-      api.features.agents.agent_access.updateAgentByUnipileId,
+      internal.features.agents.agent_access.updateAgentByUnipileId,
       { unipileId: agentId, updateData: { connection_status: "CONNECTED" } },
     );
   }
@@ -107,7 +120,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Disconnected action ======= ~
   if (action === "DELETED") {
     await ctx.runMutation(
-      api.features.agents.agent_access.updateAgentByUnipileId,
+      internal.features.agents.agent_access.updateAgentByUnipileId,
       { unipileId: agentId, updateData: { connection_status: "DISCONNECTED" } },
     );
   }
@@ -115,7 +128,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Sync success actions ======= ~
   if (action === "SYNC_SUCCESS") {
     await ctx.runMutation(
-      api.features.agents.agent_access.updateAgentByUnipileId,
+      internal.features.agents.agent_access.updateAgentByUnipileId,
       {
         unipileId: agentId,
         updateData: {
