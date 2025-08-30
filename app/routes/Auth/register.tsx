@@ -21,7 +21,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 const formSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
-  email: z.email(),
+  email: z.string().email(),
   password: z.string(),
   flow: z.string(),
 });
@@ -59,7 +59,11 @@ const RegisterPage = () => {
 
   return (
     <div className="relative flex h-full w-full items-center justify-center p-5 lg:p-20">
-      <Button variant="ghost" className="absolute top-4 right-20">
+      <Button
+        variant="ghost"
+        className="absolute top-4 right-20"
+        onClick={() => navigate("/signin")}
+      >
         <span>Login</span>
       </Button>
       <div className="flex h-max w-full max-w-md flex-col items-center gap-y-3">

@@ -4,7 +4,7 @@ import {
   DocumentType,
   ReviewableItemStatus,
   RestaurantLegalDocuments,
-} from "../enums";
+} from "../types/enums";
 
 export const restaurant_documents = defineTable({
   restaurant: v.id("restaurants"),

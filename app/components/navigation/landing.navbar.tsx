@@ -22,7 +22,7 @@ import { api } from "convex/_generated/api";
 const LandingNavbar = () => {
   const { user } = useUser();
   const { data: brands, isPending: brandsIsPending } = useCachedQuery(
-    api.brands.functions.getUserBrands,
+    api.features.brands.functions.getUserBrands,
   );
 
   return (

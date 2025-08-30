@@ -24,6 +24,7 @@ import { ChevronDown } from "lucide-react";
 import {
   IconBuildingStore,
   IconBurger,
+  IconCheck,
   IconChefHat,
   IconLayoutDashboard,
   IconPlus,
@@ -36,14 +37,23 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { cn } from "~/lib/utils";
+import { useUser } from "~/hooks/use-user/use-user";
+import { use } from "react";
 
 const BrandHubSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useUser();
   const { brandId } = useParams();
+
+  // ~ ======= Queries  ======= ~
   const { data: brand, isPending: brandIsPending } = useCachedQuery(
-    api.brands.functions.getBrand,
+    api.features.brands.functions.getBrand,
     brandId ? { id: brandId as Id<"brands"> } : "skip",
+  );
+  const { data: brands, isPending: brandsIsPending } = useCachedQuery(
+    api.features.brands.functions.getUserBrands,
   );
 
   const paths = {
@@ -76,18 +86,31 @@ const BrandHubSidebar = () => {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[var(--radix-popper-anchor-width)]">
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Acme Corp.</span>
-                </DropdownMenuItem>
+                {brandsIsPending ? (
+                  <DropdownMenuItem>
+                    <span>Loading...</span>
+                  </DropdownMenuItem>
+                ) : (
+                  <>
+                    {brands &&
+                      brands?.map((brd) => (
+                        <DropdownMenuItem key={brd!._id}>
+                          <span>{brd?.name}</span>
+                          <IconCheck
+                            size={18}
+                            strokeWidth={1.5}
+                            className={cn("ml-auto")}
+                          />
+                        </DropdownMenuItem>
+                      ))}
 
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <IconPlus size={18} strokeWidth={1.5} />
-                  <span>Create Brand</span>
-                </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <IconPlus size={18} strokeWidth={1.5} />
+                      <span>Create Brand</span>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

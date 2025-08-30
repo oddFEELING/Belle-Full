@@ -4,26 +4,32 @@
 import { type Infer } from "convex/values";
 
 import { addresses } from "./convex/schemas/address.schema";
+import { agent_enquiries } from "./convex/schemas/agent.enquiries.schema";
 import { brands } from "./convex/schemas/brand.schema";
 import { categories } from "./convex/schemas/category.schema";
 import { menu_items } from "./convex/schemas/menu.item.schema";
 import { menus } from "./convex/schemas/menu.schema";
+import { menu_x_category } from "./convex/schemas/menu_x_category.schema";
 import { menu_x_item } from "./convex/schemas/menu_x_item.schema";
 import { order_items } from "./convex/schemas/order.items.schema";
 import { orders } from "./convex/schemas/order.schema";
+import { restaurant_agents } from "./convex/schemas/restaurant.agent.schema";
 import { restaurant_documents } from "./convex/schemas/restaurant.document.schema";
 import { restaurants } from "./convex/schemas/restaurant.schema";
 import { users } from "./convex/schemas/users.schema";
 import { users_x_brands } from "./convex/schemas/users_x_brands.schema";
 
 export type Addresses = Infer<typeof addresses.validator>;
+export type AgentEnquiries = Infer<typeof agent_enquiries.validator>;
 export type Brands = Infer<typeof brands.validator>;
 export type Categories = Infer<typeof categories.validator>;
 export type MenuItems = Infer<typeof menu_items.validator>;
 export type Menus = Infer<typeof menus.validator>;
+export type MenuXCategory = Infer<typeof menu_x_category.validator>;
 export type MenuXItem = Infer<typeof menu_x_item.validator>;
 export type OrderItems = Infer<typeof order_items.validator>;
 export type Orders = Infer<typeof orders.validator>;
+export type RestaurantAgents = Infer<typeof restaurant_agents.validator>;
 export type RestaurantDocuments = Infer<typeof restaurant_documents.validator>;
 export type Restaurants = Infer<typeof restaurants.validator>;
 export type Users = Infer<typeof users.validator>;

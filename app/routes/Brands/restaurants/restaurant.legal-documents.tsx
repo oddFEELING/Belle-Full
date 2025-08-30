@@ -14,7 +14,7 @@ import { useCachedQuery } from "~/hooks/use-app-query";
 const RestaurantLegalDocumentsPage = () => {
   const restaurantId = useParams().restaurantId as Id<"restaurants">;
   const { data: documents } = useCachedQuery(
-    api.restaurants.documents.listDocuments,
+    api.features.restaurants.documents.listDocuments,
     restaurantId ? { restaurant: { id: restaurantId } } : "skip",
   );
   const [openUploadPanel, setOpenUploadPanel] = useState<boolean>(false);

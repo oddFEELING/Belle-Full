@@ -80,10 +80,7 @@ const UserBubble = ({
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            onClick={() => signOut()}
-            className="cursor-pointer text-red-600 focus:text-red-600"
-          >
+          <DropdownMenuItem onClick={() => signOut()} variant="destructive">
             <IconLogout2 size={16} />
             <span>Sign out</span>
           </DropdownMenuItem>

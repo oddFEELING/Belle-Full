@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { BrandRole } from "../enums";
+import { BrandRole } from "../types/enums";
 
 export const users_x_brands = defineTable({
   user: v.id("users"),

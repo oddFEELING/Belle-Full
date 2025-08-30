@@ -13,6 +13,7 @@ export default [
     // ~ ======= Auth routes ======= ~
     layout("routes/Auth/_auth.layout.tsx", [
       route("/register", "routes/Auth/register.tsx"),
+      route("/signin", "routes/Auth/signin.tsx"),
     ]),
 
     // ~ ======= Brand routes ======= ~
@@ -41,24 +42,42 @@ export default [
         ...prefix("/restaurants/:restaurantId", [
           layout("routes/Brands/restaurants/_restaurant.layout.tsx", [
             index("routes/Brands/restaurants/restaurant.overview.tsx"),
+            route("/menu", "routes/Brands/restaurant.menu/index.tsx"),
+
             route(
-              "/menu",
-              "routes/Brands/restaurants/restaurant.menu/index.tsx",
+              "/menu/add-menu-item",
+              "routes/Brands/restaurant.menu/add.menu.item.tsx",
             ),
+
             route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
+
             route("/staff", "routes/Brands/restaurants/restaurant.staff.tsx"),
+
             route(
               "/bellebot",
               "routes/Brands/restaurants/restaurant.bellebot.tsx",
             ),
+
+            route("/agents", "routes/Brands/restaurant.agents/index.tsx"),
+            route(
+              "/agents/:agentId",
+              "routes/Brands/restaurant.agents/[id].tsx",
+            ),
+            route(
+              "/agents/:agentId/editor",
+              "routes/Brands/restaurant.agents/agent.editor.tsx",
+            ),
+
             route(
               "/transactions",
               "routes/Brands/restaurants/restaurant.transactions.tsx",
             ),
+
             route(
               "/billing",
               "routes/Brands/restaurants/restaurant.billing.tsx",
             ),
+
             route(
               "/legal-documents",
               "routes/Brands/restaurants/restaurant.legal-documents.tsx",

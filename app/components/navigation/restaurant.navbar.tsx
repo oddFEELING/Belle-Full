@@ -14,13 +14,16 @@ import {
 } from "../ui/dropdown-menu";
 import { SidebarTrigger } from "../ui/sidebar";
 import { UserBubble } from "../popovers/user.bubble.popover";
+import { RestaurantHubBreadcrumb } from "./restaurant.hub.breadcrumb";
 
 const RestaurantNavbar = () => {
   const { theme, setTheme } = useTheme();
   return (
     <div className="flex h-[var(--header-height)] w-full items-center justify-between border-b px-4 md:px-6">
-      <div>
+      <div className="flex items-center gap-4">
         <SidebarTrigger className="text-muted-foreground" />
+
+        <RestaurantHubBreadcrumb />
       </div>
 
       <div className="flex w-max items-center gap-4">

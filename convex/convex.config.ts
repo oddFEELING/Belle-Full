@@ -10,6 +10,7 @@ import twilio from "@convex-dev/twilio/convex.config";
 import resend from "@convex-dev/resend/convex.config";
 import geospatial from "@convex-dev/geospatial/convex.config";
 import aggregate from "@convex-dev/aggregate/convex.config";
+import prosemirrorSync from "@convex-dev/prosemirror-sync/convex.config";
 
 const app = defineApp();
 
@@ -22,6 +23,7 @@ app.use(twilio);
 app.use(resend);
 app.use(geospatial);
 app.use(aggregate);
+app.use(prosemirrorSync);
 
 // ~ ======= Aggregates ======= ~
 app.use(aggregate, { name: "restaurantMenuAnalytics" });

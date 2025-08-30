@@ -6,7 +6,7 @@ const useUser = () => {
     data: user,
     isPending: userIsPending,
     ...rest
-  } = useAppQuery(api.users.functions.getUserSession);
+  } = useAppQuery(api.features.users.functions.getUserSession);
 
   return {
     user,

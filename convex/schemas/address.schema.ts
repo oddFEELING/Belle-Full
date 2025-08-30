@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { AddressType } from "../enums";
+import { AddressType } from "../types/enums";
 
 export const addresses = defineTable({
   line1: v.string(),

@@ -2,16 +2,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import type { Doc } from "convex/_generated/dataModel";
 import { Checkbox } from "~/components/ui/checkbox";
 import { format } from "date-fns";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
-import {
-  CursorFollow,
-  CursorProvider,
-} from "~/components/custom-ui/animated.cursor";
+import { ActionCell } from "./cells/category.actions.cell";
 
 export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
   {
@@ -66,7 +57,7 @@ export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
     enableHiding: true,
     cell: ({ row }) => (
       <div className="w-max max-w-44">
-        <span className="line-clamp-1 truncate underline-offset-4 hover:underline">
+        <span className="line-clamp-1 cursor-default truncate">
           {row.original.description}
         </span>
       </div>
@@ -80,5 +71,13 @@ export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
     cell: ({ row }) => (
       <span>{format(row.original._creationTime, "MMM d, yyyy")}</span>
     ),
+  },
+
+  // ~ ======= Actions ======= ~
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return <ActionCell rowCategory={row.original} />;
+    },
   },
 ];

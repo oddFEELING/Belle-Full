@@ -6,6 +6,9 @@ import path from "path";
 
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  ssr: {
+    noExternal: ["posthog-js", "posthog-js/react"],
+  },
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "./app"),

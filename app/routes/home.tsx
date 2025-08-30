@@ -25,6 +25,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import LandingNavbar from "~/components/navigation/landing.navbar";
 import { useIsMobile } from "~/hooks/use-mobile";
+import posthog from "posthog-js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -114,6 +115,7 @@ export default function Home() {
           {buttonActions.map((action) => (
             <div
               key={action.text}
+              onClick={action.action}
               className="text-muted-foreground hover:border-primary/40 hover:text-primary flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border p-3 transition-all duration-300 ease-out hover:font-medium"
             >
               <action.Icon size={20} strokeWidth={1.3} />
@@ -131,7 +133,21 @@ const buttonActions: {
   text: string;
   Icon: Icon | LucideIcon;
 }[] = [
-  { text: "Reorder", Icon: IconBasketCheck, action: () => {} },
-  { text: "Explore", Icon: IconBuildingStore, action: () => {} },
+  {
+    text: "Reorder",
+    Icon: IconBasketCheck,
+    action: () => {
+      throw new Error("No orders found");
+    },
+  },
+  {
+    text: "Explore",
+    Icon: IconBuildingStore,
+    action: () => {
+      posthog.captureException("Nothing to explore", {
+        event: "Exploring page",
+      });
+    },
+  },
   { text: "Near me", Icon: IconMapPinBolt, action: () => {} },
 ];

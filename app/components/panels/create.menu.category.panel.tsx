@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Panel,
+  PanelActionButton,
+  PanelCancelButton,
   PanelContent,
   PanelFooter,
   PanelHeader,
@@ -46,7 +48,9 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
   open,
   onOpenChange,
 }) => {
-  const createCategory = useMutation(api.menus.categories.functions.create);
+  const createCategory = useMutation(
+    api.features.menu_categories.functions.create,
+  );
 
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateMenuCategorySchema>({
@@ -111,17 +115,11 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
               )}
             />
 
-            <PanelFooter className="flex items-center justify-between">
-              <Button
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                className="w-full px-8 sm:w-max"
-              >
+            <PanelFooter>
+              <PanelCancelButton onClick={() => onOpenChange(false)}>
                 Cancel
-              </Button>
-              <Button type="submit" className="w-full px-8 sm:w-max">
-                Create
-              </Button>
+              </PanelCancelButton>
+              <PanelActionButton type="submit">Create</PanelActionButton>
             </PanelFooter>
           </form>
         </Form>
