@@ -126,7 +126,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
   const navigate = useNavigate();
   const restaurant = useParams().restaurantId as Id<"restaurants">;
   const createDocument = useMutation(
-    api.restaurants.documents.createUploadedDocument,
+    api.features.restaurants.documents.createUploadedDocument,
   );
   const [uploadStatus, setUploadStatus] = useState<{
     status: "idle" | "uploading" | "success" | "error";
@@ -134,7 +134,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
     uploadedFiles: string[];
     error?: string;
   }>({ status: "idle", currentlyUploading: [], uploadedFiles: [] });
-  const uploadFile = useUploadFile(api.restaurants.documents);
+  const uploadFile = useUploadFile(api.features.restaurants.documents);
 
   const [
     { files, isDragging, errors },

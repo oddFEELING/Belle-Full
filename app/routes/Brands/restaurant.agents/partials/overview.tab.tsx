@@ -4,19 +4,26 @@ import {
   IconSoup,
   IconPennant,
   IconSquareRoundedPercentage,
+  IconBubbleText,
+  IconShoppingCart,
+  IconMessageChatbot,
+  IconMushroom,
+  IconGrain,
 } from "@tabler/icons-react";
 import { TabsContent } from "~/components/ui/tabs";
 import type { Id } from "convex/_generated/dataModel";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
 
-interface OverviewTabProps {
+interface RestaurantAgentsOverviewTabProps {
   restaurantId: Id<"restaurants">;
 }
 
-export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
+export const RestaurantAgentsOverviewTab: React.FC<
+  RestaurantAgentsOverviewTabProps
+> = ({ restaurantId }) => {
   const { data: menuAnalytics, isPending: menuAnalyticsIsPending } =
-    useCachedQuery(api.menus.functions.menuAnalytics, {
+    useCachedQuery(api.features.menus.functions.menuAnalytics, {
       restaurant: restaurantId,
     });
 
@@ -26,8 +33,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Total Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Menus</CardTitle>
-            <IconClipboardText
+            <CardTitle className="text-sm font-medium">Total Agents</CardTitle>
+            <IconGrain
               size={18}
               className="text-muted-foreground"
               strokeWidth={1.5}
@@ -38,7 +45,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
               {menuAnalytics?.menuCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
-              Total menus in this restaurant
+              Total agents in this restaurant
             </p>
           </CardContent>
         </Card>
@@ -46,8 +53,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Total Menu Items Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Menu Items</CardTitle>
-            <IconSoup
+            <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
+            <IconMushroom
               size={18}
               className="text-muted-foreground"
               strokeWidth={1.5}
@@ -58,7 +65,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
               {menuAnalytics?.menuItemCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
-              Total menu items in this restaurant
+              Total active agents in this restaurant
             </p>
           </CardContent>
         </Card>
@@ -66,8 +73,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Active Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Menus</CardTitle>
-            <IconPennant
+            <CardTitle className="text-sm font-medium">Agent Chats</CardTitle>
+            <IconMessageChatbot
               size={18}
               className="text-muted-foreground"
               strokeWidth={1.5}
@@ -76,7 +83,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
           <CardContent>
             <div className="text-2xl font-bold">4</div>
             <p className="text-muted-foreground text-xs">
-              Currently published menus
+              Total chats with agents.
             </p>
           </CardContent>
         </Card>
@@ -84,10 +91,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Average Items per Menu Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Avg Items/Menu
-            </CardTitle>
-            <IconSquareRoundedPercentage
+            <CardTitle className="text-sm font-medium">Agent Orders</CardTitle>
+            <IconShoppingCart
               size={18}
               className="text-muted-foreground"
               strokeWidth={1.5}
@@ -96,7 +101,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
           <CardContent>
             <div className="text-2xl font-bold">21</div>
             <p className="text-muted-foreground text-xs">
-              Average items per menu
+              Total orders placed by agents.
             </p>
           </CardContent>
         </Card>

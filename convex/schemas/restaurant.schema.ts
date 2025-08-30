@@ -18,20 +18,6 @@ export const restaurants = defineTable({
   activeMenu: v.optional(v.id("menus")),
   fhrsRating: v.optional(v.number()),
   fhrsAuthority: v.optional(v.string()),
-
-  fulfilment: v.optional(
-    v.object({
-      supportsDelivery: v.boolean(),
-      supportsPickup: v.boolean(),
-      defaultPrepMinutes: v.number(),
-      avgCourierPickupSlackMins: v.optional(v.number()),
-      minOrderSubTotal: Money,
-    }),
-  ),
-
-  deliveryZones: v.optional(v.array(DeliveryZone)),
-
-  flaggedForShutdown: v.optional(v.boolean()),
 })
   .index("by_brand", ["brand"])
   .index("by_brand_name", ["brand", "name"])

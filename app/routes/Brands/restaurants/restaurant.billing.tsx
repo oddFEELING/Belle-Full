@@ -11,7 +11,7 @@ import { Separator } from "~/components/ui/separator";
 const RestaurantBillingPage = () => {
   const restaurantId = useParams().restaurantId as Id<"restaurants">;
   const { data: restaurant, isPending } = useCachedQuery(
-    api.restaurants.functions.getRestaurant,
+    api.features.restaurants.functions.getRestaurant,
     {
       id: restaurantId,
     },

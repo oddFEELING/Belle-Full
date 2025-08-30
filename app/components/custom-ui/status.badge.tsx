@@ -4,12 +4,14 @@ import { cn } from "~/lib/utils";
 export default function StatusBadge({
   status,
   text,
+  className,
 }: {
   text: string;
   status: "success" | "warning" | "error" | "inactive";
+  className?: string;
 }) {
   return (
-    <Badge variant="outline" className="gap-1.5">
+    <Badge variant="outline" className={cn("gap-1.5", className)}>
       <span
         className={cn("size-1.5 rounded-full", {
           "bg-emerald-500": status === "success",

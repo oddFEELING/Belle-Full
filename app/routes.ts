@@ -42,14 +42,11 @@ export default [
         ...prefix("/restaurants/:restaurantId", [
           layout("routes/Brands/restaurants/_restaurant.layout.tsx", [
             index("routes/Brands/restaurants/restaurant.overview.tsx"),
-            route(
-              "/menu",
-              "routes/Brands/restaurants/restaurant.menu/index.tsx",
-            ),
+            route("/menu", "routes/Brands/restaurant.menu/index.tsx"),
 
             route(
               "/menu/add-menu-item",
-              "routes/Brands/restaurants/restaurant.menu/add.menu.item.tsx",
+              "routes/Brands/restaurant.menu/add.menu.item.tsx",
             ),
 
             route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
@@ -61,13 +58,14 @@ export default [
               "routes/Brands/restaurants/restaurant.bellebot.tsx",
             ),
 
-            route(
-              "/agents",
-              "routes/Brands/restaurants/restaurant.agents/index.tsx",
-            ),
+            route("/agents", "routes/Brands/restaurant.agents/index.tsx"),
             route(
               "/agents/:agentId",
-              "routes/Brands/restaurants/restaurant.agents/[id].tsx",
+              "routes/Brands/restaurant.agents/[id].tsx",
+            ),
+            route(
+              "/agents/:agentId/editor",
+              "routes/Brands/restaurant.agents/agent.editor.tsx",
             ),
 
             route(

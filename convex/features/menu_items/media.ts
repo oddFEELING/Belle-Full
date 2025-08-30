@@ -1,8 +1,8 @@
 import { v } from "convex/values";
-import { r2 } from "../../../infrastructure/components/r2";
-import type { Id } from "../../../_generated/dataModel";
-import { authenticatedMutation } from "../../../_custom/mutation";
-import { query } from "../../../_generated/server";
+import { r2 } from "../../infrastructure/components/r2";
+import type { Id } from "../../_generated/dataModel";
+import { authenticatedMutation } from "../../_custom/mutation";
+import { query } from "../../_generated/server";
 
 const PREFIX = "mnu_itm";
 

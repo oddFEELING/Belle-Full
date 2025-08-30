@@ -84,8 +84,8 @@ const AddMenuItem = () => {
   const navigate = useNavigate();
   const brandId = useParams().brandId as Id<"brands">;
   const restaurantId = useParams().restaurantId as Id<"restaurants">;
-  const uploadImage = useUploadFile(api.menus.items.media);
-  const createMenuItem = useMutation(api.menus.items.functions.create);
+  const uploadImage = useUploadFile(api.features.menu_items.media);
+  const createMenuItem = useMutation(api.features.menu_items.functions.create);
   const [isLoading, setIsLoading] = useState(false);
 
   const [menuItemOptions, setMenuItemOptions] = useState<MenuItemOption[]>([]);
@@ -99,7 +99,7 @@ const AddMenuItem = () => {
   const fileName = files[0]?.file.name || null;
 
   const { data: menus } = useCachedQuery(
-    api.menus.functions.getMenuByRestaurant,
+    api.features.menus.functions.getMenuByRestaurant,
     { restaurant: restaurantId },
   );
 
@@ -197,11 +197,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
               <div className="flex items-center gap-3">
-                <div className="bg-primary/10 rounded-lg p-2">
-                  <Package2Icon className="text-primary h-5 w-5" />
+                <div className="bg-background rounded-lg p-2">
+                  <Package2Icon
+                    size={20}
+                    strokeWidth={1.2}
+                    className="text-primary h-5 w-5"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Basic Details</h3>
+                  <h3 className="text-primary text-lg font-semibold">
+                    Basic Details
+                  </h3>
                   <p className="text-muted-foreground text-sm">
                     Essential information about your menu item
                   </p>
@@ -355,11 +361,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
               <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-green-500/10 p-2">
-                  <LeafIcon className="h-5 w-5 text-green-600" />
+                <div className="bg-background rounded-lg p-2">
+                  <LeafIcon
+                    size={20}
+                    strokeWidth={1.2}
+                    className="text-primary h-5 w-5"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Dietary Information</h3>
+                  <h3 className="text-primary text-lg font-semibold">
+                    Dietary Information
+                  </h3>
                   <p className="text-muted-foreground text-sm">
                     Help customers make informed choices
                   </p>
@@ -532,11 +544,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4">
               <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-blue-500/10 p-2">
-                  <IconSettings className="h-5 w-5 text-blue-600" />
+                <div className="bg-background rounded-lg p-2">
+                  <IconSettings
+                    size={20}
+                    strokeWidth={1.2}
+                    className="text-primary h-5 w-5"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Options</h3>
+                  <h3 className="text-primary text-lg font-semibold">
+                    Options
+                  </h3>
                   <p className="text-muted-foreground text-sm">
                     Customize your menu item with options
                   </p>
@@ -680,11 +698,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
               <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-amber-500/10 p-2">
-                  <BanknoteIcon className="h-5 w-5 text-amber-600" />
+                <div className="bg-background rounded-lg p-2">
+                  <BanknoteIcon
+                    size={20}
+                    strokeWidth={1.2}
+                    className="text-primary h-5 w-5"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Pricing</h3>
+                  <h3 className="text-primary text-lg font-semibold">
+                    Pricing
+                  </h3>
                   <p className="text-muted-foreground text-sm">
                     Set your item pricing and promotions
                   </p>

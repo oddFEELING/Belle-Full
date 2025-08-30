@@ -48,7 +48,9 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
   open,
   onOpenChange,
 }) => {
-  const createCategory = useMutation(api.menus.categories.functions.create);
+  const createCategory = useMutation(
+    api.features.menu_categories.functions.create,
+  );
 
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateMenuCategorySchema>({

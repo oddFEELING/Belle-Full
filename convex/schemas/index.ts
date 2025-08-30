@@ -1,4 +1,5 @@
 export * from "./address.schema";
+export * from "./agent.enquiries.schema";
 export * from "./brand.schema";
 export * from "./category.schema";
 export * from "./menu.item.schema";

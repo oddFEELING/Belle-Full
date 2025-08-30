@@ -4,10 +4,10 @@ import {
   internalQuery,
   mutation,
   query,
-} from "../../../_generated/server";
+} from "../../_generated/server";
 import { partial } from "convex-helpers/validators";
-import schema from "../../../schema";
-import type { Doc } from "../../../_generated/dataModel";
+import schema from "../../schema";
+import type { Doc } from "../../_generated/dataModel";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -44,5 +44,25 @@ export const getAgentByUnipileId = query({
       .query("restaurant_agents")
       .withIndex("by_unipile_id", (q) => q.eq("unipile_id", args.unipileId))
       .first();
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Create agent enquiry
+// ~ =============================================>
+export const agentCreateEnquiry = mutation({
+  args: {
+    threadId: v.string(),
+    agentId: v.id("restaurant_agents"),
+    enquiry: v.string(),
+    restaurant: v.id("restaurants"),
+  },
+  handler: async (ctx, args): Promise<{ success: boolean }> => {
+    ctx.db.insert("agent_enquiries", {
+      ...args,
+      status: "PENDING",
+    });
+
+    return { success: true };
   },
 });

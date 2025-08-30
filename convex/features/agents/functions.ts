@@ -1,15 +1,15 @@
-import { authenticatedAction } from "../../../_custom/action";
-import { authenticatedMutation } from "../../../_custom/mutation";
-import { authenticatedQuery } from "../../../_custom/query";
-import { api } from "../../../_generated/api";
+import { authenticatedAction } from "../../_custom/action";
+import { authenticatedMutation } from "../../_custom/mutation";
+import { authenticatedQuery } from "../../_custom/query";
+import { api } from "../../_generated/api";
 import {
   createAgentDto,
   createDBAgentDto,
 } from "./interfaces/restaurant.agents.dto";
 import { v } from "convex/values";
 import { partial } from "convex-helpers/validators";
-import schema, { vv } from "../../../schema";
-import { action } from "../../../_generated/server";
+import schema, { vv } from "../../schema";
+import { action } from "../../_generated/server";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -71,9 +71,12 @@ export const getSingleAgent = authenticatedQuery({
 export const disconnectAgent = action({
   args: { agent: v.id("restaurant_agents") },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
-    await ctx.runAction(api.services.unipile.functions.disconnectAccount, {
-      agentId: args.agent,
-    });
+    await ctx.runAction(
+      api.infrastructure.services.unipile.functions.disconnectAccount,
+      {
+        agentId: args.agent,
+      },
+    );
 
     return { success: true };
   },
@@ -86,11 +89,11 @@ export const generateWhatsappAgentCode = authenticatedAction({
   args: { agent: v.id("restaurant_agents"), restaurant: v.id("restaurants") },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
     const data = await ctx.runAction(
-      api.services.unipile.functions.createWhatsappAgent,
+      api.infrastructure.services.unipile.functions.createWhatsappAgent,
       { agent: args.agent, restaurant: args.restaurant },
     );
 
-    await ctx.runMutation(api.restaurants.agents.functions.updateAgent, {
+    await ctx.runMutation(api.features.agents.functions.updateAgent, {
       agent: args.agent,
       updateData: {
         auth_code: data.code,

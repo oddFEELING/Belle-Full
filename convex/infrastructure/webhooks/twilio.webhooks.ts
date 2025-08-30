@@ -9,7 +9,7 @@ export default httpAction(async (ctx, request) => {
   const extractedObj = Object.fromEntries(extracted.entries());
 
   console.log(extractedObj);
-  await ctx.runAction(api.services.twilio.twilio.sendMessage, {
+  await ctx.runAction(api.infrastructure.services.twilio.twilio.sendMessage, {
     to: "whatsapp:+447407747298",
     body: "Your message has been received and processed.",
   });

@@ -13,10 +13,14 @@ import type { Doc, Id } from "../../../../_generated/dataModel";
 import { restaurantAgentPrompt } from "./prompt";
 import { humanTone } from "../tone.prompt";
 import schema from "../../../../schema";
+import { AgentRestaurantReturn } from "@/features/restaurants/interfaces/restaurants.dto";
+import * as restaurantAgentTools from "./tools";
 
-type RestautantAgentCtx = ToolCtx & {
+export type RestaurantAgentCtx = ToolCtx & {
   restaurantId: Id<"restaurants">;
   chatId: string;
+  threadId: string;
+  agentId: Id<"restaurant_agents">;
 };
 
 export const restaurantAgent = new Agent<{
@@ -27,72 +31,7 @@ export const restaurantAgent = new Agent<{
   languageModel: openai.chat("gpt-4.1"),
   maxSteps: 20,
 
-  tools: {
-    // ~ ======= Get a list of restaurants ======= ~
-    getRestaurant: createTool({
-      description: "Get the restaurant details.",
-      args: z.object({
-        restaurantId: z
-          .string()
-          .describe("The id of your restaurnat to ghet info"),
-      }),
-      handler: async (ctx, args): Promise<Doc<"restaurants"> | "NotFound"> => {
-        const restaurant = await ctx.runQuery(
-          api.restaurants.agent_access.getRestaurant,
-          { restaurant: args.restaurantId as Id<"restaurants"> },
-        );
-
-        if (!restaurant) return "NotFound";
-
-        return restaurant;
-      },
-    }),
-
-    // ~ ======= Get a list of food items from a restaurant ======= ~
-    getRestaurantFoodItems: createTool({
-      description:
-        "Get a list of food items that a user can order from a restaurant using the restaurant _id and not the name",
-      args: z.object({}),
-      handler: async (
-        ctx: RestautantAgentCtx,
-      ): Promise<Doc<"menu_items">[]> => {
-        return await ctx.runQuery(
-          api.restaurants.agent_access.getAgentMenuItemsByRestaurantId,
-          { restaurantId: ctx.restaurantId },
-        );
-      },
-    }),
-
-    // ~ ======= Say something to the user ======= ~
-    saySomething: createTool({
-      description:
-        "Say something to the user to give them insight into what you are doing",
-      args: z.object({ message: z.string() }),
-      handler: async (ctx: RestautantAgentCtx, args) => {
-        await ctx.runAction(api.services.unipile.functions.sendMessageToUser, {
-          response: args.message,
-          chat_id: ctx.chatId,
-        });
-
-        return "Message sent";
-      },
-    }),
-
-    // ~ ======= Ask restaurant question ======= ~
-    askRestaurantQuestion: createTool({
-      description:
-        "escalate a question to the restaurant if you are not sure about the answer",
-      args: z.object({ question: z.string() }),
-      handler: async (ctx: RestautantAgentCtx, args) => {
-        await ctx.runAction(api.services.unipile.functions.sendMessageToUser, {
-          response: args.question,
-          chat_id: ctx.chatId,
-        });
-
-        return "Question escalated";
-      },
-    }),
-  },
+  tools: { ...restaurantAgentTools },
 });
 
 // ~ =============================================>
@@ -108,30 +47,37 @@ export const chat = action({
     threadId: v.string(),
     agentName: v.string(),
     chatId: v.string(),
+    agentId: v.id("restaurant_agents"),
   },
   handler: async (ctx, args): Promise<string> => {
+    const agentCtx: RestaurantAgentCtx = {
+      ...ctx,
+      restaurantId: args.restaurantId,
+      chatId: args.chatId,
+      threadId: args.threadId,
+      agentId: args.agentId,
+    };
     const restaurant = await ctx.runQuery(
-      api.restaurants.agent_access.getRestaurant,
+      api.features.restaurants.agent_access.getRestaurant,
       { restaurant: args.restaurantId },
     );
 
-    const response = await restaurantAgent.generateText(
-      { ...ctx, restaurantId: args.restaurantId, chatId: args.chatId },
-      { threadId: args.threadId },
-      {
-        system: restaurantAgentPrompt({
-          tone: humanTone(),
-          goals: args.goals || "",
-          personna: args.personna || "",
-          traits: args.traits?.join(", ") || "",
-          restaurantName: restaurant?.name || "",
-          restaurantDetails: restaurant?.description || "",
-          agentName: args.agentName,
-        }),
-        prompt: args.prompt,
-        temperature: 0.5,
-      },
-    );
+    const { thread } = await restaurantAgent.continueThread(agentCtx, {
+      threadId: args.threadId,
+    });
+    const response = await thread.generateText({
+      system: restaurantAgentPrompt({
+        tone: humanTone(),
+        goals: args.goals || "",
+        personna: args.personna || "",
+        traits: args.traits?.join(", ") || "",
+        restaurantName: restaurant?.name || "",
+        restaurantDetails: restaurant?.description || "",
+        agentName: args.agentName,
+      }),
+      prompt: args.prompt,
+      temperature: 0.5,
+    });
 
     return response.text;
   },

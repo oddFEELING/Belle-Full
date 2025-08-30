@@ -24,7 +24,7 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
 
   // ~ ======= Get targeted agent ======= ~
   const agent = await ctx.runQuery(
-    api.restaurants.agents.agent_access.getAgentByUnipileId,
+    api.features.agents.agent_access.getAgentByUnipileId,
     { unipileId: body.account_id },
   );
   if (!agent) {
@@ -35,13 +35,15 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Get or create thread ======= ~
   let threadId: string;
   const threads = await ctx.runQuery(
-    api.components.agents.restaurants.agent.getRestaurantAgentThread,
+    api.infrastructure.components.agents.restaurants.agent
+      .getRestaurantAgentThread,
     { userId: body.sender.attendee_provider_id, agentId: agent._id },
   );
   if (threads.page.length > 0) threadId = threads.page[0]._id;
   else {
     threadId = await ctx.runAction(
-      api.components.agents.restaurants.agent.createRestaurantAgentThread,
+      api.infrastructure.components.agents.restaurants.agent
+        .createRestaurantAgentThread,
       {
         senderId: body.sender.attendee_provider_id,
         senderName: body.sender.attendee_name,
@@ -55,7 +57,7 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
     body.sender.attendee_name.toLowerCase().includes("oddfeeling")
   ) {
     const response = await ctx.runAction(
-      api.components.agents.restaurants.agent.chat,
+      api.infrastructure.components.agents.restaurants.agent.chat,
       {
         prompt: `user: ${body.message}`,
         threadId,
@@ -65,14 +67,18 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
         restaurantId: agent.restaurant,
         goals: agent.goals || "",
         chatId: body.chat_id,
+        agentId: agent._id,
       },
     );
     console.log(response);
 
-    await ctx.runAction(api.services.unipile.functions.sendMessageToUser, {
-      response,
-      chat_id: body.chat_id,
-    });
+    await ctx.runAction(
+      api.infrastructure.services.unipile.functions.sendMessageToUser,
+      {
+        response,
+        chat_id: body.chat_id,
+      },
+    );
   }
   return new Response(null, { status: 200 });
 });
@@ -93,7 +99,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Connected action ======= ~
   if (action === "CREATION_SUCCESS") {
     await ctx.runMutation(
-      api.restaurants.agents.agent_access.updateAgentByUnipileId,
+      api.features.agents.agent_access.updateAgentByUnipileId,
       { unipileId: agentId, updateData: { connection_status: "CONNECTED" } },
     );
   }
@@ -101,7 +107,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Disconnected action ======= ~
   if (action === "DELETED") {
     await ctx.runMutation(
-      api.restaurants.agents.agent_access.updateAgentByUnipileId,
+      api.features.agents.agent_access.updateAgentByUnipileId,
       { unipileId: agentId, updateData: { connection_status: "DISCONNECTED" } },
     );
   }
@@ -109,7 +115,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   // ~ ======= Sync success actions ======= ~
   if (action === "SYNC_SUCCESS") {
     await ctx.runMutation(
-      api.restaurants.agents.agent_access.updateAgentByUnipileId,
+      api.features.agents.agent_access.updateAgentByUnipileId,
       {
         unipileId: agentId,
         updateData: {

@@ -32,7 +32,7 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
   const navigate = useNavigate();
 
   const { data: menuItems, isPending: menuItemsIsPending } = useCachedQuery(
-    api.menus.items.functions.getMenuItemsByRestaurant,
+    api.features.menu_items.functions.getMenuItemsByRestaurant,
     { restaurant: restaurantId },
   );
 

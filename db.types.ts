@@ -4,6 +4,7 @@
 import { type Infer } from "convex/values";
 
 import { addresses } from "./convex/schemas/address.schema";
+import { agent_enquiries } from "./convex/schemas/agent.enquiries.schema";
 import { brands } from "./convex/schemas/brand.schema";
 import { categories } from "./convex/schemas/category.schema";
 import { menu_items } from "./convex/schemas/menu.item.schema";
@@ -19,6 +20,7 @@ import { users } from "./convex/schemas/users.schema";
 import { users_x_brands } from "./convex/schemas/users_x_brands.schema";
 
 export type Addresses = Infer<typeof addresses.validator>;
+export type AgentEnquiries = Infer<typeof agent_enquiries.validator>;
 export type Brands = Infer<typeof brands.validator>;
 export type Categories = Infer<typeof categories.validator>;
 export type MenuItems = Infer<typeof menu_items.validator>;

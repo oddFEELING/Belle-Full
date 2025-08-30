@@ -42,7 +42,7 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
   onOpenChange,
 }) => {
   const isMobile = useIsMobile();
-  const createMenu = useMutation(api.menus.functions.create);
+  const createMenu = useMutation(api.features.menus.functions.create);
 
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateMenuSchema>({

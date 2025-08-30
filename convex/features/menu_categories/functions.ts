@@ -1,8 +1,8 @@
 import { v } from "convex/values";
-import { authenticatedMutation } from "../../../_custom/mutation";
-import { Doc, Id } from "../../../_generated/dataModel";
+import { authenticatedMutation } from "../../_custom/mutation";
+import { Doc, Id } from "../../_generated/dataModel";
 import { getManyFrom } from "convex-helpers/server/relationships";
-import { authenticatedQuery } from "../../../_custom/query";
+import { authenticatedQuery } from "../../_custom/query";
 
 // ~ =============================================>
 // ~ ======= Create Category

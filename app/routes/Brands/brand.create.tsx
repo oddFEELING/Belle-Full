@@ -30,8 +30,10 @@ type BrandSchema = z.infer<typeof brandSchema>;
 
 const CreateBrandPage = () => {
   const navigate = useNavigate();
-  const createBrand = useMutation(api.brands.functions.createBrand);
-  const generateBrandSlug = useMutation(api.brands.functions.generateBrandSlug);
+  const createBrand = useMutation(api.features.brands.functions.createBrand);
+  const generateBrandSlug = useMutation(
+    api.features.brands.functions.generateBrandSlug,
+  );
 
   // ~ ======= Form instance ======= ~
   const form = useForm<BrandSchema>({

@@ -61,11 +61,11 @@ const RestaurantSidebar = () => {
   // ~ ======= Queries ======= ~
   const { data: brandRestaurants, isPending: brandRestaurantsIsPending } =
     useCachedQuery(
-      api.restaurants.functions.getBrandRestaurants,
+      api.features.restaurants.functions.getBrandRestaurants,
       brandId ? { brandId: brandId as Id<"brands"> } : "skip",
     );
   const { data: restaurant, isPending: restaurantIsPending } = useCachedQuery(
-    api.restaurants.functions.getRestaurant,
+    api.features.restaurants.functions.getRestaurant,
     restaurantId ? { id: restaurantId as Id<"restaurants"> } : "skip",
   );
 

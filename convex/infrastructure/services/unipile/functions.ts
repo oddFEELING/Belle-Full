@@ -75,7 +75,7 @@ export const disconnectAccount = action({
   args: { agentId: v.id("restaurant_agents") },
   handler: async (ctx, args) => {
     const toDelete = await ctx.runQuery(
-      api.restaurants.agents.functions.getSingleAgent,
+      api.features.agents.functions.getSingleAgent,
       { agent: args.agentId },
     );
 

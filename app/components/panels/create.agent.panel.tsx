@@ -53,9 +53,7 @@ export const CreateAgentPanel: React.FC<CreateAgentPanelProps> = ({
   onOpenChange,
   restaurantId,
 }) => {
-  const createAgent = useMutation(
-    api.restaurants.agents.functions.createDBAgent,
-  );
+  const createAgent = useMutation(api.features.agents.functions.createDBAgent);
 
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateAgentSchema>({

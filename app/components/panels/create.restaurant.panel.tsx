@@ -46,7 +46,9 @@ const CreateRestaurantPanel: React.FC<PanelContentProps> = ({
 }) => {
   const brandId = useParams().brandId as Id<"brands">;
   const navigate = useNavigate();
-  const createRestaurant = useMutation(api.restaurants.functions.create);
+  const createRestaurant = useMutation(
+    api.features.restaurants.functions.create,
+  );
 
   // ~ ======= Form instance ======= ~
   const form = useForm<CreateRestaurantSchema>({

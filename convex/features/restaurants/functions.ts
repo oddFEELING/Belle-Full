@@ -35,7 +35,7 @@ export const create = authenticatedMutation({
   },
   handler: async (ctx, args): Promise<Id<"restaurants">> => {
     const slug = await ctx.runMutation(
-      api.restaurants.functions.generateRestaurantSlug,
+      api.features.restaurants.functions.generateRestaurantSlug,
       { restaurantName: args.name },
     );
     const restaurant = await ctx.db.insert("restaurants", {

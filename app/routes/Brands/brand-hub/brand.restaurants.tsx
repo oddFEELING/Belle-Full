@@ -28,7 +28,7 @@ const BrandRestaurantsPage = () => {
   const navigate = useNavigate();
   const brandId = useParams().brandId as Id<"brands">;
   const { data: restaurants, isPending: restaurantsIsPending } = useCachedQuery(
-    api.restaurants.functions.getBrandRestaurants,
+    api.features.restaurants.functions.getBrandRestaurants,
     { brandId },
   );
 

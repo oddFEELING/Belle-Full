@@ -36,7 +36,7 @@ export const RestaurantAgentsTab: React.FC<RestaurantAgentsTabProps> = ({
 }) => {
   // ~ ======= Queries ======= ~
   const { data: agents, isPending: agentsIsPending } = useCachedQuery(
-    api.restaurants.agents.functions.getRestaurantAgents,
+    api.features.agents.functions.getRestaurantAgents,
     { restaurant: restaurantId },
   );
 
