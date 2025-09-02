@@ -1,33 +1,41 @@
+import { useUploadFile } from "@convex-dev/r2/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { IconCamera, IconChevronDown, IconSettings } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 import {
+  type Allergen,
+  AllergenEnum,
+  type DietaryTag,
+  DietaryTagEnum,
+} from "convex/types/enums";
+import type { MenuItemOption, Money } from "convex/types/shared";
+import {
+  ArrowLeftIcon,
+  BanknoteIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  XIcon,
-  Package2Icon,
   LeafIcon,
-  BanknoteIcon,
-  SaveIcon,
-  ArrowLeftIcon,
-  PlusIcon,
   Loader2,
+  Package2Icon,
+  PlusIcon,
+  SaveIcon,
+  XIcon,
 } from "lucide-react";
-import { useParams, useNavigate } from "react-router";
-import { Button } from "~/components/ui/button";
-import { useCachedQuery } from "~/hooks/use-app-query";
-import { useFileUpload } from "~/hooks/use-file-upload";
-import { z } from "zod";
-import {
-  AllergenEnum,
-  DietaryTagEnum,
-  type Allergen,
-  type DietaryTag,
-} from "convex/types/enums";
-import { Money, type MenuItemOption } from "convex/types/shared";
+import { useMemo, useState } from "react";
+import { Input as AriaInput, Group, NumberField } from "react-aria-components";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { logger } from "~/lib/logger";
+import { useNavigate, useParams } from "react-router";
+import { z } from "zod";
+import { ValueMultiSelector } from "~/components/custom-ui/value-multi-select";
+import { CreateMenuItemOptionPanel } from "~/components/panels/create.menu.item.option.panel";
+import { Button } from "~/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "~/components/ui/collapsible";
 import {
   Form,
   FormControl,
@@ -45,18 +53,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import { ValueMultiSelector } from "~/components/custom-ui/value-multi-select";
-import { NumberField, Input as AriaInput, Group } from "react-aria-components";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { useFileUpload } from "~/hooks/use-file-upload";
+import { logger } from "~/lib/logger";
 import { cn } from "~/lib/utils";
-import { useMemo, useState } from "react";
-import { CreateMenuItemOptionPanel } from "~/components/panels/create.menu.item.option.panel";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "~/components/ui/collapsible";
-import { useUploadFile } from "@convex-dev/r2/react";
-import { useMutation } from "convex/react";
 
 const createMenuItemSchema = z.object({
   name: z.string().min(1),
@@ -93,7 +93,7 @@ const AddMenuItem = () => {
 
   const { data: menus } = useCachedQuery(
     api.features.menus.functions.getMenuByRestaurant,
-    { restaurant: restaurantId },
+    { restaurant: restaurantId }
   );
 
   // Build select options once for value-based multi selectors
@@ -103,7 +103,7 @@ const AddMenuItem = () => {
         label,
         value,
       })),
-    [],
+    []
   );
   const allergenOptions = useMemo(
     () =>
@@ -111,7 +111,7 @@ const AddMenuItem = () => {
         label,
         value,
       })),
-    [],
+    []
   );
 
   // ~ ======= Form instance  ======= ~
@@ -147,10 +147,10 @@ const AddMenuItem = () => {
       picks: option.picks.map((pick) => ({
         ...pick,
         dietaryTags: (pick.dietaryTags || []).map((t: any) =>
-          typeof t === "string" ? t : t.value,
+          typeof t === "string" ? t : t.value
         ),
         allergens: (pick.allergens || []).map((a: any) =>
-          typeof a === "string" ? a : a.value,
+          typeof a === "string" ? a : a.value
         ),
       })),
     }));
@@ -185,7 +185,7 @@ const AddMenuItem = () => {
   return (
     <div className="restaurant-dashboard--page">
       <div className="container">
-        <h3 className="text-2xl font-semibold">
+        <h3 className="font-semibold text-2xl">
           {form.watch("name") ? (
             <span className="text-foreground">{form.watch("name")}</span>
           ) : (
@@ -198,21 +198,21 @@ const AddMenuItem = () => {
       {/* ~ =================================== ~ */}
       <div className="container max-w-4xl py-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+          <form className="space-y-12" onSubmit={form.handleSubmit(onSubmit)}>
             {/* ~ =================================== ~ */}
             {/* -- Basic details -- */}
             {/* ~ =================================== ~ */}
-            <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
+            <div className="space-y-6 rounded-2xl bg-muted/40 p-4 md:p-8 dark:bg-muted">
               <div className="flex items-center gap-3">
-                <div className="bg-background rounded-lg p-2">
+                <div className="rounded-lg bg-background p-2">
                   <Package2Icon
+                    className="h-5 w-5 text-primary"
                     size={20}
                     strokeWidth={1.2}
-                    className="text-primary h-5 w-5"
                   />
                 </div>
                 <div>
-                  <h3 className="text-primary text-lg font-semibold">
+                  <h3 className="font-semibold text-lg text-primary">
                     Basic Details
                   </h3>
                   <p className="text-muted-foreground text-sm">
@@ -226,31 +226,31 @@ const AddMenuItem = () => {
                 <div className="flex-shrink-0">
                   <div className="relative">
                     <Button
-                      type="button"
-                      variant="outline"
+                      aria-label={previewUrl ? "Change image" : "Upload image"}
                       className={cn(
-                        "hover:border-primary/50 relative h-32 w-32 overflow-hidden rounded-xl border-2 border-dashed p-0 transition-all",
-                        previewUrl && "border-solid border-transparent",
+                        "relative h-32 w-32 overflow-hidden rounded-xl border-2 border-dashed p-0 transition-all hover:border-primary/50",
+                        previewUrl && "border-transparent border-solid"
                       )}
                       onClick={openFileDialog}
-                      aria-label={previewUrl ? "Change image" : "Upload image"}
+                      type="button"
+                      variant="outline"
                     >
                       {previewUrl ? (
                         <img
-                          className="size-full object-cover"
-                          src={previewUrl}
                           alt="Preview of uploaded image"
-                          width={128}
+                          className="size-full object-cover"
                           height={128}
+                          src={previewUrl}
+                          width={128}
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center gap-2 p-4">
                           <IconCamera
+                            className="text-muted-foreground"
                             size={20}
                             strokeWidth={1.5}
-                            className="text-muted-foreground"
                           />
-                          <span className="text-muted-foreground text-center text-xs">
+                          <span className="text-center text-muted-foreground text-xs">
                             Add image
                           </span>
                         </div>
@@ -258,20 +258,20 @@ const AddMenuItem = () => {
                     </Button>
                     {previewUrl && (
                       <Button
-                        type="button"
+                        aria-label="Remove image"
+                        className="-top-1.5 -right-1.5 absolute h-6 w-6 rounded-full shadow-sm"
                         onClick={() => removeFile(files[0]?.id)}
                         size="icon"
+                        type="button"
                         variant="secondary"
-                        className="absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full shadow-sm"
-                        aria-label="Remove image"
                       >
                         <XIcon className="h-3 w-3" />
                       </Button>
                     )}
                     <input
                       {...getInputProps()}
-                      className="sr-only"
                       aria-label="Upload image file"
+                      className="sr-only"
                       tabIndex={-1}
                     />
                   </div>
@@ -280,18 +280,18 @@ const AddMenuItem = () => {
                 <div className="grid flex-1 gap-6 md:grid-cols-2">
                   {/* ~ ======= Name field ======= ~ */}
                   <FormField
-                    name="name"
                     control={form.control}
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">
+                        <FormLabel className="font-medium text-sm">
                           Item Name
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
+                            className="h-10 rounded-lg transition-all focus:ring-2 focus:ring-primary/20"
                             placeholder="e.g. Classic Cheeseburger"
-                            className="focus:ring-primary/20 h-10 rounded-lg transition-all focus:ring-2"
                           />
                         </FormControl>
                         <FormMessage />
@@ -301,21 +301,21 @@ const AddMenuItem = () => {
 
                   {/* ~ ======= Availability field ======= ~ */}
                   <FormField
-                    name="isAvailable"
                     control={form.control}
+                    name="isAvailable"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">
+                        <FormLabel className="font-medium text-sm">
                           Availability
                         </FormLabel>
                         <FormControl>
                           <Select
-                            value={field.value ? "true" : "false"}
                             onValueChange={(value) =>
                               field.onChange(value === "true")
                             }
+                            value={field.value ? "true" : "false"}
                           >
-                            <SelectTrigger className="focus:ring-primary/20 h-10 rounded-lg transition-all focus:ring-2">
+                            <SelectTrigger className="h-10 rounded-lg transition-all focus:ring-2 focus:ring-primary/20">
                               <SelectValue placeholder="Select availability" />
                             </SelectTrigger>
                             <SelectContent>
@@ -341,17 +341,17 @@ const AddMenuItem = () => {
 
                   {/* ~ ======= Description field ======= ~ */}
                   <FormField
-                    name="description"
                     control={form.control}
+                    name="description"
                     render={({ field }) => (
                       <FormItem className="md:col-span-2">
-                        <FormLabel className="text-sm font-medium">
+                        <FormLabel className="font-medium text-sm">
                           Description
                         </FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            className="focus:ring-primary/20 min-h-[120px] resize-none rounded-lg transition-all focus:ring-2"
+                            className="min-h-[120px] resize-none rounded-lg transition-all focus:ring-2 focus:ring-primary/20"
                             placeholder="Describe your menu item in detail..."
                           />
                         </FormControl>
@@ -366,17 +366,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             {/* -- Dietary information section -- */}
             {/* ~ =================================== ~ */}
-            <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
+            <div className="space-y-6 rounded-2xl bg-muted/40 p-4 md:p-8 dark:bg-muted">
               <div className="flex items-center gap-3">
-                <div className="bg-background rounded-lg p-2">
+                <div className="rounded-lg bg-background p-2">
                   <LeafIcon
+                    className="h-5 w-5 text-primary"
                     size={20}
                     strokeWidth={1.2}
-                    className="text-primary h-5 w-5"
                   />
                 </div>
                 <div>
-                  <h3 className="text-primary text-lg font-semibold">
+                  <h3 className="font-semibold text-lg text-primary">
                     Dietary Information
                   </h3>
                   <p className="text-muted-foreground text-sm">
@@ -388,13 +388,13 @@ const AddMenuItem = () => {
               <div className="grid gap-y-8 md:grid-cols-2 md:gap-6">
                 {/* ~ ======= Calories field ======= ~ */}
                 <FormField
-                  name="calories"
                   control={form.control}
+                  name="calories"
                   render={({ field }) => (
                     <FormItem className="">
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Calorie Content
-                        <span className="text-muted-foreground ml-2 text-xs font-normal">
+                        <span className="ml-2 font-normal text-muted-foreground text-xs">
                           (Optional)
                         </span>
                       </FormLabel>
@@ -402,19 +402,19 @@ const AddMenuItem = () => {
                         <div className="relative">
                           <Input
                             {...field}
-                            value={field.value || ""}
+                            className="h-10 rounded-lg pr-16 transition-all focus:ring-2 focus:ring-primary/20"
                             onChange={(e) =>
                               field.onChange(
                                 e.target.value
                                   ? Number(e.target.value)
-                                  : undefined,
+                                  : undefined
                               )
                             }
-                            type="number"
                             placeholder="e.g. 450"
-                            className="focus:ring-primary/20 h-10 rounded-lg pr-16 transition-all focus:ring-2"
+                            type="number"
+                            value={field.value || ""}
                           />
-                          <span className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 text-sm">
+                          <span className="-translate-y-1/2 absolute top-1/2 right-3 text-muted-foreground text-sm">
                             kcal
                           </span>
                         </div>
@@ -426,21 +426,21 @@ const AddMenuItem = () => {
 
                 {/* ~ ======= DietaryTags field ======= ~ */}
                 <FormField
-                  name="dietaryTags"
                   control={form.control}
+                  name="dietaryTags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Dietary Tags
                       </FormLabel>
                       <FormControl>
                         <ValueMultiSelector
-                          values={field.value}
+                          className="w-full"
                           onValuesChange={field.onChange}
                           options={dietaryOptions}
-                          className="w-full"
                           placeholder=" -> Dietary tags"
                           triggerClassName="min-h-10"
+                          values={field.value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -450,21 +450,21 @@ const AddMenuItem = () => {
 
                 {/* ~ ======= Allergens field ======= ~ */}
                 <FormField
-                  name="allergens"
                   control={form.control}
+                  name="allergens"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Contains Allergens
                       </FormLabel>
                       <FormControl>
                         <ValueMultiSelector
-                          values={field.value}
+                          className="w-full"
                           onValuesChange={field.onChange}
                           options={allergenOptions}
-                          className="w-full"
                           placeholder="-> Allergens in item..."
                           triggerClassName="min-h-10"
+                          values={field.value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -474,21 +474,21 @@ const AddMenuItem = () => {
 
                 {/* ~ ======= May contain field ======= ~ */}
                 <FormField
-                  name="mayContain"
                   control={form.control}
+                  name="mayContain"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         May Contain Traces
                       </FormLabel>
                       <FormControl>
                         <ValueMultiSelector
-                          values={field.value}
+                          className="w-full"
                           onValuesChange={field.onChange}
                           options={allergenOptions}
-                          className="w-full"
                           placeholder="-> May contain..."
                           triggerClassName="min-h-10"
+                          values={field.value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -501,17 +501,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             {/* -- Options -- */}
             {/* ~ =================================== ~ */}
-            <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4">
+            <div className="space-y-6 rounded-2xl bg-muted/40 p-4 dark:bg-muted">
               <div className="flex items-center gap-3">
-                <div className="bg-background rounded-lg p-2">
+                <div className="rounded-lg bg-background p-2">
                   <IconSettings
+                    className="h-5 w-5 text-primary"
                     size={20}
                     strokeWidth={1.2}
-                    className="text-primary h-5 w-5"
                   />
                 </div>
                 <div>
-                  <h3 className="text-primary text-lg font-semibold">
+                  <h3 className="font-semibold text-lg text-primary">
                     Options
                   </h3>
                   <p className="text-muted-foreground text-sm">
@@ -525,15 +525,15 @@ const AddMenuItem = () => {
                 {menuItemOptions.map((option: MenuItemOption) => {
                   return (
                     <Collapsible
+                      className="group rounded-lg border border-border/50 bg-card transition-all hover:border-border hover:shadow-sm"
                       key={option.position}
-                      className="group border-border/50 bg-card hover:border-border rounded-lg border transition-all hover:shadow-sm"
                     >
                       <CollapsibleTrigger asChild>
                         <div className="flex cursor-pointer items-center justify-between gap-4 p-4">
                           <div className="flex items-center gap-3">
-                            <Package2Icon className="text-muted-foreground h-4 w-4" />
+                            <Package2Icon className="h-4 w-4 text-muted-foreground" />
                             <div>
-                              <h4 className="text-sm font-medium">
+                              <h4 className="font-medium text-sm">
                                 {option.name}
                               </h4>
                               <p className="text-muted-foreground text-xs">
@@ -542,29 +542,29 @@ const AddMenuItem = () => {
                               </p>
                             </div>
                           </div>
-                          <ChevronDownIcon className="text-muted-foreground h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                          <ChevronDownIcon className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
                         </div>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
                         <div className="border-border/30 border-t p-4 pt-3">
                           {option.description && (
-                            <p className="text-muted-foreground mb-3 text-sm">
+                            <p className="mb-3 text-muted-foreground text-sm">
                               {option.description}
                             </p>
                           )}
                           <div className="space-y-2">
                             {option.picks.map((pick) => (
                               <div
+                                className="space-y-2 rounded-md bg-muted/30 p-3"
                                 key={pick.name}
-                                className="bg-muted/30 space-y-2 rounded-md p-3"
                               >
                                 <div className="flex items-center justify-between">
-                                  <span className="text-sm font-medium">
+                                  <span className="font-medium text-sm">
                                     {pick.name}
                                   </span>
                                   <div className="flex items-center gap-1">
-                                    <BanknoteIcon className="text-muted-foreground h-3 w-3" />
-                                    <span className="text-sm font-medium">
+                                    <BanknoteIcon className="h-3 w-3 text-muted-foreground" />
+                                    <span className="font-medium text-sm">
                                       {pick.price.currency === "GBP"
                                         ? "£"
                                         : pick.price.currency === "USD"
@@ -580,7 +580,7 @@ const AddMenuItem = () => {
                                 {/* Additional pick details */}
                                 <div className="flex flex-wrap items-center gap-2 text-xs">
                                   {pick.calories && (
-                                    <div className="bg-background/50 flex items-center gap-1 rounded px-2 py-1">
+                                    <div className="flex items-center gap-1 rounded bg-background/50 px-2 py-1">
                                       <span className="text-muted-foreground">
                                         🔥
                                       </span>
@@ -593,8 +593,8 @@ const AddMenuItem = () => {
                                       <div className="flex items-center gap-1">
                                         {pick.dietaryTags.map((tag) => (
                                           <div
-                                            key={String(tag)}
                                             className="flex items-center gap-1 rounded bg-green-100 px-2 py-1 text-green-700"
+                                            key={String(tag)}
                                           >
                                             <LeafIcon className="h-3 w-3" />
                                             <span className="capitalize">
@@ -612,8 +612,8 @@ const AddMenuItem = () => {
                                       <div className="flex items-center gap-1">
                                         {pick.allergens.map((allergen) => (
                                           <div
-                                            key={String(allergen)}
                                             className="flex items-center gap-1 rounded bg-amber-100 px-2 py-1 text-amber-700"
+                                            key={String(allergen)}
                                           >
                                             <span>⚠️</span>
                                             <span className="capitalize">
@@ -636,17 +636,17 @@ const AddMenuItem = () => {
                 })}
 
                 <Button
-                  type="button"
-                  variant="outline"
                   className="mt-4 w-full"
                   onClick={() => setShowCreateMenuItemOptionPanel(true)}
+                  type="button"
+                  variant="outline"
                 >
                   <PlusIcon className="h-4 w-4" />
                   Add option
                 </Button>
                 <CreateMenuItemOptionPanel
-                  open={showCreateMenuItemOptionPanel}
                   onOpenChange={setShowCreateMenuItemOptionPanel}
+                  open={showCreateMenuItemOptionPanel}
                   setFormState={setMenuItemOptions}
                 />
               </div>
@@ -655,17 +655,17 @@ const AddMenuItem = () => {
             {/* ~ =================================== ~ */}
             {/* -- Pricing section -- */}
             {/* ~ =================================== ~ */}
-            <div className="bg-muted/40 dark:bg-muted space-y-6 rounded-2xl p-4 md:p-8">
+            <div className="space-y-6 rounded-2xl bg-muted/40 p-4 md:p-8 dark:bg-muted">
               <div className="flex items-center gap-3">
-                <div className="bg-background rounded-lg p-2">
+                <div className="rounded-lg bg-background p-2">
                   <BanknoteIcon
+                    className="h-5 w-5 text-primary"
                     size={20}
                     strokeWidth={1.2}
-                    className="text-primary h-5 w-5"
                   />
                 </div>
                 <div>
-                  <h3 className="text-primary text-lg font-semibold">
+                  <h3 className="font-semibold text-lg text-primary">
                     Pricing
                   </h3>
                   <p className="text-muted-foreground text-sm">
@@ -677,15 +677,16 @@ const AddMenuItem = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 {/* ~ ======= Base price field ======= ~ */}
                 <FormField
-                  name="basePrice"
                   control={form.control}
+                  name="basePrice"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Base Price
                       </FormLabel>
                       <FormControl>
                         <NumberField
+                          aria-label="Base Price"
                           defaultValue={field.value.amount}
                           formatOptions={{
                             style: "currency",
@@ -695,22 +696,21 @@ const AddMenuItem = () => {
                           onChange={(value) =>
                             field.onChange({ ...field.value, amount: value })
                           }
-                          aria-label="Base Price"
                         >
-                          <Group className="border-input bg-background focus-within:ring-primary/20 relative flex h-10 w-full items-center overflow-hidden rounded-lg border text-sm shadow-xs transition-all focus-within:ring-2">
-                            <AriaInput className="dark:bg-input/30 flex-1 bg-transparent px-3 py-2 tabular-nums outline-none" />
-                            <div className="border-input flex h-full flex-col border-l">
+                          <Group className="relative flex h-10 w-full items-center overflow-hidden rounded-lg border border-input bg-background text-sm shadow-xs transition-all focus-within:ring-2 focus-within:ring-primary/20">
+                            <AriaInput className="flex-1 bg-transparent px-3 py-2 tabular-nums outline-none dark:bg-input/30" />
+                            <div className="flex h-full flex-col border-input border-l">
                               <Button
+                                className="flex h-1/2 w-8 items-center justify-center border-input border-b bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                                 slot="increment"
                                 type="button"
-                                className="border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center border-b transition-colors"
                               >
                                 <ChevronUpIcon className="h-3 w-3" />
                               </Button>
                               <Button
+                                className="flex h-1/2 w-8 items-center justify-center bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                                 slot="decrement"
                                 type="button"
-                                className="bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center transition-colors"
                               >
                                 <ChevronDownIcon className="h-3 w-3" />
                               </Button>
@@ -725,18 +725,19 @@ const AddMenuItem = () => {
 
                 {/* ~ ======= Promotional price field ======= ~ */}
                 <FormField
-                  name="promotionalPrice"
                   control={form.control}
+                  name="promotionalPrice"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Promotional Price
-                        <span className="text-muted-foreground ml-2 text-xs font-normal">
+                        <span className="ml-2 font-normal text-muted-foreground text-xs">
                           (Optional)
                         </span>
                       </FormLabel>
                       <FormControl>
                         <NumberField
+                          aria-label="Discount Price"
                           defaultValue={field.value.amount}
                           formatOptions={{
                             style: "currency",
@@ -746,22 +747,21 @@ const AddMenuItem = () => {
                           onChange={(value) =>
                             field.onChange({ ...field.value, amount: value })
                           }
-                          aria-label="Discount Price"
                         >
-                          <Group className="border-input bg-background focus-within:ring-primary/20 relative flex h-10 w-full items-center overflow-hidden rounded-lg border text-sm shadow-xs transition-all focus-within:ring-2">
-                            <AriaInput className="dark:bg-input/30 flex-1 bg-transparent px-3 py-2 tabular-nums outline-none" />
-                            <div className="border-input flex h-full flex-col border-l">
+                          <Group className="relative flex h-10 w-full items-center overflow-hidden rounded-lg border border-input bg-background text-sm shadow-xs transition-all focus-within:ring-2 focus-within:ring-primary/20">
+                            <AriaInput className="flex-1 bg-transparent px-3 py-2 tabular-nums outline-none dark:bg-input/30" />
+                            <div className="flex h-full flex-col border-input border-l">
                               <Button
+                                className="flex h-1/2 w-8 items-center justify-center border-input border-b bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                                 slot="increment"
                                 type="button"
-                                className="border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center border-b transition-colors"
                               >
                                 <ChevronUpIcon className="h-3 w-3" />
                               </Button>
                               <Button
+                                className="flex h-1/2 w-8 items-center justify-center bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                                 slot="decrement"
                                 type="button"
-                                className="bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center transition-colors"
                               >
                                 <ChevronDownIcon className="h-3 w-3" />
                               </Button>
@@ -785,18 +785,18 @@ const AddMenuItem = () => {
       <div className="z-20 border-t">
         <div className="container flex h-16 items-center justify-end gap-3 px-4 md:px-6">
           <Button
+            className="min-w-[100px]"
+            onClick={() => navigate(-1)}
             type="button"
             variant="outline"
-            onClick={() => navigate(-1)}
-            className="min-w-[100px]"
           >
             Cancel
           </Button>
           <Button
-            type="button"
+            className="min-w-[100px] gap-2"
             disabled={isLoading}
             onClick={form.handleSubmit(onSubmit)}
-            className="min-w-[100px] gap-2"
+            type="button"
           >
             <SaveIcon className="h-4 w-4" />
             {isLoading ? (

@@ -1,9 +1,9 @@
-import react from "react";
+import type { PostHogConfig } from "posthog-js";
 import {
   PostHogErrorBoundary,
   PostHogProvider as PostHogProviderBase,
 } from "posthog-js/react";
-import type { PostHogConfig } from "posthog-js";
+import react from "react";
 
 type PostHogProviderProps = {
   children: React.ReactNode;

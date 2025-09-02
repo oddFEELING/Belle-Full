@@ -10,7 +10,7 @@ export const agent_enquiries = defineTable({
   status: v.union(
     v.literal("PENDING"),
     v.literal("RESOLVED"),
-    v.literal("CLOSED"),
+    v.literal("CLOSED")
   ),
   resolvedBy: v.optional(v.id("users")),
   resolvedAt: v.optional(v.number()),

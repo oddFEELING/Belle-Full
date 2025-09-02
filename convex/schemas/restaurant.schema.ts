@@ -1,5 +1,5 @@
-import { v } from "convex/values";
 import { defineTable } from "convex/server";
+import { v } from "convex/values";
 import { RestaurantStatus } from "../types/enums";
 import { DeliveryZone, Money } from "../types/shared";
 

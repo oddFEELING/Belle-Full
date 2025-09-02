@@ -1,5 +1,5 @@
-import { customMutation } from "convex-helpers/server/customFunctions";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { customMutation } from "convex-helpers/server/customFunctions";
 import { mutation } from "../_generated/server";
 
 export const authenticatedMutation = customMutation(mutation, {

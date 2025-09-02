@@ -1,14 +1,11 @@
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { z } from "zod";
 import {
   Panel,
   PanelActionButton,
@@ -18,10 +15,17 @@ import {
   PanelHeader,
   PanelTitle,
 } from "~/components/ui/panel";
-import type { PanelProps } from "./panel.types";
-import type { Id } from "convex/_generated/dataModel";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { logger } from "~/lib/logger";
+import { PhoneInput } from "../custom-ui/phone.input";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -30,11 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
-import { useMutation } from "convex/react";
-import { api } from "convex/_generated/api";
-import { useEffect } from "react";
-import { PhoneInput } from "../custom-ui/phone.input";
+import type { PanelProps } from "./panel.types";
 
 interface CreateAgentPanelProps extends PanelProps {
   restaurantId: Id<"restaurants">;
@@ -78,7 +78,7 @@ export const CreateAgentPanel: React.FC<CreateAgentPanelProps> = ({
   }, [open]);
 
   return (
-    <Panel open={open} onOpenChange={onOpenChange}>
+    <Panel onOpenChange={onOpenChange} open={open}>
       <PanelContent>
         <PanelHeader>
           <PanelTitle>Create new Agent</PanelTitle>
@@ -86,8 +86,8 @@ export const CreateAgentPanel: React.FC<CreateAgentPanelProps> = ({
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid grid-cols-2 gap-4 gap-y-8 px-4 md:px-0"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             {/* ~ ======= Agent name field ======= ~ */}
             <FormField
@@ -112,24 +112,24 @@ export const CreateAgentPanel: React.FC<CreateAgentPanelProps> = ({
                 <FormItem>
                   <FormLabel>Type</FormLabel>
                   <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="[&>span_svg]:text-muted-foreground/80 w-full [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0">
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0 [&>span_svg]:text-muted-foreground/80">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
-                      <SelectContent className="[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0">
+                      <SelectContent className="[&_*[role=option]>span>svg]:shrink-0 [&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
                         <SelectItem value="whatsapp">
                           <IconBrandWhatsapp
-                            strokeWidth={1.5}
-                            size={16}
                             className="text-muted-foreground"
+                            size={16}
+                            strokeWidth={1.5}
                           />
                           <span>WhatsApp</span>
                         </SelectItem>
-                        <SelectItem value="instagram" disabled aria-disabled>
+                        <SelectItem aria-disabled disabled value="instagram">
                           <IconBrandInstagram
-                            strokeWidth={1.5}
-                            size={16}
                             className="text-muted-foreground"
+                            size={16}
+                            strokeWidth={1.5}
                           />
                           <span>
                             Instagram{" "}

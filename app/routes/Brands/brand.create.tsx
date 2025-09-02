@@ -1,7 +1,11 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { logger } from "~/lib/logger";
+import { api } from "convex/_generated/api";
+import { useMutation } from "convex/react";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { z } from "zod";
+import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,11 +16,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { Button } from "~/components/ui/button";
-import { useMutation } from "convex/react";
-import { api } from "convex/_generated/api";
-import { useCallback, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { logger } from "~/lib/logger";
 
 const brandSchema = z.object({
   name: z.string(),
@@ -32,7 +32,7 @@ const CreateBrandPage = () => {
   const navigate = useNavigate();
   const createBrand = useMutation(api.features.brands.functions.createBrand);
   const generateBrandSlug = useMutation(
-    api.features.brands.functions.generateBrandSlug,
+    api.features.brands.functions.generateBrandSlug
   );
 
   // ~ ======= Form instance ======= ~
@@ -76,22 +76,22 @@ const CreateBrandPage = () => {
   return (
     <div className="no-scroll-full-page mt-20 flex justify-center md:mt-0 md:items-center">
       <div className="flex h-max w-full max-w-xl flex-col items-center gap-y-3 px-5 md:px-8">
-        <h2 className="text-2xl font-semibold">
+        <h2 className="font-semibold text-2xl">
           Create your <span className="text-primary">Brand</span>
         </h2>
-        <p className="text-muted-foreground -mt-2 text-center">
+        <p className="-mt-2 text-center text-muted-foreground">
           Create your brand first and then add restaurants to it.
         </p>
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid w-full grid-cols-2 gap-x-3 gap-y-5"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             {/* ~ ======= Brand name ======= ~ */}
             <FormField
-              name="name"
               control={form.control}
+              name="name"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Brand name</FormLabel>
@@ -105,13 +105,13 @@ const CreateBrandPage = () => {
 
             {/* ~ ======= Brand slug ======= ~ */}
             <FormField
-              name="slug"
               control={form.control}
+              name="slug"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>
                     Slug&nbsp;
-                    <span className="text-muted-foreground font-light">
+                    <span className="font-light text-muted-foreground">
                       (auto generated)
                     </span>
                   </FormLabel>
@@ -125,8 +125,8 @@ const CreateBrandPage = () => {
 
             {/* ~ ======= Brand description ======= ~ */}
             <FormField
-              name="description"
               control={form.control}
+              name="description"
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Description</FormLabel>
@@ -134,9 +134,9 @@ const CreateBrandPage = () => {
                     <Textarea
                       required
                       {...field}
-                      rows={5}
-                      placeholder="✨ Describe your brand"
                       className="h-25 resize-none"
+                      placeholder="✨ Describe your brand"
+                      rows={5}
                     />
                   </FormControl>
                   <FormMessage />
@@ -146,8 +146,8 @@ const CreateBrandPage = () => {
 
             {/* ~ ======= Brand website ======= ~ */}
             <FormField
-              name="website"
               control={form.control}
+              name="website"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Website</FormLabel>
@@ -161,8 +161,8 @@ const CreateBrandPage = () => {
 
             {/* ~ ======= Brand phone number ======= ~ */}
             <FormField
-              name="phone"
               control={form.control}
+              name="phone"
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Phone number</FormLabel>
@@ -175,7 +175,7 @@ const CreateBrandPage = () => {
             />
 
             <div className="col-span-2 mt-5 flex w-full items-center justify-center">
-              <Button type="submit" size="lg" className="w-full">
+              <Button className="w-full" size="lg" type="submit">
                 Create brand
               </Button>
             </div>

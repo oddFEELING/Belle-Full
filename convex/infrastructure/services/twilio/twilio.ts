@@ -21,7 +21,7 @@ export const sendMessage = action({
         Authorization:
           "Basic " +
           btoa(
-            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`,
+            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`
           ),
         "Content-Type": "application/x-www-form-urlencoded",
       },

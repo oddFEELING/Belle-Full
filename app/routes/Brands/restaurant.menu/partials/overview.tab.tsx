@@ -1,14 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
   IconClipboardText,
-  IconSoup,
   IconPennant,
+  IconSoup,
   IconSquareRoundedPercentage,
 } from "@tabler/icons-react";
-import { TabsContent } from "~/components/ui/tabs";
-import type { Id } from "convex/_generated/dataModel";
-import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { TabsContent } from "~/components/ui/tabs";
+import { useCachedQuery } from "~/hooks/use-app-query";
 
 interface OverviewTabProps {
   restaurantId: Id<"restaurants">;
@@ -26,15 +26,15 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Total Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Menus</CardTitle>
+            <CardTitle className="font-medium text-sm">Total Menus</CardTitle>
             <IconClipboardText
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="font-bold text-2xl">
               {menuAnalytics?.menuCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
@@ -46,15 +46,15 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Total Menu Items Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Menu Items</CardTitle>
+            <CardTitle className="font-medium text-sm">Menu Items</CardTitle>
             <IconSoup
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="font-bold text-2xl">
               {menuAnalytics?.menuItemCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
@@ -66,15 +66,15 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Active Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Menus</CardTitle>
+            <CardTitle className="font-medium text-sm">Active Menus</CardTitle>
             <IconPennant
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
+            <div className="font-bold text-2xl">4</div>
             <p className="text-muted-foreground text-xs">
               Currently published menus
             </p>
@@ -84,17 +84,17 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
         {/* Average Items per Menu Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="font-medium text-sm">
               Avg Items/Menu
             </CardTitle>
             <IconSquareRoundedPercentage
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">21</div>
+            <div className="font-bold text-2xl">21</div>
             <p className="text-muted-foreground text-xs">
               Average items per menu
             </p>

@@ -1,6 +1,6 @@
-import { Doc } from "@/_generated/dataModel";
-import { internalQuery, internalMutation } from "../../_generated/server";
 import { v } from "convex/values";
+import type { Doc } from "@/_generated/dataModel";
+import { internalMutation, internalQuery } from "../../_generated/server";
 
 // ~ =============================================>
 // ~ ======= Create an agent enquiry

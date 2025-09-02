@@ -1,3 +1,26 @@
+import { useUploadFile } from "@convex-dev/r2/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { IconCheck } from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import {
+  AlertCircleIcon,
+  FileUpIcon,
+  Loader,
+  Loader2,
+  XIcon,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router";
+import { z } from "zod";
+import { getFileIcon } from "~/helpers/get-file-icon";
+import { formatBytes, useFileUpload } from "~/hooks/use-file-upload";
+import { useIsMobile } from "~/hooks/use-mobile";
+import { logger } from "~/lib/logger";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +35,6 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "../ui/drawer";
-import type { PanelContentProps, PanelProviderProps } from "./panel.types";
-import { useIsMobile } from "~/hooks/use-mobile";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   Form,
   FormControl,
@@ -26,32 +44,14 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { useNavigate, useParams } from "react-router";
-import type { Id } from "convex/_generated/dataModel";
-import { z } from "zod";
 import {
   Select,
-  SelectItem,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { logger } from "~/lib/logger";
-import { formatBytes, useFileUpload } from "~/hooks/use-file-upload";
-import {
-  AlertCircleIcon,
-  FileUpIcon,
-  Loader,
-  Loader2,
-  XIcon,
-} from "lucide-react";
-import { getFileIcon } from "~/helpers/get-file-icon";
-import { useEffect, useState } from "react";
-import { useUploadFile } from "@convex-dev/r2/react";
-import { api } from "convex/_generated/api";
-import { useMutation } from "convex/react";
-import { IconCheck } from "@tabler/icons-react";
+import type { PanelContentProps, PanelProviderProps } from "./panel.types";
 
 // ~ =============================================>
 // ~ ======= Panel provider
@@ -65,12 +65,12 @@ const UploadRestaurantDocumentsPanelProvider: React.FC<PanelProviderProps> = ({
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
+      <Drawer onOpenChange={onOpenChange} open={open}>
         <DrawerContent className="flex max-h-[85dvh] flex-col">
           <DrawerHeader className="flex-shrink-0">
             <DrawerTitle>Upload Document</DrawerTitle>
             <VisuallyHidden>
-              <DrawerDescription></DrawerDescription>
+              <DrawerDescription />
             </VisuallyHidden>
           </DrawerHeader>
 
@@ -81,12 +81,12 @@ const UploadRestaurantDocumentsPanelProvider: React.FC<PanelProviderProps> = ({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent className="md:max-w-xl [&>button]:hidden">
         <DialogHeader>
           <DialogTitle>Upload Document</DialogTitle>
           <VisuallyHidden>
-            <DialogDescription></DialogDescription>
+            <DialogDescription />
           </VisuallyHidden>
         </DialogHeader>
         {children}
@@ -126,7 +126,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
   const navigate = useNavigate();
   const restaurant = useParams().restaurantId as Id<"restaurants">;
   const createDocument = useMutation(
-    api.features.restaurants.documents.createUploadedDocument,
+    api.features.restaurants.documents.createUploadedDocument
   );
   const [uploadStatus, setUploadStatus] = useState<{
     status: "idle" | "uploading" | "success" | "error";
@@ -195,11 +195,11 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
           ...prev,
           uploadedFiles: [...prev.uploadedFiles, file.id],
           currentlyUploading: prev.currentlyUploading.filter(
-            (id) => id !== file.id,
+            (id) => id !== file.id
           ),
         }));
         return { key, docRef };
-      }),
+      })
     );
 
     logger.info(fileKeys);
@@ -217,25 +217,25 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
 
   return (
     <UploadRestaurantDocumentsPanelProvider
-      open={open}
       onOpenChange={onOpenChange}
+      open={open}
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
           className={
             isMobile
               ? "flex flex-col"
               : "mt-5 grid h-full grid-cols-1 gap-5 px-4 lg:px-0"
           }
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           {/* Mobile: Scrollable content area */}
           <div className={isMobile ? "overflow-y-auto px-4 pb-4" : "contents"}>
             <div className={isMobile ? "space-y-4" : "contents"}>
               {/* ~ ======= Category ======= ~ */}
               <FormField
-                name="category"
                 control={form.control}
+                name="category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Document name</FormLabel>
@@ -262,8 +262,8 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
 
               {/* ~ ======= Files ======= ~ */}
               <FormField
-                name="files"
                 control={form.control}
+                name="files"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Files</FormLabel>
@@ -271,35 +271,35 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                       <div className="flex flex-col gap-2">
                         {/* Drop area */}
                         <div
-                          role="button"
+                          className={`flex flex-col items-center justify-center rounded-xl border border-input border-dashed p-4 transition-colors hover:bg-accent/50 has-disabled:pointer-events-none has-[input:focus]:border-ring has-disabled:opacity-50 has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50 ${isMobile ? "min-h-32" : "min-h-40"}`}
+                          data-dragging={isDragging || undefined}
                           onClick={openFileDialog}
                           onDragEnter={handleDragEnter}
                           onDragLeave={handleDragLeave}
                           onDragOver={handleDragOver}
                           onDrop={handleDrop}
-                          data-dragging={isDragging || undefined}
-                          className={`border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 flex flex-col items-center justify-center rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[input:focus]:ring-[3px] ${isMobile ? "min-h-32" : "min-h-40"}`}
+                          role="button"
                         >
                           <Input
                             {...getInputProps()}
-                            className="sr-only"
                             aria-label="Upload files"
+                            className="sr-only"
                           />
 
                           <div className="flex flex-col items-center justify-center text-center">
                             <div
-                              className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
                               aria-hidden="true"
+                              className="mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border bg-background"
                             >
                               <FileUpIcon className="size-4 opacity-60" />
                             </div>
-                            <p className="mb-1.5 text-sm font-medium">
+                            <p className="mb-1.5 font-medium text-sm">
                               Upload files
                             </p>
-                            <p className="text-muted-foreground mb-2 text-xs">
+                            <p className="mb-2 text-muted-foreground text-xs">
                               Drag & drop or click to browse
                             </p>
-                            <div className="text-muted-foreground/70 flex flex-wrap justify-center gap-1 text-xs">
+                            <div className="flex flex-wrap justify-center gap-1 text-muted-foreground/70 text-xs">
                               <span>All files</span>
                               <span>∙</span>
                               <span>Max {maxFiles} files</span>
@@ -311,7 +311,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
 
                         {errors.length > 0 && (
                           <div
-                            className="text-destructive flex items-center gap-1 text-xs"
+                            className="flex items-center gap-1 text-destructive text-xs"
                             role="alert"
                           >
                             <AlertCircleIcon className="size-3 shrink-0" />
@@ -324,15 +324,15 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                           <div className="space-y-2">
                             {files.map((file) => (
                               <div
+                                className="flex items-center justify-between gap-2 rounded-lg border bg-background p-2 pe-3"
                                 key={file.id}
-                                className="bg-background flex items-center justify-between gap-2 rounded-lg border p-2 pe-3"
                               >
                                 <div className="flex items-center gap-3 overflow-hidden">
                                   <div className="flex aspect-square size-10 shrink-0 items-center justify-center rounded border">
                                     {getFileIcon(file)}
                                   </div>
                                   <div className="flex min-w-0 flex-col gap-0.5">
-                                    <p className="truncate text-[13px] font-medium">
+                                    <p className="truncate font-medium text-[13px]">
                                       {file.file instanceof File
                                         ? file.file.name
                                         : file.file.name}
@@ -341,35 +341,35 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                                       {formatBytes(
                                         file.file instanceof File
                                           ? file.file.size
-                                          : file.file.size,
+                                          : file.file.size
                                       )}
                                     </p>
                                   </div>
                                 </div>
 
                                 <Button
+                                  aria-label="Remove file"
+                                  className="-me-2 size-8 text-muted-foreground/80 hover:bg-transparent hover:text-foreground"
+                                  onClick={() => removeFile(file.id)}
                                   size="icon"
                                   variant="ghost"
-                                  className="text-muted-foreground/80 hover:text-foreground -me-2 size-8 hover:bg-transparent"
-                                  onClick={() => removeFile(file.id)}
-                                  aria-label="Remove file"
                                 >
                                   {uploadStatus.status === "idle" && (
                                     <XIcon
-                                      className="size-4"
                                       aria-hidden="true"
+                                      className="size-4"
                                     />
                                   )}
 
                                   {uploadStatus.status === "uploading" &&
                                     uploadStatus.currentlyUploading.includes(
-                                      file.id,
+                                      file.id
                                     ) && (
                                       <Loader2 className="size-4 animate-spin" />
                                     )}
 
                                   {uploadStatus.uploadedFiles.includes(
-                                    file.id,
+                                    file.id
                                   ) && <IconCheck className="size-4" />}
                                 </Button>
                               </div>
@@ -379,10 +379,10 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                             {files.length > 1 && (
                               <div>
                                 <Button
-                                  size="sm"
                                   disabled={uploadStatus.status !== "idle"}
-                                  variant="outline"
                                   onClick={clearFiles}
+                                  size="sm"
+                                  variant="outline"
                                 >
                                   Remove all files
                                 </Button>
@@ -402,7 +402,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
           <div
             className={
               isMobile
-                ? "bg-background/95 supports-[backdrop-filter]:bg-background/60 flex-shrink-0 border-t p-4 backdrop-blur"
+                ? "flex-shrink-0 border-t bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
                 : "mt-5 flex justify-end gap-2"
             }
           >
@@ -412,14 +412,14 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
               }
             >
               <Button
+                className={isMobile ? "flex-1" : ""}
+                onClick={() => onOpenChange(false)}
                 type="button"
                 variant="outline"
-                onClick={() => onOpenChange(false)}
-                className={isMobile ? "flex-1" : ""}
               >
                 Cancel
               </Button>
-              <Button type="submit" className={isMobile ? "flex-1" : "px-8"}>
+              <Button className={isMobile ? "flex-1" : "px-8"} type="submit">
                 Upload
               </Button>
             </div>

@@ -1,21 +1,21 @@
+import {
+  IconBug,
+  IconDeviceFloppy,
+  IconDeviceLaptop,
+  IconMessage,
+  IconMoon,
+  IconSun,
+} from "@tabler/icons-react";
 import React from "react";
-import { SidebarTrigger } from "../ui/sidebar";
+import { useTheme } from "../providers/theme.provider";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { useTheme } from "../providers/theme.provider";
-import {
-  IconMoon,
-  IconDeviceFloppy,
-  IconSun,
-  IconDeviceLaptop,
-  IconBug,
-  IconMessage,
-} from "@tabler/icons-react";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const BrandHubNavbar = () => {
   const { theme, setTheme } = useTheme();
@@ -27,20 +27,20 @@ const BrandHubNavbar = () => {
       </div>
 
       <div className="flex w-max items-center gap-2">
-        <Button variant="ghost" size="xs">
+        <Button size="xs" variant="ghost">
           <IconMessage stroke={1.5} />
           <span>Brand Support</span>
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button size="icon" variant="outline">
               {theme === "light" && <IconSun />}
               {theme === "dark" && <IconMoon />}
               {theme === "system" && <IconDeviceLaptop />}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end" className="w-28">
+          <DropdownMenuContent align="end" className="w-28" side="bottom">
             <DropdownMenuItem onClick={() => setTheme("light")}>
               <IconSun />
               <span>Light</span>

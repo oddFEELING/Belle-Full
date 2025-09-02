@@ -1,11 +1,11 @@
-import { type ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { Doc } from "convex/_generated/dataModel";
-import { Checkbox } from "~/components/ui/checkbox";
 import { format } from "date-fns";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { cn } from "~/lib/utils";
 import type { AgentEnquiriesDatatableDto } from "./agent.enquiries.datable.dto";
 import { ActionCell } from "./cells/agent.enquiries.action.cell";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 export const AgentEnquiriesTableColumns: ColumnDef<AgentEnquiriesDatatableDto>[] =
   [
@@ -13,21 +13,21 @@ export const AgentEnquiriesTableColumns: ColumnDef<AgentEnquiriesDatatableDto>[]
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          className="border-muted-foreground"
+          aria-label="select all"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          aria-label="select all"
+          className="border-muted-foreground"
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="border-muted-foreground"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          checked={row.getIsSelected()}
+          className="border-muted-foreground"
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
       ),
       enableSorting: false,
@@ -48,8 +48,8 @@ export const AgentEnquiriesTableColumns: ColumnDef<AgentEnquiriesDatatableDto>[]
       header: "Enquiry",
       enableHiding: false,
       cell: ({ row }) => (
-        <span className="hover:text-primary cursor-pointer underline-offset-4 transition-all duration-150 ease-out hover:underline">
-          <Button variant="outline" size="xs">
+        <span className="cursor-pointer underline-offset-4 transition-all duration-150 ease-out hover:text-primary hover:underline">
+          <Button size="xs" variant="outline">
             View content
           </Button>
         </span>
@@ -83,7 +83,7 @@ export const AgentEnquiriesTableColumns: ColumnDef<AgentEnquiriesDatatableDto>[]
       enableHiding: true,
       cell: ({ row }) => (
         <div className="w-max max-w-44">
-          <span className="text-muted-foreground line-clamp-1 cursor-default truncate text-sm">
+          <span className="line-clamp-1 cursor-default truncate text-muted-foreground text-sm">
             {row.original.chatId}
           </span>
         </div>

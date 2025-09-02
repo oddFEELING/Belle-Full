@@ -47,19 +47,19 @@ export function ValueMultiSelector({
 
   return (
     <MultiSelector
-      values={objectValues}
-      onValuesChange={handleObjectChange}
       className={className}
+      onValuesChange={handleObjectChange}
+      values={objectValues}
     >
       <MultiSelectorTrigger
         className={cn(
-          "focus-within:ring-primary/20 rounded-lg transition-all focus-within:ring-2",
-          triggerClassName,
+          "rounded-lg transition-all focus-within:ring-2 focus-within:ring-primary/20",
+          triggerClassName
         )}
       >
         <MultiSelectorInput
-          placeholder={placeholder}
           className={cn("text-sm", inputClassName)}
+          placeholder={placeholder}
         />
       </MultiSelectorTrigger>
       <MultiSelectorContent>
@@ -67,8 +67,8 @@ export function ValueMultiSelector({
           {options.map((opt) => (
             <MultiSelectorItem
               key={opt.value}
-              value={opt.value}
               label={opt.label}
+              value={opt.value}
             >
               {opt.label}
             </MultiSelectorItem>

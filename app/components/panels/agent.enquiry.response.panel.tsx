@@ -1,12 +1,12 @@
-import type { Id } from "convex/_generated/dataModel";
-import { Panel, PanelTitle, PanelHeader, PanelContent } from "../ui/panel";
-import type { PanelProps } from "./panel.types";
-import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import type { Id } from "convex/_generated/dataModel";
 import { useAction } from "convex/react";
+import { useState } from "react";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { Button } from "../ui/button";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from "../ui/panel";
+import { Textarea } from "../ui/textarea";
+import type { PanelProps } from "./panel.types";
 
 interface AgentEnquiryResponsePanelProps extends PanelProps {
   enquiryId: Id<"agent_enquiries">;
@@ -20,10 +20,10 @@ export const AgentEnquiryResponsePanel: React.FC<
   // ~ ======= Queries ======= ~
   const { data: enquiry, isPending: enquiryIsPending } = useCachedQuery(
     api.features.agent_enquiries.functions.getAgentEnquiryById,
-    { enquiryId },
+    { enquiryId }
   );
   const respondToAgentEnquiry = useAction(
-    api.features.agent_enquiries.functions.respondToAgentEnquiry,
+    api.features.agent_enquiries.functions.respondToAgentEnquiry
   );
 
   const handleRespond = async () => {
@@ -36,7 +36,7 @@ export const AgentEnquiryResponsePanel: React.FC<
   };
 
   return (
-    <Panel open={open} onOpenChange={onOpenChange}>
+    <Panel onOpenChange={onOpenChange} open={open}>
       <PanelContent>
         <PanelHeader>
           <PanelTitle>Respond to enquiry</PanelTitle>
@@ -46,9 +46,9 @@ export const AgentEnquiryResponsePanel: React.FC<
           <p>{enquiry?.enquiry}</p>
 
           <Textarea
-            value={response}
-            onChange={(e) => setResponse(e.target.value)}
             className="mt-4"
+            onChange={(e) => setResponse(e.target.value)}
+            value={response}
           />
 
           <Button className="mt-4" onClick={handleRespond}>

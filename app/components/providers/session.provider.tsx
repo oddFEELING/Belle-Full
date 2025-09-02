@@ -1,5 +1,5 @@
-import React from "react";
 import { SessionProvider } from "convex-helpers/react/sessions";
+import type React from "react";
 
 type AppSessionProvider = {
   children: React.ReactNode;

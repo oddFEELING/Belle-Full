@@ -1,14 +1,14 @@
 import { v } from "convex/values";
-import { r2 } from "../../infrastructure/components/r2";
-import { authenticatedMutation } from "../../_custom/mutation";
-import { DocumentType, RestaurantLegalDocuments } from "../../types/enums";
-import type { Doc, Id } from "../../_generated/dataModel";
-import { authenticatedQuery } from "../../_custom/query";
 import {
   getManyFrom,
   getOneFromOrThrow,
 } from "convex-helpers/server/relationships";
+import { authenticatedMutation } from "../../_custom/mutation";
+import { authenticatedQuery } from "../../_custom/query";
+import type { Doc, Id } from "../../_generated/dataModel";
 import { query } from "../../_generated/server";
+import { r2 } from "../../infrastructure/components/r2";
+import { DocumentType, RestaurantLegalDocuments } from "../../types/enums";
 
 const PREFIX = "rst_doc";
 
@@ -64,7 +64,7 @@ export const listDocuments = query({
   },
   handler: async (
     ctx,
-    { restaurant },
+    { restaurant }
   ): Promise<Doc<"restaurant_documents">[]> => {
     const { id, slug } = restaurant;
     let restaurantId = id;
@@ -90,7 +90,7 @@ export const listDocuments = query({
         ...doc,
         documentUrl: await r2.getUrl(doc.key),
         expiresIn: 60 * 60 * 24, // 1 day
-      })),
+      }))
     );
   },
 });

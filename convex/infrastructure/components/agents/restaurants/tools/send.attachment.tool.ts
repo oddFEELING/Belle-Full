@@ -1,7 +1,7 @@
+import { createTool } from "@convex-dev/agent";
 import { z } from "zod";
 import { api } from "@/_generated/api";
-import { createTool } from "@convex-dev/agent";
-import { RestaurantAgentCtx } from "../agent";
+import type { RestaurantAgentCtx } from "../agent";
 
 export const sendAttachment = createTool({
   description: "Send an attachment to the user",
@@ -20,7 +20,7 @@ export const sendAttachment = createTool({
         caption: args.caption,
         chat_id: ctx.chatId,
         filename: args.fileName,
-      },
+      }
     );
 
     return "Message sent";

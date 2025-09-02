@@ -1,8 +1,8 @@
+import { v } from "convex/values";
+import { getManyFrom } from "convex-helpers/server/relationships";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
-import { v } from "convex/values";
 import type { Doc, Id } from "../../_generated/dataModel";
-import { getManyFrom } from "convex-helpers/server/relationships";
 
 // ~ =============================================>
 // ~ ======= Create Menu
@@ -51,19 +51,19 @@ export const menuAnalytics = authenticatedQuery({
   args: { restaurant: v.id("restaurants") },
   handler: async (
     ctx,
-    args,
+    args
   ): Promise<{ menuCount: number; menuItemCount: number }> => {
     const menus = await getManyFrom(
       ctx.db,
       "menus",
       "by_restaurant",
-      args.restaurant,
+      args.restaurant
     );
     const menuItems = await getManyFrom(
       ctx.db,
       "menu_items",
       "by_restaurant",
-      args.restaurant,
+      args.restaurant
     );
 
     return { menuCount: menus.length, menuItemCount: menuItems.length };

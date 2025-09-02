@@ -1,11 +1,11 @@
-import { Outlet, useNavigate } from "react-router";
 import { Authenticated, AuthLoading, useConvexAuth } from "convex/react";
+import { Outlet, useNavigate } from "react-router";
 
 const BrandLayout = () => {
   const navigate = useNavigate();
   const { isLoading, isAuthenticated } = useConvexAuth();
 
-  if (!isLoading && !isAuthenticated) {
+  if (!(isLoading || isAuthenticated)) {
     return navigate("/", { replace: true });
   }
 

@@ -1,8 +1,8 @@
 import {
-  type RouteConfig,
   index,
   layout,
   prefix,
+  type RouteConfig,
   route,
 } from "@react-router/dev/routes";
 
@@ -27,13 +27,13 @@ export default [
             index("routes/Brands/brand-hub/index.tsx"),
             route(
               "/restaurants",
-              "routes/Brands/brand-hub/brand.restaurants.tsx",
+              "routes/Brands/brand-hub/brand.restaurants.tsx"
             ),
             route("/people", "routes/Brands/brand-hub/brand.people.tsx"),
             route("/manage", "routes/Brands/brand-hub/brand.manage.tsx"),
             route(
               "/ai-description",
-              "routes/Brands/brand-hub/brand.ai-description.tsx",
+              "routes/Brands/brand-hub/brand.ai-description.tsx"
             ),
           ]),
         ]),
@@ -46,7 +46,7 @@ export default [
 
             route(
               "/menu/add-menu-item",
-              "routes/Brands/restaurant.menu/add.menu.item.tsx",
+              "routes/Brands/restaurant.menu/add.menu.item.tsx"
             ),
 
             route("/orders", "routes/Brands/restaurants/restaurant.orders.tsx"),
@@ -55,32 +55,32 @@ export default [
 
             route(
               "/bellebot",
-              "routes/Brands/restaurants/restaurant.bellebot.tsx",
+              "routes/Brands/restaurants/restaurant.bellebot.tsx"
             ),
 
             route("/agents", "routes/Brands/restaurant.agents/index.tsx"),
             route(
               "/agents/:agentId",
-              "routes/Brands/restaurant.agents/[id].tsx",
+              "routes/Brands/restaurant.agents/[id].tsx"
             ),
             route(
               "/agents/:agentId/editor",
-              "routes/Brands/restaurant.agents/agent.editor.tsx",
+              "routes/Brands/restaurant.agents/agent.editor.tsx"
             ),
 
             route(
               "/transactions",
-              "routes/Brands/restaurants/restaurant.transactions.tsx",
+              "routes/Brands/restaurants/restaurant.transactions.tsx"
             ),
 
             route(
               "/billing",
-              "routes/Brands/restaurants/restaurant.billing.tsx",
+              "routes/Brands/restaurants/restaurant.billing.tsx"
             ),
 
             route(
               "/legal-documents",
-              "routes/Brands/restaurants/restaurant.legal-documents.tsx",
+              "routes/Brands/restaurants/restaurant.legal-documents.tsx"
             ),
           ]),
         ]),

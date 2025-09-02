@@ -1,5 +1,5 @@
-import React from "react";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
+import type React from "react";
 
 type NuqsProviderProps = {
   children: React.ReactNode;

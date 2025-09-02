@@ -3,14 +3,14 @@ import { Button } from "~/components/ui/button";
 
 const AuthLayout = () => {
   return (
-    <div className="no-scroll-full-page bg-background grid grid-cols-2">
+    <div className="no-scroll-full-page grid grid-cols-2 bg-background">
       {/* ~ =================================== ~ */}
       {/* -- Side Contetn -- */}
       {/* ~ =================================== ~ */}
       <aside className="hidden items-center justify-center p-5 lg:flex">
-        <div className="bg-muted dark:bg-muted/40 flex h-full w-full flex-col justify-between rounded-3xl p-5">
+        <div className="flex h-full w-full flex-col justify-between rounded-3xl bg-muted p-5 dark:bg-muted/40">
           <Link to="/">
-            <span className="cursor-pointer text-lg font-medium underline-offset-2 hover:underline">
+            <span className="cursor-pointer font-medium text-lg underline-offset-2 hover:underline">
               BelleFull
             </span>
           </Link>
@@ -19,7 +19,7 @@ const AuthLayout = () => {
             <p className="text-muted-foreground">
               African Cuisine, made simple
             </p>
-            <p className="text-muted-foreground leading-tighter text-sm">
+            <p className="text-muted-foreground text-sm leading-tighter">
               Discover the best of African cuisine, enjoy the goodness without
               the hassle.
             </p>

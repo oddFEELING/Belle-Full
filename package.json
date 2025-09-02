@@ -8,7 +8,10 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "email:dev": "email dev",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "ultracite check && ultracite fix",
+    "lint:check": "ultracite check",
+    "lint:fix": "ultracite fix",
+    "lint:health": "ultracite doctor",
     "dev:worker": "concurrently --names \"schema:watch,agent:tool\" \"pnpm schema:watch\" \"pnpm agent:tool\"",
     "schema:watch": "nodemon --watch convex/schemas --ext ts --exec node scripts/schema-watch.script.js",
     "agent:tool": "nodemon --watch convex/infrastructure/components/agents/restaurants/tools --ext ts --exec node scripts/agent-tool.script.js"

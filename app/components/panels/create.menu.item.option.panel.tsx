@@ -1,11 +1,23 @@
-import { z } from "zod";
-import React, { useState } from "react";
-import type { PanelProps } from "./panel.types";
-import type { MenuItemOption, Money } from "convex/types/shared";
-import { AllergenEnum, DietaryTagEnum } from "convex/types/enums";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AllergenEnum, DietaryTagEnum } from "convex/types/enums";
+import type { MenuItemOption, Money } from "convex/types/shared";
+import { Trash } from "iconsax-reactjs";
+import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { Input as AriaInput, Group, NumberField } from "react-aria-components";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { logger } from "~/lib/logger";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "../custom-ui/multi-select";
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -15,6 +27,8 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { ScrollArea } from "../ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -22,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Textarea } from "../ui/textarea";
+import { Separator } from "../ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -30,22 +44,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
-import { Button } from "../ui/button";
-import { ScrollArea } from "../ui/scroll-area";
-import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from "lucide-react";
-import { Label } from "../ui/label";
-import { Trash } from "iconsax-reactjs";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "../custom-ui/multi-select";
-
-import { NumberField, Input as AriaInput, Group } from "react-aria-components";
-import { Separator } from "../ui/separator";
+import { Textarea } from "../ui/textarea";
+import type { PanelProps } from "./panel.types";
 
 const createMenuItemOptionSchema = z.object({
   name: z.string(),
@@ -80,7 +80,7 @@ export const CreateMenuItemOptionPanel: React.FC<
     const extractValues = (items: any[]) => {
       return (
         items?.map((item) =>
-          typeof item === "object" && item.value ? item.value : item,
+          typeof item === "object" && item.value ? item.value : item
         ) || []
       );
     };
@@ -104,10 +104,10 @@ export const CreateMenuItemOptionPanel: React.FC<
   // ~ ======= Handle pick data change  ======= ~
   const handlePickDataChange = (
     idx: number,
-    data: Partial<MenuItemOption["picks"][number]>,
+    data: Partial<MenuItemOption["picks"][number]>
   ) => {
     setPicks((prev) =>
-      prev.map((pick, i) => (i === idx ? { ...pick, ...data } : pick)),
+      prev.map((pick, i) => (i === idx ? { ...pick, ...data } : pick))
     );
   };
 
@@ -117,7 +117,7 @@ export const CreateMenuItemOptionPanel: React.FC<
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet onOpenChange={onOpenChange} open={open}>
       <SheetContent className="md:max-w-xl">
         <SheetHeader>
           <SheetTitle>Add option</SheetTitle>
@@ -125,8 +125,8 @@ export const CreateMenuItemOptionPanel: React.FC<
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="flex h-full flex-col"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             <ScrollArea className="h-[83dvh] w-full overflow-hidden px-4">
               <div className="grid w-full grid-cols-2 gap-x-4 gap-y-6">
@@ -146,21 +146,21 @@ export const CreateMenuItemOptionPanel: React.FC<
 
                 {/* ~ ======= Availability field ======= ~ */}
                 <FormField
-                  name="isAvailable"
                   control={form.control}
+                  name="isAvailable"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">
+                      <FormLabel className="font-medium text-sm">
                         Availability
                       </FormLabel>
                       <FormControl>
                         <Select
-                          value={field.value ? "true" : "false"}
                           onValueChange={(value) =>
                             field.onChange(value === "true")
                           }
+                          value={field.value ? "true" : "false"}
                         >
-                          <SelectTrigger className="focus:ring-primary/20 h-10 w-full rounded-lg transition-all focus:ring-2">
+                          <SelectTrigger className="h-10 w-full rounded-lg transition-all focus:ring-2 focus:ring-primary/20">
                             <SelectValue placeholder="Select availability" />
                           </SelectTrigger>
                           <SelectContent>
@@ -186,16 +186,16 @@ export const CreateMenuItemOptionPanel: React.FC<
 
                 {/* ~ ======= Description field ======= ~ */}
                 <FormField
-                  name="description"
                   control={form.control}
+                  name="description"
                   render={({ field }) => (
                     <FormItem className="md:col-span-2">
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder="Describe the option"
                           className="h-20 resize-none"
+                          placeholder="Describe the option"
                         />
                       </FormControl>
                       <FormMessage />
@@ -204,26 +204,26 @@ export const CreateMenuItemOptionPanel: React.FC<
                 />
               </div>
               <Separator className="my-8" />
-              <h3 className="text-lg font-medium">Picks</h3>
+              <h3 className="font-medium text-lg">Picks</h3>
 
               {/* ~ ======= Picks ======= ~ */}
               <div className="">
                 {picks.map((pick, idx) => (
                   <div
+                    className="mt-3 grid w-full grid-cols-2 gap-4 rounded-xl border bg-muted/90 p-4 dark:bg-muted"
                     key={idx}
-                    className="bg-muted/90 dark:bg-muted mt-3 grid w-full grid-cols-2 gap-4 rounded-xl border p-4"
                   >
                     {/* ~ ======= Pick name ======= ~ */}
                     <div className="col-span-2 flex flex-col gap-1">
                       <Label>Name</Label>
                       <Input
-                        placeholder="Pick name"
-                        value={pick.name}
                         onChange={(e) =>
                           handlePickDataChange(idx, {
                             name: e.target.value,
                           })
                         }
+                        placeholder="Pick name"
+                        value={pick.name}
                       />
                     </div>
 
@@ -244,20 +244,20 @@ export const CreateMenuItemOptionPanel: React.FC<
                           })
                         }
                       >
-                        <Group className="border-input bg-background focus-within:ring-primary/20 relative flex h-10 w-full items-center overflow-hidden rounded-lg border text-sm shadow-xs transition-all focus-within:ring-2">
-                          <AriaInput className="dark:bg-input/30 flex-1 bg-transparent px-3 py-2 tabular-nums outline-none" />
-                          <div className="border-input flex h-full flex-col border-l">
+                        <Group className="relative flex h-10 w-full items-center overflow-hidden rounded-lg border border-input bg-background text-sm shadow-xs transition-all focus-within:ring-2 focus-within:ring-primary/20">
+                          <AriaInput className="flex-1 bg-transparent px-3 py-2 tabular-nums outline-none dark:bg-input/30" />
+                          <div className="flex h-full flex-col border-input border-l">
                             <Button
+                              className="flex h-1/2 w-8 items-center justify-center border-input border-b bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                               slot="increment"
                               type="button"
-                              className="border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center border-b transition-colors"
                             >
                               <ChevronUpIcon className="h-3 w-3" />
                             </Button>
                             <Button
+                              className="flex h-1/2 w-8 items-center justify-center bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                               slot="decrement"
                               type="button"
-                              className="bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex h-1/2 w-8 items-center justify-center transition-colors"
                             >
                               <ChevronDownIcon className="h-3 w-3" />
                             </Button>
@@ -271,7 +271,7 @@ export const CreateMenuItemOptionPanel: React.FC<
                       <Label>Calories</Label>
                       <div className="relative">
                         <Input
-                          value={pick.calories || ""}
+                          className="h-10 rounded-lg bg-transparent pr-16 transition-all focus:ring-2 focus:ring-primary/20 dark:bg-input/30"
                           onChange={(e) =>
                             handlePickDataChange(idx, {
                               calories: e.target.value
@@ -279,11 +279,11 @@ export const CreateMenuItemOptionPanel: React.FC<
                                 : undefined,
                             })
                           }
-                          type="number"
                           placeholder="e.g. 450"
-                          className="focus:ring-primary/20 dark:bg-input/30 h-10 rounded-lg bg-transparent pr-16 transition-all focus:ring-2"
+                          type="number"
+                          value={pick.calories || ""}
                         />
-                        <span className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 text-sm">
+                        <span className="-translate-y-1/2 absolute top-1/2 right-3 text-muted-foreground text-sm">
                           kcal
                         </span>
                       </div>
@@ -293,15 +293,15 @@ export const CreateMenuItemOptionPanel: React.FC<
                     <div className="col-span-2 flex flex-col gap-1">
                       <Label>Dietary tags</Label>
                       <MultiSelector
-                        values={pick.dietaryTags as any[]}
+                        className="w-full"
                         onValuesChange={(values) =>
                           handlePickDataChange(idx, {
                             dietaryTags: values as any[],
                           })
                         }
-                        className="w-full"
+                        values={pick.dietaryTags as any[]}
                       >
-                        <MultiSelectorTrigger className="focus-within:ring-primary/20 min-h-10 rounded-lg transition-all focus-within:ring-2">
+                        <MultiSelectorTrigger className="min-h-10 rounded-lg transition-all focus-within:ring-2 focus-within:ring-primary/20">
                           <MultiSelectorInput placeholder=" -> Dietary tags" />
                         </MultiSelectorTrigger>
                         <MultiSelectorContent>
@@ -310,12 +310,12 @@ export const CreateMenuItemOptionPanel: React.FC<
                               ([key, value]) => (
                                 <MultiSelectorItem
                                   key={key}
-                                  value={value}
                                   label={key}
+                                  value={value}
                                 >
                                   {key}
                                 </MultiSelectorItem>
-                              ),
+                              )
                             )}
                           </MultiSelectorList>
                         </MultiSelectorContent>
@@ -326,15 +326,15 @@ export const CreateMenuItemOptionPanel: React.FC<
                     <div className="col-span-2 flex flex-col gap-1">
                       <Label>Allergens</Label>
                       <MultiSelector
-                        values={pick.allergens as any[]}
+                        className="w-full"
                         onValuesChange={(values) =>
                           handlePickDataChange(idx, {
                             allergens: values as any[],
                           })
                         }
-                        className="w-full"
+                        values={pick.allergens as any[]}
                       >
-                        <MultiSelectorTrigger className="focus-within:ring-primary/20 min-h-10 rounded-lg transition-all focus-within:ring-2">
+                        <MultiSelectorTrigger className="min-h-10 rounded-lg transition-all focus-within:ring-2 focus-within:ring-primary/20">
                           <MultiSelectorInput placeholder=" -> Allergens" />
                         </MultiSelectorTrigger>
                         <MultiSelectorContent>
@@ -343,12 +343,12 @@ export const CreateMenuItemOptionPanel: React.FC<
                               ([key, value]) => (
                                 <MultiSelectorItem
                                   key={key}
-                                  value={value}
                                   label={key}
+                                  value={value}
                                 >
                                   {key}
                                 </MultiSelectorItem>
-                              ),
+                              )
                             )}
                           </MultiSelectorList>
                         </MultiSelectorContent>
@@ -358,11 +358,11 @@ export const CreateMenuItemOptionPanel: React.FC<
                     {/* ~ ======= Remove pick button ======= ~ */}
                     <div className="col-span-2 mt-2 flex w-full justify-end">
                       <Button
-                        variant="destructive"
-                        size="xs"
                         className="text-destructive-foreground"
-                        type="button"
                         onClick={() => handleRemovePick(idx)}
+                        size="xs"
+                        type="button"
+                        variant="destructive"
                       >
                         <Trash strokeWidth={1.3} />
                         <span> Remove</span>
@@ -371,8 +371,6 @@ export const CreateMenuItemOptionPanel: React.FC<
                   </div>
                 ))}
                 <Button
-                  variant="outline"
-                  type="button"
                   className="mt-5 w-full"
                   onClick={() =>
                     setPicks([
@@ -386,6 +384,8 @@ export const CreateMenuItemOptionPanel: React.FC<
                       },
                     ])
                   }
+                  type="button"
+                  variant="outline"
                 >
                   <PlusIcon className="h-4 w-4" />
                   Add pick
@@ -396,16 +396,16 @@ export const CreateMenuItemOptionPanel: React.FC<
             {/* ~ ======= Actions= ======= ~ */}
             <SheetFooter className="flex h-14 w-full flex-row items-center justify-end gap-2">
               <Button
+                onClick={() => onOpenChange(false)}
                 type="button"
                 variant="outline"
-                onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
               <Button
-                type="button"
-                onClick={() => onSubmit(form.getValues())}
                 disabled={picks.length === 0}
+                onClick={() => onSubmit(form.getValues())}
+                type="button"
               >
                 Add to item
               </Button>

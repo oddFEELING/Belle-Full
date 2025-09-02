@@ -22,24 +22,29 @@ export const getFileIcon = (file: {
     fileName.endsWith(".docx")
   ) {
     return <FileTextIcon className="size-4 opacity-60" />;
-  } else if (
+  }
+  if (
     fileType.includes("zip") ||
     fileType.includes("archive") ||
     fileName.endsWith(".zip") ||
     fileName.endsWith(".rar")
   ) {
     return <FileArchiveIcon className="size-4 opacity-60" />;
-  } else if (
+  }
+  if (
     fileType.includes("excel") ||
     fileName.endsWith(".xls") ||
     fileName.endsWith(".xlsx")
   ) {
     return <FileSpreadsheetIcon className="size-4 opacity-60" />;
-  } else if (fileType.includes("video/")) {
+  }
+  if (fileType.includes("video/")) {
     return <VideoIcon className="size-4 opacity-60" />;
-  } else if (fileType.includes("audio/")) {
+  }
+  if (fileType.includes("audio/")) {
     return <HeadphonesIcon className="size-4 opacity-60" />;
-  } else if (fileType.startsWith("image/")) {
+  }
+  if (fileType.startsWith("image/")) {
     return <ImageIcon className="size-4 opacity-60" />;
   }
   return <FileIcon className="size-4 opacity-60" />;

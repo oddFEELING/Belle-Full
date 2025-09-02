@@ -1,14 +1,14 @@
-import { authenticatedMutation } from "@/_custom/mutation";
-import { api } from "@/_generated/api";
-import { Doc, Id } from "@/_generated/dataModel";
-import { partial } from "convex-helpers/validators";
 import { v } from "convex/values";
-import schema from "../../schema";
-import { authenticatedQuery } from "@/_custom/query";
+import { partial } from "convex-helpers/validators";
 import { authenticatedAction } from "@/_custom/action";
+import { authenticatedMutation } from "@/_custom/mutation";
+import { authenticatedQuery } from "@/_custom/query";
+import { api } from "@/_generated/api";
+import type { Doc, Id } from "@/_generated/dataModel";
 import { restaurantAgent } from "@/infrastructure/components/agents/restaurants/agent";
 import { restaurantAgentPrompt } from "@/infrastructure/components/agents/restaurants/prompt";
 import { humanTone } from "@/infrastructure/components/agents/tone.prompt";
+import schema from "../../schema";
 
 // ~ =============================================>
 // ~ ======= Respond to an agent enquiry
@@ -33,7 +33,7 @@ export const getAgentEnquiriesByRestaurant = authenticatedQuery({
   },
   handler: async (
     ctx,
-    args,
+    args
   ): Promise<
     (Doc<"agent_enquiries"> & {
       agent: Doc<"restaurant_agents"> | null;
@@ -45,10 +45,10 @@ export const getAgentEnquiriesByRestaurant = authenticatedQuery({
       .order("desc")
       .collect();
 
-    const response = enquiry.map(async (enquiry) => {
+    const response = enquiry.map(async (singleEnquiry) => {
       return {
-        ...enquiry,
-        agent: await ctx.db.get(enquiry.agentId),
+        ...singleEnquiry,
+        agent: await ctx.db.get(singleEnquiry.agentId),
       };
     });
 
@@ -56,8 +56,8 @@ export const getAgentEnquiriesByRestaurant = authenticatedQuery({
   },
 });
 
-// ~ =============================================>
-// ~ ======= Get enquiry by enquiryId
+// ~  ===========================================>
+// ~  ====== Get enquiry by enquiryId
 // ~ =============================================>
 export const getAgentEnquiryById = authenticatedQuery({
   args: { enquiryId: v.id("agent_enquiries") },
@@ -67,8 +67,8 @@ export const getAgentEnquiryById = authenticatedQuery({
 });
 
 // ~ =============================================>
-// ~ ======= Respond to an agent enquiry
-// ~ =============================================>
+// ~ ======= R    pond to an agent enquiry
+// ~   ============================================>
 export const respondToAgentEnquiry = authenticatedAction({
   args: {
     enquiryId: v.id("agent_enquiries"),
@@ -80,14 +80,15 @@ export const respondToAgentEnquiry = authenticatedAction({
       {
         enquiryId: args.enquiryId,
         updateData: { response: args.response, status: "RESOLVED" },
-      },
+      }
     );
     const enquiry = await ctx.runQuery(
       api.features.agent_enquiries.functions.getAgentEnquiryById,
-      { enquiryId: args.enquiryId },
+      { enquiryId: args.enquiryId }
     );
-
-    if (!enquiry?.restaurant) return null;
+    if (!enquiry?.restaurant) {
+      return null;
+    }
 
     const { thread } = await restaurantAgent.continueThread(
       {
@@ -95,15 +96,17 @@ export const respondToAgentEnquiry = authenticatedAction({
         restaurantId: enquiry?.restaurant,
         chatId: enquiry?.chatId as string,
       },
-      { threadId: enquiry?.threadId as string },
+
+      { threadId: enquiry?.threadId as string }
     );
+
     const agent = await ctx.runQuery(
       api.features.agents.functions.getSingleAgent,
-      { agent: enquiry?.agentId as Id<"restaurant_agents"> },
+      { agent: enquiry?.agentId as Id<"restaurant_agents"> }
     );
     const restaurant = await ctx.runQuery(
       api.features.restaurants.functions.getRestaurant,
-      { id: enquiry?.restaurant as Id<"restaurants"> },
+      { id: enquiry?.restaurant as Id<"restaurants"> }
     );
 
     const response = await thread.generateText({
@@ -119,13 +122,16 @@ export const respondToAgentEnquiry = authenticatedAction({
       }),
       prompt: `
         query: ${enquiry?.enquiry}
-        restaurant-response: ${args.response}
+        restaurant-response: ${args.response}        
     `,
     });
 
     await ctx.runAction(
       api.infrastructure.services.unipile.functions.sendMessageToUser,
-      { response: response.text, chat_id: enquiry?.chatId as string },
+      {
+        response: response.text,
+        chat_id: enquiry?.chatId as string,
+      }
     );
 
     return enquiry;

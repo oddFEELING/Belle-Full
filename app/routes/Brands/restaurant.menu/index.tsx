@@ -1,14 +1,3 @@
-import React, { useEffect, useState } from "react";
-
-import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { Plus } from "lucide-react";
 import {
   IconAdjustmentsBolt,
   IconCategoryPlus,
@@ -21,17 +10,27 @@ import {
   IconTransitionRight,
   IconTrash,
 } from "@tabler/icons-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { useQueryState } from "nuqs";
-import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
-import { useParams } from "react-router";
 import type { Id } from "convex/_generated/dataModel";
+import { Plus } from "lucide-react";
+import { useQueryState } from "nuqs";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import CreateMenuPanel from "~/components/panels/create.menu.panel";
-import { OverviewTab } from "./partials/overview.tab";
-import { MenusTab } from "./partials/menus.tab";
-import { MenuItemsTab } from "./partials/menu.items.tab";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useCachedQuery } from "~/hooks/use-app-query";
 import { CategoriesTab } from "./partials/category.tab";
+import { MenuItemsTab } from "./partials/menu.items.tab";
+import { MenusTab } from "./partials/menus.tab";
+import { OverviewTab } from "./partials/overview.tab";
 
 const RestaurantMenu = () => {
   const brandId = useParams().brandId as Id<"brands">;
@@ -46,15 +45,15 @@ const RestaurantMenu = () => {
       {/* Header Section */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">My Menus</h2>
-          <p className="text-muted-foreground max-w-2xl">
+          <h2 className="font-semibold text-2xl">My Menus</h2>
+          <p className="max-w-2xl text-muted-foreground">
             Manage the menus for your restaurant. Create, edit, and organize
             your menu offerings.
           </p>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
+            <Button size="sm" variant="ghost">
               <span className="hidden sm:block">Actions</span>
               <IconChevronDown size={16} strokeWidth={1.5} />
             </Button>
@@ -62,17 +61,17 @@ const RestaurantMenu = () => {
           <DropdownMenuContent>
             <DropdownMenuItem>
               <IconFolders
+                className="text-muted-foreground"
                 size={18}
                 strokeWidth={1.5}
-                className="text-muted-foreground"
               />
               <span>Copy Menu</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <IconTransitionRight
+                className="text-muted-foreground"
                 size={18}
                 strokeWidth={1.5}
-                className="text-muted-foreground"
               />
               <span>Make Active</span>
             </DropdownMenuItem>
@@ -82,59 +81,59 @@ const RestaurantMenu = () => {
 
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
         <div className="mt-2 mb-3 w-full max-w-2xl">
-          <TabsList className="bg-muted h-max w-full">
+          <TabsList className="h-max w-full bg-muted">
             <TabsTrigger
-              value="overview"
               className="dark:data-[state=active]:bg-accent"
+              value="overview"
             >
               <IconChefHat
+                className="dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Overview
               </span>
             </TabsTrigger>
 
             <TabsTrigger
-              value="menus"
               className="dark:data-[state=active]:bg-accent"
+              value="menus"
             >
               <IconClipboardText
+                className="dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Menus
               </span>
             </TabsTrigger>
 
             <TabsTrigger
-              value="categories"
               className="dark:data-[state=active]:bg-accent"
+              value="categories"
             >
               <IconCategoryPlus
+                className="dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Categories
               </span>
             </TabsTrigger>
 
             <TabsTrigger
-              value="menu-items"
               className="dark:data-[state=active]:bg-accent"
+              value="menu-items"
             >
               <IconSoup
+                className="dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Menu Items
               </span>
             </TabsTrigger>
@@ -142,7 +141,7 @@ const RestaurantMenu = () => {
         </div>
 
         <OverviewTab restaurantId={restaurantId} />
-        <MenusTab restaurantId={restaurantId} brandId={brandId} />
+        <MenusTab brandId={brandId} restaurantId={restaurantId} />
         <CategoriesTab restaurantId={restaurantId} />
         <MenuItemsTab restaurantId={restaurantId} />
       </Tabs>

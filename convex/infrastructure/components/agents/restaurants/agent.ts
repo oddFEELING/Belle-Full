@@ -1,16 +1,16 @@
-import { components, internal } from "@/_generated/api";
-import {
-  createThread as createThreadAction,
-  Agent,
-  ToolCtx,
-} from "@convex-dev/agent";
 import { openai } from "@ai-sdk/openai";
+import {
+  Agent,
+  createThread as createThreadAction,
+  type ToolCtx,
+} from "@convex-dev/agent";
 import { v } from "convex/values";
-import { query, action } from "@/_generated/server";
+import { components, internal } from "@/_generated/api";
 import type { Doc, Id } from "@/_generated/dataModel";
-import { restaurantAgentPrompt } from "./prompt";
-import { humanTone } from "../tone.prompt";
+import { action, query } from "@/_generated/server";
 import schema from "@/schema";
+import { humanTone } from "../tone.prompt";
+import { restaurantAgentPrompt } from "./prompt";
 import * as restaurantAgentTools from "./tools";
 
 export type RestaurantAgentCtx = ToolCtx & {
@@ -56,7 +56,7 @@ export const chat = action({
     };
     const restaurant = await ctx.runQuery(
       internal.features.restaurants.agent_access.getRestaurant,
-      { restaurant: args.restaurantId },
+      { restaurant: args.restaurantId }
     );
 
     const { thread } = await restaurantAgent.continueThread(agentCtx, {
@@ -114,11 +114,11 @@ export const getRestaurantAgentThread = query({
   handler: async (ctx, args) => {
     const agentThreads = await ctx.runQuery(
       components.agent.threads.listThreadsByUserId,
-      { userId: args.agentId },
+      { userId: args.agentId }
     );
 
     return agentThreads.page.find((thread) =>
-      thread.title?.toLocaleLowerCase().includes(args.userId),
+      thread.title?.toLocaleLowerCase().includes(args.userId)
     );
   },
 });

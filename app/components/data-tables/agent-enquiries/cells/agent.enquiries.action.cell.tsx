@@ -11,6 +11,7 @@ import { useMutation } from "convex/react";
 import { ArchiveBox, TextalignLeft, Trash } from "iconsax-reactjs";
 import { Download, MoreVertical } from "lucide-react";
 import { useState } from "react";
+import { AgentEnquiryResponsePanel } from "~/components/panels/agent.enquiry.response.panel";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -20,7 +21,6 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { AgentEnquiriesDatatableDto } from "../agent.enquiries.datable.dto";
-import { AgentEnquiryResponsePanel } from "~/components/panels/agent.enquiry.response.panel";
 
 type ActionCellProps = {
   rowEnquiry: AgentEnquiriesDatatableDto;
@@ -32,7 +32,7 @@ export const ActionCell: React.FC<ActionCellProps> = ({ rowEnquiry }) => {
   return (
     <span className="w-max items-center justify-center gap-2">
       {rowEnquiry.status === "PENDING" && (
-        <Button size="xs" variant="ghost" onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)} size="xs" variant="ghost">
           <IconMessageReply />
           <span>Respond</span>
         </Button>
@@ -40,25 +40,25 @@ export const ActionCell: React.FC<ActionCellProps> = ({ rowEnquiry }) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="group-hover:opacity-0">
+          <Button className="group-hover:opacity-0" size="icon" variant="ghost">
             <MoreVertical />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" side="bottom">
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <IconAdjustmentsBolt
+              className="mr-1 text-muted-foreground"
               size={16}
               strokeWidth={1.5}
-              className="text-muted-foreground mr-1"
             />
             <span>Manage enquiry</span>
           </DropdownMenuItem>
           {rowEnquiry.status === "PENDING" && (
             <DropdownMenuItem>
               <IconChecks
+                className="mr-1 text-muted-foreground"
                 size={16}
                 strokeWidth={1.5}
-                className="text-muted-foreground mr-1"
               />
               <span>Mark as resolved</span>
             </DropdownMenuItem>
@@ -70,9 +70,9 @@ export const ActionCell: React.FC<ActionCellProps> = ({ rowEnquiry }) => {
 
               <DropdownMenuItem variant="destructive">
                 <IconProgressX
+                  className="mr-1 text-muted-foreground"
                   size={16}
                   strokeWidth={1.5}
-                  className="text-muted-foreground mr-1"
                 />
                 <span>Mark as closed</span>
               </DropdownMenuItem>
@@ -83,8 +83,8 @@ export const ActionCell: React.FC<ActionCellProps> = ({ rowEnquiry }) => {
       {rowEnquiry._id && (
         <AgentEnquiryResponsePanel
           enquiryId={rowEnquiry._id as Id<"agent_enquiries">}
-          open={open}
           onOpenChange={setOpen}
+          open={open}
         />
       )}
     </span>

@@ -1,17 +1,13 @@
+import { v } from "convex/values";
+import { partial } from "convex-helpers/validators";
 import { authenticatedAction } from "../../_custom/action";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
 import { api, components } from "../../_generated/api";
-import {
-  createAgentDto,
-  createDBAgentDto,
-} from "./interfaces/restaurant.agents.dto";
-import { v } from "convex/values";
-import { partial } from "convex-helpers/validators";
-import schema, { vv } from "../../schema";
-import { action } from "../../_generated/server";
 import type { Doc } from "../../_generated/dataModel";
-import { restaurantAgent } from "@/infrastructure/components/agents/restaurants/agent";
+import { action } from "../../_generated/server";
+import schema from "../../schema";
+import { createDBAgentDto } from "./interfaces/restaurant.agents.dto";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -78,7 +74,7 @@ export const disconnectAgent = action({
       api.infrastructure.services.unipile.functions.disconnectAccount,
       {
         agentId: args.agent,
-      },
+      }
     );
 
     return { success: true };
@@ -93,7 +89,7 @@ export const generateWhatsappAgentCode = authenticatedAction({
   handler: async (ctx, args): Promise<{ success: boolean }> => {
     const data = await ctx.runAction(
       api.infrastructure.services.unipile.functions.createWhatsappAgent,
-      { agent: args.agent, restaurant: args.restaurant },
+      { agent: args.agent, restaurant: args.restaurant }
     );
 
     await ctx.runMutation(api.features.agents.functions.updateAgent, {
@@ -128,7 +124,7 @@ export const getAgentThreads = authenticatedQuery({
   handler: async (ctx, args) => {
     const threads = await ctx.runQuery(
       components.agent.threads.listThreadsByUserId,
-      { userId: args.agent },
+      { userId: args.agent }
     );
 
     return threads;

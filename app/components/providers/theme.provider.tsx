@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 // ~ ======= Types ======= ~
 export type Theme = "light" | "dark" | "system";
@@ -20,8 +21,8 @@ export const useTheme = create<ThemeProvider>()(
     {
       name: "bellefull-theme",
       storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    }
+  )
 );
 
 // ~ ======= Props ======= ~

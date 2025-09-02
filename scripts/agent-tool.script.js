@@ -12,7 +12,7 @@ const toolsDir = path.join(
   projectRoot,
   "convex",
   "infrastructure/components/agents/restaurants",
-  "tools",
+  "tools"
 );
 const barrelFile = path.join(toolsDir, "index.ts");
 
@@ -23,9 +23,7 @@ function generateBarrelFile() {
     const toolFiles = files.filter((file) => file.endsWith(".tool.ts")).sort();
 
     if (toolFiles.length === 0) {
-      console.log(
-        "⚠️  No restaurant agent tool files found in tools directory",
-      );
+      console.log("⚠️  No restaurant agent tool files found in tools directory");
       return;
     }
 
@@ -52,7 +50,7 @@ function generateBarrelFile() {
       console.log(
         `🛠️ Generated ${toolFiles.length} export${
           toolFiles.length === 1 ? "" : "s"
-        } in index.ts`,
+        } in index.ts`
       );
     } else {
       console.log("✨ Barrel file is already up to date");

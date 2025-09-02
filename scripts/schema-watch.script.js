@@ -59,7 +59,7 @@ function generateBarrelFile() {
       console.log(
         `📁 Generated ${schemaFiles.length} export${
           schemaFiles.length === 1 ? "" : "s"
-        } in index.ts`,
+        } in index.ts`
       );
     } else {
       console.log("✨ Barrel file is already up to date");
@@ -121,12 +121,12 @@ function generateDBTypeFile() {
 
         // Add import statement
         imports.push(
-          `import { ${exportName} } from "./convex/schemas/${fileName}.schema";`,
+          `import { ${exportName} } from "./convex/schemas/${fileName}.schema";`
         );
 
         // Add type definition using Infer
         typeDefinitions.push(
-          `export type ${typeName} = Infer<typeof ${exportName}.validator>;`,
+          `export type ${typeName} = Infer<typeof ${exportName}.validator>;`
         );
 
         console.log(`   📄 ${file} -> ${typeName}`);
@@ -154,7 +154,7 @@ function generateDBTypeFile() {
     fs.writeFileSync(typeFilePath, typeFileContent, "utf8");
 
     console.log(
-      "✅ Generated db.types.ts in project root with the following types:",
+      "✅ Generated db.types.ts in project root with the following types:"
     );
     console.log();
     typeDefinitions.forEach((typeDef) => {
@@ -163,7 +163,7 @@ function generateDBTypeFile() {
     });
     console.log();
     console.log(
-      `📁 Generated ${typeDefinitions.length} type${typeDefinitions.length === 1 ? "" : "s"} in db.types.ts`,
+      `📁 Generated ${typeDefinitions.length} type${typeDefinitions.length === 1 ? "" : "s"} in db.types.ts`
     );
   } catch (err) {
     console.error("❌ Error generating db.types.ts:", err.message);

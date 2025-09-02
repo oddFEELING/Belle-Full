@@ -1,31 +1,31 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 import React, { useEffect } from "react";
-import { z } from "zod";
-import { useParams } from "react-router";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "~/components/ui/resizable";
-import { useCachedQuery } from "~/hooks/use-app-query";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { logger } from "~/lib/logger";
-import { Separator } from "~/components/ui/separator";
-import {
-  Form,
-  FormItem,
-  FormLabel,
-  FormField,
-  FormMessage,
-  FormControl,
-} from "~/components/ui/form";
+import { useParams } from "react-router";
+import { z } from "zod";
 import { PhoneInput } from "~/components/custom-ui/phone.input";
 import { ValueMultiSelector } from "~/components/custom-ui/value-multi-select";
 import { Button } from "~/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "~/components/ui/resizable";
+import { Separator } from "~/components/ui/separator";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { logger } from "~/lib/logger";
 import { AgentEditorPanel } from "./partials/agent.editor.panel";
-import { useMutation } from "convex/react";
 
 const agentFormSchema = z.object({
   traits: z.array(z.string()),
@@ -39,7 +39,7 @@ const RestaurantAgentEditor = () => {
   // ~ ======= Queries ======= ~
   const { data: agent, isPending: agentIsPending } = useCachedQuery(
     api.features.agents.functions.getSingleAgent,
-    { agent: agentId },
+    { agent: agentId }
   );
   const updateAgent = useMutation(api.features.agents.functions.updateAgent);
 
@@ -86,22 +86,22 @@ const RestaurantAgentEditor = () => {
         {/* ~ =================================== ~ */}
         {/* -- Editor side panel -- */}
         {/* ~ =================================== ~ */}
-        <ResizablePanel maxSize={35} minSize={30} defaultSize={30}>
+        <ResizablePanel defaultSize={30} maxSize={35} minSize={30}>
           <div className="restaurant-dashboard--page h-full w-full">
-            <h3 className="text-lg font-semibold">Agent Editor</h3>
+            <h3 className="font-semibold text-lg">Agent Editor</h3>
             <p className="text-muted-foreground text-sm">
               This is where you can manage the details of your agent. Agent
               names cannot be changed.
             </p>
 
-            <div className="flex w-full flex-col p-2"></div>
+            <div className="flex w-full flex-col p-2" />
 
             <Separator className="my-2" />
 
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
                 className="mt-6 grid w-full space-y-4"
+                onSubmit={form.handleSubmit(onSubmit)}
               >
                 {/* ~ ======= Supervisor number field ======= ~ */}
                 <FormField
@@ -131,10 +131,10 @@ const RestaurantAgentEditor = () => {
                       <FormLabel>Traits</FormLabel>
                       <FormControl>
                         <ValueMultiSelector
-                          values={field.value}
                           onValuesChange={field.onChange}
                           options={AgentTraits}
                           placeholder="-> Traits"
+                          values={field.value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -144,7 +144,7 @@ const RestaurantAgentEditor = () => {
 
                 {/* ~ ======= Buttons ======= ~ */}
                 <div className="flex w-full items-center justify-end gap-2">
-                  <Button size="sm" disabled={!form.formState.isDirty}>
+                  <Button disabled={!form.formState.isDirty} size="sm">
                     Save
                   </Button>
                 </div>

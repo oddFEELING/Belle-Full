@@ -1,14 +1,14 @@
-import { customQuery } from "convex-helpers/server/customFunctions";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import type { UserIdentity } from "convex/server";
+import { customQuery } from "convex-helpers/server/customFunctions";
+import type { Id } from "../_generated/dataModel";
 import { query } from "../_generated/server";
-import { type UserIdentity } from "convex/server";
-import { Id } from "../_generated/dataModel";
 
 export const authenticatedQuery = customQuery(query, {
   args: {},
   input: async (
     ctx,
-    args,
+    args
   ): Promise<{
     ctx: { user: (Partial<UserIdentity> & { id: Id<"users"> }) | null };
     args: {};

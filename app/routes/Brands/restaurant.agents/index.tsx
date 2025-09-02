@@ -1,11 +1,15 @@
 import {
+  IconBrandWhatsapp,
   IconChevronDown,
   IconRobot,
   IconTrash,
-  IconBrandWhatsapp,
 } from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Doc, Id } from "convex/_generated/dataModel";
 import { Chart } from "iconsax-reactjs";
 import { parseAsString, useQueryState } from "nuqs";
+import { useParams } from "react-router";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -14,41 +18,37 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Tabs, TabsTrigger, TabsList } from "~/components/ui/tabs";
-import { RestaurantAgentsOverviewTab } from "./partials/overview.tab";
-import { useParams } from "react-router";
-import type { Doc, Id } from "convex/_generated/dataModel";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { cn } from "~/lib/utils";
 import { RestaurantAgentsTab } from "./partials/agents.tab";
 import { RestaurantAgentsEnquiriesTab } from "./partials/enquiries.tab";
-import { useCachedQuery } from "~/hooks/use-app-query";
-import { api } from "convex/_generated/api";
-import { Badge } from "~/components/ui/badge";
-import { cn } from "~/lib/utils";
+import { RestaurantAgentsOverviewTab } from "./partials/overview.tab";
 
 const RestaurantAgents = () => {
   const restaurantId = useParams().restaurantId as Id<"restaurants">;
   const [activeTab, setActiveTab] = useQueryState(
     "activeTab",
-    parseAsString.withDefault("overview"),
+    parseAsString.withDefault("overview")
   );
 
   // ~ ======= Queries ======= ~
   const { data: enquiries, isPending: enquiriesIsPending } = useCachedQuery(
     api.features.agent_enquiries.functions.getAgentEnquiriesByRestaurant,
-    { restaurant: restaurantId },
+    { restaurant: restaurantId }
   );
 
   const hasEnquiries =
     enquiries?.filter(
-      (enquiry: Doc<"agent_enquiries">) => enquiry.status === "PENDING",
+      (enquiry: Doc<"agent_enquiries">) => enquiry.status === "PENDING"
     ).length > 0;
 
   return (
     <div className="restaurant-dashboard--page">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Agents</h2>
-          <p className="text-muted-foreground max-w-2xl">
+          <h2 className="font-semibold text-2xl">Agents</h2>
+          <p className="max-w-2xl text-muted-foreground">
             Manage the agents for your restaurant. Create, edit, and organize
             your agents.
           </p>
@@ -61,7 +61,7 @@ const RestaurantAgents = () => {
               <IconChevronDown size={16} strokeWidth={1.5} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" side="bottom" className="w-48">
+          <DropdownMenuContent align="end" className="w-48" side="bottom">
             <DropdownMenuItem>
               <IconRobot size={18} strokeWidth={1.5} />
               <span>Create Agent</span>
@@ -81,45 +81,45 @@ const RestaurantAgents = () => {
       {/* ~ =================================== ~ */}
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
         <div className="mt-2 mb-3 w-full max-w-md">
-          <TabsList className="bg-muted h-max w-full">
+          <TabsList className="h-max w-full bg-muted">
             <TabsTrigger
-              value="overview"
               className="dark:data-[state=active]:bg-accent"
+              value="overview"
             >
               <Chart
+                className="mr-1 dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60 mr-1"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Overview
               </span>
             </TabsTrigger>
 
             <TabsTrigger
-              value="agents"
               className="dark:data-[state=active]:bg-accent"
+              value="agents"
             >
               <IconRobot
+                className="mr-1 dark:text-foreground/60"
                 size={16}
                 strokeWidth={1.5}
-                className="dark:text-foreground/60 mr-1"
               />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Agents
               </span>
             </TabsTrigger>
 
             <TabsTrigger
+              className={cn(hasEnquiries && "animate-pulse border-primary/40")}
               value="enquiries"
-              className={cn(hasEnquiries && "border-primary/40 animate-pulse")}
             >
               <IconBrandWhatsapp size={16} strokeWidth={1.5} />
-              <span className="dark:text-foreground/60 hidden sm:block">
+              <span className="hidden sm:block dark:text-foreground/60">
                 Enquiries
               </span>
               {hasEnquiries && (
-                <span className="bg-primary ml-2 h-2 w-2 animate-pulse rounded-full" />
+                <span className="ml-2 h-2 w-2 animate-pulse rounded-full bg-primary" />
               )}
             </TabsTrigger>
           </TabsList>

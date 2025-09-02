@@ -1,7 +1,7 @@
-import { internalQuery, query } from "../../_generated/server";
 import { Infer, v } from "convex/values";
-import type { Doc } from "../../_generated/dataModel";
 import { parse } from "convex-helpers/validators";
+import type { Doc } from "../../_generated/dataModel";
+import { internalQuery, query } from "../../_generated/server";
 import {
   type AgentRestaurantReturn,
   agentRestaurantReturn,

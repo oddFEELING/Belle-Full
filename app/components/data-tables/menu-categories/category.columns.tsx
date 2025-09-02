@@ -1,7 +1,7 @@
-import { type ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { Doc } from "convex/_generated/dataModel";
-import { Checkbox } from "~/components/ui/checkbox";
 import { format } from "date-fns";
+import { Checkbox } from "~/components/ui/checkbox";
 import { ActionCell } from "./cells/category.actions.cell";
 
 export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
@@ -9,21 +9,21 @@ export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        className="border-muted-foreground"
+        aria-label="select all"
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        aria-label="select all"
+        className="border-muted-foreground"
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       />
     ),
     cell: ({ row }) => (
       <Checkbox
-        className="border-muted-foreground"
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        checked={row.getIsSelected()}
+        className="border-muted-foreground"
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
       />
     ),
     enableSorting: false,
@@ -44,7 +44,7 @@ export const MenusCategoriesTableColumns: ColumnDef<Doc<"categories">>[] = [
     header: "Name",
     enableHiding: false,
     cell: ({ row }) => (
-      <span className="hover:text-primary cursor-pointer underline-offset-4 transition-all duration-150 ease-out hover:underline">
+      <span className="cursor-pointer underline-offset-4 transition-all duration-150 ease-out hover:text-primary hover:underline">
         {row.original.name}
       </span>
     ),

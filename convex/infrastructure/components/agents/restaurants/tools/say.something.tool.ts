@@ -1,7 +1,7 @@
+import { createTool } from "@convex-dev/agent";
 import { z } from "zod";
 import { api } from "@/_generated/api";
-import { createTool } from "@convex-dev/agent";
-import { RestaurantAgentCtx } from "../agent";
+import type { RestaurantAgentCtx } from "../agent";
 
 export const saySomething = createTool({
   description:
@@ -13,7 +13,7 @@ export const saySomething = createTool({
       {
         response: args.message,
         chat_id: ctx.chatId,
-      },
+      }
     );
 
     return "Message sent";

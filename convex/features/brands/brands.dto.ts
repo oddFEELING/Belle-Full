@@ -1,5 +1,4 @@
-import { v } from "convex/values";
-import { Infer } from "convex/values";
+import { type Infer, v } from "convex/values";
 
 export const createBrandDto = v.object({
   name: v.string(),

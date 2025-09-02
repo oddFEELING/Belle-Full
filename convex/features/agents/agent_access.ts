@@ -1,13 +1,8 @@
 import { v } from "convex/values";
-import {
-  internalMutation,
-  internalQuery,
-  mutation,
-  query,
-} from "../../_generated/server";
 import { partial } from "convex-helpers/validators";
-import schema from "../../schema";
 import type { Doc } from "../../_generated/dataModel";
+import { internalMutation, internalQuery } from "../../_generated/server";
+import schema from "../../schema";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -59,7 +54,7 @@ export const agentCreateEnquiry = internalMutation({
     chatId: v.string(),
   },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
-    ctx.db.insert("agent_enquiries", {
+    await ctx.db.insert("agent_enquiries", {
       ...args,
       status: "PENDING",
       chatId: args.chatId,

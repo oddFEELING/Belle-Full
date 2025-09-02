@@ -1,8 +1,8 @@
+import { createTool } from "@convex-dev/agent";
 import { z } from "zod";
 import { internal } from "@/_generated/api";
-import { createTool } from "@convex-dev/agent";
-import { RestaurantAgentCtx } from "../agent";
 import type { Doc } from "@/_generated/dataModel";
+import type { RestaurantAgentCtx } from "../agent";
 
 export const getRestaurantFoodItems = createTool({
   description:
@@ -12,7 +12,7 @@ export const getRestaurantFoodItems = createTool({
     return await ctx.runQuery(
       internal.features.restaurants.agent_access
         .getAgentMenuItemsByRestaurantId,
-      { restaurantId: ctx.restaurantId },
+      { restaurantId: ctx.restaurantId }
     );
   },
 });

@@ -1,25 +1,25 @@
-import * as React from "react";
+import type * as React from "react";
 import { useIsMobile } from "~/hooks/use-mobile";
+import { cn } from "~/lib/utils";
+import { Button } from "./button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
 } from "./dialog";
 import {
   Drawer,
   DrawerContent,
   DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-  DrawerFooter,
 } from "./drawer";
-import { cn } from "~/lib/utils";
-import { Button } from "./button";
 
 // Panel - main wrapper that switches between Drawer (mobile) and Dialog (desktop)
 function Panel(props: React.ComponentProps<typeof Dialog>) {
@@ -63,7 +63,7 @@ function PanelTitle(props: React.ComponentProps<typeof DialogTitle>) {
 
 // PanelDescription - descriptive text below the title
 function PanelDescription(
-  props: React.ComponentProps<typeof DialogDescription>,
+  props: React.ComponentProps<typeof DialogDescription>
 ) {
   const isMobile = useIsMobile();
   const Component = isMobile ? DrawerDescription : DialogDescription;
@@ -80,16 +80,16 @@ function PanelFooter(props: React.ComponentProps<"div">) {
     <div
       className={cn(
         isMobile
-          ? "bg-background/95 supports-[backdrop-filter]:bg-background/60 flex-shrink-0 border-t p-4 backdrop-blur"
+          ? "flex-shrink-0 border-t bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
           : "mt-5 flex justify-end gap-2",
-        props.className,
+        props.className
       )}
     >
       <div
-        data-slot="panel-footer"
         className={cn(
-          isMobile ? "flex w-full gap-2" : "flex justify-end gap-2",
+          isMobile ? "flex w-full gap-2" : "flex justify-end gap-2"
         )}
+        data-slot="panel-footer"
         {...props}
       />
     </div>
@@ -99,7 +99,7 @@ function PanelFooter(props: React.ComponentProps<"div">) {
 const PanelCancelButton = (props: React.ComponentProps<typeof Button>) => {
   const isMobile = useIsMobile();
   return (
-    <Button variant="outline" className={isMobile ? "flex-1" : ""} {...props} />
+    <Button className={isMobile ? "flex-1" : ""} variant="outline" {...props} />
   );
 };
 

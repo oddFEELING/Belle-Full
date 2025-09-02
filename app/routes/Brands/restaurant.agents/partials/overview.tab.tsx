@@ -1,19 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
-  IconClipboardText,
-  IconSoup,
-  IconPennant,
-  IconSquareRoundedPercentage,
   IconBubbleText,
-  IconShoppingCart,
+  IconClipboardText,
+  IconGrain,
   IconMessageChatbot,
   IconMushroom,
-  IconGrain,
+  IconPennant,
+  IconShoppingCart,
+  IconSoup,
+  IconSquareRoundedPercentage,
 } from "@tabler/icons-react";
-import { TabsContent } from "~/components/ui/tabs";
-import type { Id } from "convex/_generated/dataModel";
-import { useCachedQuery } from "~/hooks/use-app-query";
 import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { TabsContent } from "~/components/ui/tabs";
+import { useCachedQuery } from "~/hooks/use-app-query";
 
 interface RestaurantAgentsOverviewTabProps {
   restaurantId: Id<"restaurants">;
@@ -33,15 +33,15 @@ export const RestaurantAgentsOverviewTab: React.FC<
         {/* Total Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Agents</CardTitle>
+            <CardTitle className="font-medium text-sm">Total Agents</CardTitle>
             <IconGrain
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="font-bold text-2xl">
               {menuAnalytics?.menuCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
@@ -53,15 +53,15 @@ export const RestaurantAgentsOverviewTab: React.FC<
         {/* Total Menu Items Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
+            <CardTitle className="font-medium text-sm">Active Agents</CardTitle>
             <IconMushroom
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="font-bold text-2xl">
               {menuAnalytics?.menuItemCount || 0}
             </div>
             <p className="text-muted-foreground text-xs">
@@ -73,15 +73,15 @@ export const RestaurantAgentsOverviewTab: React.FC<
         {/* Active Menus Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Agent Chats</CardTitle>
+            <CardTitle className="font-medium text-sm">Agent Chats</CardTitle>
             <IconMessageChatbot
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
+            <div className="font-bold text-2xl">4</div>
             <p className="text-muted-foreground text-xs">
               Total chats with agents.
             </p>
@@ -91,15 +91,15 @@ export const RestaurantAgentsOverviewTab: React.FC<
         {/* Average Items per Menu Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Agent Orders</CardTitle>
+            <CardTitle className="font-medium text-sm">Agent Orders</CardTitle>
             <IconShoppingCart
-              size={18}
               className="text-muted-foreground"
+              size={18}
               strokeWidth={1.5}
             />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">21</div>
+            <div className="font-bold text-2xl">21</div>
             <p className="text-muted-foreground text-xs">
               Total orders placed by agents.
             </p>

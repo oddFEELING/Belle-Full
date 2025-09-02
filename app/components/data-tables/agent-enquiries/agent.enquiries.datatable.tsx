@@ -1,15 +1,18 @@
+import { IconCategoryMinus, IconMessageX } from "@tabler/icons-react";
 import {
   type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  type SortingState,
-  getSortedRowModel,
-  getPaginationRowModel,
-  type ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
+import { useState } from "react";
+import DataTablePagination from "~/components/data-tables/pagination.datatables";
 import {
   Table,
   TableBody,
@@ -19,11 +22,8 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { AgentEnquiriesTableColumns } from "./agent.enquiries.columns";
-import DataTablePagination from "~/components/data-tables/pagination.datatables";
-import { useState } from "react";
-import AgentEnquiriesDataTableFilter from "./agent.enquiries.filter";
-import { IconCategoryMinus, IconMessageX } from "@tabler/icons-react";
 import type { AgentEnquiriesDatatableDto } from "./agent.enquiries.datable.dto";
+import AgentEnquiriesDataTableFilter from "./agent.enquiries.filter";
 
 interface DataTableProps {
   columns: ColumnDef<AgentEnquiriesDatatableDto, unknown>[];
@@ -70,12 +70,12 @@ const AgentEnquiriesDataTable = ({ columns, data }: DataTableProps) => {
           {/* ~ =================================== ~ */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-muted/50">
+              <TableRow className="bg-muted/50" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {flexRender(
                       header.column.columnDef.header,
-                      header.getContext(),
+                      header.getContext()
                     )}
                   </TableHead>
                 ))}
@@ -90,14 +90,14 @@ const AgentEnquiriesDataTable = ({ columns, data }: DataTableProps) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  key={row.id}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -106,19 +106,19 @@ const AgentEnquiriesDataTable = ({ columns, data }: DataTableProps) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
                   className="h-24 text-center"
+                  colSpan={columns.length}
                 >
                   <div className="flex flex-col items-center justify-center space-y-3 py-5">
                     <IconMessageX
+                      className="text-muted-foreground"
                       size={26}
                       strokeWidth={1.5}
-                      className="text-muted-foreground"
                     />
-                    <span className="text-muted-foreground text-lg font-medium">
+                    <span className="font-medium text-lg text-muted-foreground">
                       No Enquiries Found
                     </span>
-                    <span className="text-muted-foreground w-full max-w-sm text-center text-sm text-wrap">
+                    <span className="w-full max-w-sm text-wrap text-center text-muted-foreground text-sm">
                       Adjust your search or filter to find what you need. or
                       create a new category.
                     </span>

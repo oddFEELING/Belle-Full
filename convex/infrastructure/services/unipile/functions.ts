@@ -1,15 +1,15 @@
 "use node";
 
 import { v } from "convex/values";
-import { action, internalAction } from "../../../_generated/server";
 import { UnipileClient } from "unipile-node-sdk";
-import { api } from "../../../_generated/api";
 import z from "zod";
 import { r2 } from "@/infrastructure/components/r2";
+import { api } from "../../../_generated/api";
+import { action, internalAction } from "../../../_generated/server";
 
 const unipileClient = new UnipileClient(
   `https://${process.env.UNIPILE_DSN}`,
-  process.env.UNIPILE_ACCESS_TOKEN as string,
+  process.env.UNIPILE_ACCESS_TOKEN as string
 );
 
 // ~ =============================================>
@@ -78,10 +78,10 @@ export const disconnectAccount = action({
   handler: async (ctx, args) => {
     const toDelete = await ctx.runQuery(
       api.features.agents.functions.getSingleAgent,
-      { agent: args.agentId },
+      { agent: args.agentId }
     );
 
-    if (!toDelete || !toDelete.unipile_id) {
+    if (!(toDelete && toDelete.unipile_id)) {
       throw new Error("Agent not found");
     }
 
