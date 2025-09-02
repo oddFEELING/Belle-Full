@@ -56,11 +56,13 @@ export const agentCreateEnquiry = internalMutation({
     agentId: v.id("restaurant_agents"),
     enquiry: v.string(),
     restaurant: v.id("restaurants"),
+    chatId: v.string(),
   },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
     ctx.db.insert("agent_enquiries", {
       ...args,
       status: "PENDING",
+      chatId: args.chatId,
     });
 
     return { success: true };

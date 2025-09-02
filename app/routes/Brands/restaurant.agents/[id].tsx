@@ -105,40 +105,62 @@ const RestaurantAgentPage = () => {
       <div className="mb-6 flex items-end justify-between">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-2xl font-semibold">{agent.name}</h2>
+            {/* Agent name: prominent, subtle gradient for modern emphasis */}
+            <h2 className="from-foreground via-foreground to-foreground/60 bg-gradient-to-r bg-clip-text text-2xl font-semibold tracking-tight text-transparent">
+              {agent.name}
+            </h2>
             {
               {
                 CONNECTED: (
-                  <StatusBadge
-                    text={agent.connection_status}
-                    status="success"
-                    className="ml-2"
-                  />
+                  <>
+                    {/* Status dot: quick visual cue for connection state */}
+                    <StatusBadge
+                      text={agent.connection_status}
+                      status="success"
+                      className="ml-1"
+                    />
+                  </>
                 ),
                 PENDING: (
-                  <StatusBadge
-                    text={agent.connection_status}
-                    status="warning"
-                    className="ml-2"
-                  />
+                  <>
+                    {/* Status dot: quick visual cue for connection state */}
+                    <StatusBadge
+                      text={agent.connection_status}
+                      status="warning"
+                      className="ml-1"
+                    />
+                  </>
                 ),
                 DISCONNECTED: (
-                  <StatusBadge
-                    text={agent.connection_status}
-                    status="error"
-                    className="ml-2"
-                  />
+                  <>
+                    {/* Status dot: quick visual cue for connection state */}
+                    <StatusBadge
+                      text={agent.connection_status}
+                      status="error"
+                      className="ml-1"
+                    />
+                  </>
                 ),
               }[agent.connection_status]
             }
-            <Badge variant="outline" className="text-muted-foreground">
+            {/* Agent type: soft rounded pill for low-contrast emphasis */}
+            <Badge
+              variant="secondary"
+              className="text-foreground/70 rounded-full px-2.5 py-0.5 text-xs"
+            >
               {agent.type}
             </Badge>
           </div>
 
-          <p className="text-muted-foreground mt-1 line-clamp-3 flex max-w-2xl flex-wrap items-center gap-1.5 text-sm">
+          {/* Agent traits: compact, quiet chips to reduce visual noise */}
+          <p className="text-muted-foreground/80 mt-1 line-clamp-3 flex max-w-2xl flex-wrap items-center gap-1 text-xs">
             {agent.traits?.map((trait: string, idx: number) => (
-              <Badge variant="outline" key={idx}>
+              <Badge
+                variant="secondary"
+                key={idx}
+                className="text-foreground/70 h-6 rounded-full px-2.5 font-normal"
+                title={trait}
+              >
                 {trait}
               </Badge>
             )) || "Agent has no traits"}

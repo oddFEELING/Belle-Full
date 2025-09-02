@@ -19,7 +19,7 @@ type ActionCellProps = {
 
 export const ActionCell: React.FC<ActionCellProps> = ({ rowCategory }) => {
   const deleteCategory = useMutation(
-    api.menus.categories.functions.deleteCategory,
+    api.features.menu_categories.functions.deleteCategory,
   );
 
   return (

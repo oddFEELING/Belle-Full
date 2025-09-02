@@ -73,7 +73,7 @@ export const chat = action({
         agentName: args.agentName,
       }),
       prompt: args.prompt,
-      temperature: 0.5,
+      temperature: 0.3,
     });
 
     return response.text;

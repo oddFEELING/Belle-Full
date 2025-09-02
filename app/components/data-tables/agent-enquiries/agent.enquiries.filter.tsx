@@ -33,18 +33,19 @@ import { api } from "convex/_generated/api";
 import { useIsMobile } from "~/hooks/use-mobile";
 import { CreateMenuCategoryPanel } from "~/components/panels/create.menu.category.panel";
 import { useParams } from "react-router";
+import type { AgentEnquiriesDatatableDto } from "./agent.enquiries.datable.dto";
 
 type FileDataTableFilterProps = {
-  table: Table<Doc<"categories">>;
+  table: Table<AgentEnquiriesDatatableDto>;
 };
 
-const MenuCategoryDataTableFilter = ({ table }: FileDataTableFilterProps) => {
+const AgentEnquiriesDataTableFilter = ({ table }: FileDataTableFilterProps) => {
   const isMobile = useIsMobile();
   const { restaurantId, brandId } = useParams();
   const [openCreatePanel, setOpenCreatePanel] = useState<boolean>(false);
   const selectedCount = table.getSelectedRowModel().rows.length;
   const deleteCategory = useMutation(
-    api.features.menu_categories.functions.deleteCategory,
+    api.features.agent_enquiries.functions.deleteCategory,
   );
 
   // ~ ======= Handle delete documents ======= ~
@@ -69,9 +70,11 @@ const MenuCategoryDataTableFilter = ({ table }: FileDataTableFilterProps) => {
           <Input
             placeholder="Search by name..."
             className="w-full pl-7"
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("agent.name")?.getFilterValue() as string) ?? ""
+            }
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table.getColumn("agent.name")?.setFilterValue(event.target.value)
             }
           />
         </div>
@@ -179,4 +182,4 @@ const MenuCategoryDataTableFilter = ({ table }: FileDataTableFilterProps) => {
   );
 };
 
-export default MenuCategoryDataTableFilter;
+export default AgentEnquiriesDataTableFilter;

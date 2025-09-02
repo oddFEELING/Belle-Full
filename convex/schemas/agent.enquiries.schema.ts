@@ -5,6 +5,7 @@ export const agent_enquiries = defineTable({
   threadId: v.string(),
   restaurant: v.id("restaurants"),
   agentId: v.id("restaurant_agents"),
+  chatId: v.string(),
   enquiry: v.string(),
   status: v.union(
     v.literal("PENDING"),
@@ -16,4 +17,5 @@ export const agent_enquiries = defineTable({
   response: v.optional(v.string()),
 })
   .index("by_restaurant", ["restaurant"])
-  .index("by_agent", ["agentId"]);
+  .index("by_agent", ["agentId"])
+  .index("by_status", ["status"]);

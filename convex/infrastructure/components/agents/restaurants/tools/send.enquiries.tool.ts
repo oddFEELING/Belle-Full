@@ -17,6 +17,7 @@ export const askRestaurantQuestion = createTool({
       agentId: ctx.agentId,
       restaurant: ctx.restaurantId,
       enquiry: args.question,
+      chatId: ctx.chatId,
     });
 
     return "Enquiry sent";

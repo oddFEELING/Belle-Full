@@ -17,8 +17,13 @@ import {
 import { Tabs, TabsTrigger, TabsList } from "~/components/ui/tabs";
 import { RestaurantAgentsOverviewTab } from "./partials/overview.tab";
 import { useParams } from "react-router";
-import type { Id } from "convex/_generated/dataModel";
+import type { Doc, Id } from "convex/_generated/dataModel";
 import { RestaurantAgentsTab } from "./partials/agents.tab";
+import { RestaurantAgentsEnquiriesTab } from "./partials/enquiries.tab";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { api } from "convex/_generated/api";
+import { Badge } from "~/components/ui/badge";
+import { cn } from "~/lib/utils";
 
 const RestaurantAgents = () => {
   const restaurantId = useParams().restaurantId as Id<"restaurants">;
@@ -26,6 +31,17 @@ const RestaurantAgents = () => {
     "activeTab",
     parseAsString.withDefault("overview"),
   );
+
+  // ~ ======= Queries ======= ~
+  const { data: enquiries, isPending: enquiriesIsPending } = useCachedQuery(
+    api.features.agent_enquiries.functions.getAgentEnquiriesByRestaurant,
+    { restaurant: restaurantId },
+  );
+
+  const hasEnquiries =
+    enquiries?.filter(
+      (enquiry: Doc<"agent_enquiries">) => enquiry.status === "PENDING",
+    ).length > 0;
 
   return (
     <div className="restaurant-dashboard--page">
@@ -94,17 +110,24 @@ const RestaurantAgents = () => {
               </span>
             </TabsTrigger>
 
-            <TabsTrigger value="enquiries">
+            <TabsTrigger
+              value="enquiries"
+              className={cn(hasEnquiries && "border-primary/40 animate-pulse")}
+            >
               <IconBrandWhatsapp size={16} strokeWidth={1.5} />
               <span className="dark:text-foreground/60 hidden sm:block">
                 Enquiries
               </span>
+              {hasEnquiries && (
+                <span className="bg-primary ml-2 h-2 w-2 animate-pulse rounded-full" />
+              )}
             </TabsTrigger>
           </TabsList>
         </div>
 
         <RestaurantAgentsOverviewTab restaurantId={restaurantId} />
         <RestaurantAgentsTab restaurantId={restaurantId} />
+        <RestaurantAgentsEnquiriesTab restaurantId={restaurantId} />
       </Tabs>
     </div>
   );
