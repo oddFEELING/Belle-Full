@@ -2,21 +2,15 @@ import {
   IconArrowLeft,
   IconBasket,
   IconBowlChopsticks,
-  IconBuildingArch,
   IconBuildingStore,
   IconCheck,
   IconClipboardText,
-  IconCoinPound,
-  IconCooker,
   IconGavel,
   IconGhost2,
-  IconHome,
   IconLayoutDashboard,
   IconMapCheck,
   IconPlus,
   IconRobot,
-  IconSettings,
-  IconTransactionPound,
   IconUsers,
   IconWallet,
 } from "@tabler/icons-react";
@@ -43,7 +37,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -59,11 +52,10 @@ const RestaurantSidebar = () => {
   const { toggleSidebar } = useSidebar();
 
   // ~ ======= Queries ======= ~
-  const { data: brandRestaurants, isPending: brandRestaurantsIsPending } =
-    useCachedQuery(
-      api.features.restaurants.functions.getBrandRestaurants,
-      brandId ? { brandId: brandId as Id<"brands"> } : "skip"
-    );
+  const { data: brandRestaurants } = useCachedQuery(
+    api.features.restaurants.functions.getBrandRestaurants,
+    brandId ? { brandId: brandId as Id<"brands"> } : "skip"
+  );
   const { data: restaurant, isPending: restaurantIsPending } = useCachedQuery(
     api.features.restaurants.functions.getRestaurant,
     restaurantId ? { id: restaurantId as Id<"restaurants"> } : "skip"

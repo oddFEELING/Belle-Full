@@ -89,7 +89,7 @@ export const createRestaurantAgentThread = action({
     senderName: v.string(),
     agentId: v.id("restaurant_agents"),
   },
-  handler: async (ctx, args) => {
+  handler: (ctx, args) => {
     /**
      * The userId is the agentId from the db
      * The title is the senderId_x_agentId

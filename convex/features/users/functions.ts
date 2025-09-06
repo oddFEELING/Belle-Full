@@ -1,8 +1,6 @@
-import { getAuthSessionId, getAuthUserId } from "@convex-dev/auth/server";
-import { v } from "convex/values";
-import { authenticatedMutation } from "@/_custom/mutation";
+import { getAuthUserId } from "@convex-dev/auth/server";
 import type { Doc } from "@/_generated/dataModel";
-import { mutation, query } from "@/_generated/server";
+import { query } from "@/_generated/server";
 
 // ~ =============================================>
 // ~ ======= Get current user session

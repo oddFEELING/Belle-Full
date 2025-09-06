@@ -1,5 +1,4 @@
 import { Link, Outlet } from "react-router";
-import { Button } from "~/components/ui/button";
 
 const AuthLayout = () => {
   return (

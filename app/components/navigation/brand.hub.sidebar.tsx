@@ -1,8 +1,6 @@
 import {
   IconBuildingStore,
-  IconBurger,
   IconCheck,
-  IconChefHat,
   IconLayoutDashboard,
   IconPlus,
   IconSettings,
@@ -13,10 +11,8 @@ import {
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { ChevronDown } from "lucide-react";
-import { use } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useCachedQuery } from "~/hooks/use-app-query";
-import { useUser } from "~/hooks/use-user/use-user";
 import { cn } from "~/lib/utils";
 import {
   DropdownMenu,
@@ -34,7 +30,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -44,7 +39,6 @@ import {
 const BrandHubSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useUser();
   const { brandId } = useParams();
 
   // ~ ======= Queries  ======= ~
@@ -92,17 +86,16 @@ const BrandHubSidebar = () => {
                   </DropdownMenuItem>
                 ) : (
                   <>
-                    {brands &&
-                      brands?.map((brd) => (
-                        <DropdownMenuItem key={brd!._id}>
-                          <span>{brd?.name}</span>
-                          <IconCheck
-                            className={cn("ml-auto")}
-                            size={18}
-                            strokeWidth={1.5}
-                          />
-                        </DropdownMenuItem>
-                      ))}
+                    {brands?.map((brd) => (
+                      <DropdownMenuItem key={brd!._id}>
+                        <span>{brd?.name}</span>
+                        <IconCheck
+                          className={cn("ml-auto")}
+                          size={18}
+                          strokeWidth={1.5}
+                        />
+                      </DropdownMenuItem>
+                    ))}
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>

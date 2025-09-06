@@ -4,7 +4,6 @@ import {
   IconBuildingStore,
   IconChefHat,
   IconMapPinBolt,
-  IconSearch,
   IconSend,
   IconSparkles,
 } from "@tabler/icons-react";
@@ -25,9 +24,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { useIsMobile } from "~/hooks/use-mobile";
-import type { Route } from "./+types/home";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "BelleFull" },
     { name: "description", content: "African cuisine made simple." },
@@ -113,14 +111,15 @@ export default function Home() {
 
         <div className="mt-10 grid w-full grid-cols-3 gap-4">
           {buttonActions.map((action) => (
-            <div
+            <button
               className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border p-3 text-muted-foreground transition-all duration-300 ease-out hover:border-primary/40 hover:font-medium hover:text-primary"
               key={action.text}
               onClick={action.action}
+              type="button"
             >
               <action.Icon size={20} strokeWidth={1.3} />
               <span className="text-sm">{action.text}</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -149,5 +148,11 @@ const buttonActions: {
       });
     },
   },
-  { text: "Near me", Icon: IconMapPinBolt, action: () => {} },
+  {
+    text: "Near me",
+    Icon: IconMapPinBolt,
+    action: () => {
+      return;
+    },
+  },
 ];

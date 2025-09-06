@@ -15,7 +15,7 @@ interface CategoriesTabProps {
 export const CategoriesTab: React.FC<CategoriesTabProps> = ({
   restaurantId,
 }) => {
-  const { data: categories, isPending: categoriesIsPending } = useCachedQuery(
+  const { data: categories } = useCachedQuery(
     api.features.menu_categories.functions.getByRestaurant,
     restaurantId ? { restaurant: restaurantId } : "skip"
   );

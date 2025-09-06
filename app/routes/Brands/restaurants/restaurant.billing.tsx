@@ -1,21 +1,8 @@
 import { IconPencilBolt } from "@tabler/icons-react";
-import { api } from "convex/_generated/api";
-import type { Id } from "convex/_generated/dataModel";
-import React from "react";
-import { useParams } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
-import { Tabs } from "~/components/ui/tabs";
-import { useCachedQuery } from "~/hooks/use-app-query";
 
 const RestaurantBillingPage = () => {
-  const restaurantId = useParams().restaurantId as Id<"restaurants">;
-  const { data: restaurant, isPending } = useCachedQuery(
-    api.features.restaurants.functions.getRestaurant,
-    {
-      id: restaurantId,
-    }
-  );
   return (
     <div className="restaurant-dashboard--page">
       {/* ~ =================================== ~ */}

@@ -22,7 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { MenusCategoriesTableColumns } from "./category.columns";
+
+export { MenusCategoriesTableColumns } from "./category.columns";
+
 import MenuCategoryDataTableFilter from "./category.filter";
 
 interface DataTableProps {
@@ -140,4 +142,4 @@ const MenuCategoryDataTable = ({ columns, data }: DataTableProps) => {
   );
 };
 
-export { MenuCategoryDataTable, MenusCategoriesTableColumns };
+export { MenuCategoryDataTable };

@@ -139,7 +139,7 @@ export const useFileUpload = (
   const clearFiles = useCallback(() => {
     setState((prev) => {
       // Clean up object URLs
-      prev.files.forEach((file) => {
+      for (const file of prev.files) {
         if (
           file.preview &&
           file.file instanceof File &&
@@ -147,7 +147,7 @@ export const useFileUpload = (
         ) {
           URL.revokeObjectURL(file.preview);
         }
-      });
+      }
 
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -192,7 +192,7 @@ export const useFileUpload = (
 
       const validFiles: FileWithPreview[] = [];
 
-      newFilesArray.forEach((file) => {
+      for (const file of newFilesArray) {
         // Only check for duplicates if multiple files are allowed
         if (multiple) {
           const isDuplicate = state.files.some(
@@ -203,7 +203,7 @@ export const useFileUpload = (
 
           // Skip duplicate files silently
           if (isDuplicate) {
-            return;
+            continue;
           }
         }
 
@@ -214,7 +214,7 @@ export const useFileUpload = (
               ? `Some files exceed the maximum size of ${formatBytes(maxSize)}.`
               : `File exceeds the maximum size of ${formatBytes(maxSize)}.`
           );
-          return;
+          continue;
         }
 
         const error = validateFile(file);
@@ -227,7 +227,7 @@ export const useFileUpload = (
             preview: createPreview(file),
           });
         }
-      });
+      }
 
       // Only update state if we have valid files to add
       if (validFiles.length > 0) {
@@ -276,9 +276,8 @@ export const useFileUpload = (
       setState((prev) => {
         const fileToRemove = prev.files.find((file) => file.id === id);
         if (
-          fileToRemove &&
-          fileToRemove.preview &&
-          fileToRemove.file instanceof File &&
+          fileToRemove?.preview &&
+          fileToRemove?.file instanceof File &&
           fileToRemove.file.type.startsWith("image/")
         ) {
           URL.revokeObjectURL(fileToRemove.preview);

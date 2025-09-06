@@ -1,10 +1,9 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { getAll, getManyFrom } from "convex-helpers/server/relationships";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
 import type { Doc, Id } from "../../_generated/dataModel";
-import { mutation, query } from "../../_generated/server";
+import { mutation } from "../../_generated/server";
 import { createBrandDto } from "./brands.dto";
 
 // ~ =============================================>

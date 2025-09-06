@@ -29,7 +29,9 @@ type PromptInputContextType = {
 const PromptInputContext = createContext<PromptInputContextType>({
   isLoading: false,
   value: "",
-  setValue: () => {},
+  setValue: () => {
+    // No initial value
+  },
   maxHeight: 240,
   onSubmit: undefined,
   disabled: false,

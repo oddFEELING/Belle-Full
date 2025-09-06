@@ -49,8 +49,9 @@ export const unipileMessagingWebhooks = httpAction(async (ctx, request) => {
       .getRestaurantAgentThread,
     { userId: body.sender.attendee_provider_id, agentId: agent._id }
   );
-  if (thread) threadId = thread._id;
-  else {
+  if (thread) {
+    threadId = thread._id;
+  } else {
     threadId = await ctx.runAction(
       api.infrastructure.components.agents.restaurants.agent
         .createRestaurantAgentThread,
@@ -107,6 +108,7 @@ export const unipileAccountsWebhooks = httpAction(async (ctx, request) => {
   const action: "CREATION_SUCCESS" | "SYNC_SUCCESS" | "DELETED" =
     body.AccountStatus.message;
   const agentId: string = body.AccountStatus.account_id;
+
   const accountType: "WHATSAPP" | "INSTAGRAM" = body.AccountStatus.account_type;
 
   // ~ ======= Connected action ======= ~

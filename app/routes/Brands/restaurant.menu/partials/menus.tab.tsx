@@ -4,14 +4,12 @@ import {
   IconPencilMinus,
   IconPennant,
   IconPlus,
-  IconSoup,
   IconTrash,
 } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import type React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import CreateMenuPanel from "~/components/panels/create.menu.panel";
 import { Button } from "~/components/ui/button";
 import {
@@ -41,9 +39,8 @@ export const MenusTab: React.FC<MenusTabProps> = ({
   brandId,
 }) => {
   const [createMenuOpen, setCreateMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
-  const { data: menus, isPending: menusIsPending } = useCachedQuery(
+  const { data: menus } = useCachedQuery(
     api.features.menus.functions.getMenuByRestaurant,
     { restaurant: restaurantId }
   );

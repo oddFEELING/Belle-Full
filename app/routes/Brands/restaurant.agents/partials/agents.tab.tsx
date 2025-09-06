@@ -1,10 +1,8 @@
 import {
   IconBrandInstagram,
   IconBrandWhatsapp,
-  IconIdBadge,
   IconIdBadge2,
   IconPlus,
-  IconRobot,
   IconRobotOff,
 } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
@@ -13,7 +11,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import StatusBadge from "~/components/custom-ui/status.badge";
 import { CreateAgentPanel } from "~/components/panels/create.agent.panel";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -25,6 +22,21 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { TabsContent } from "~/components/ui/tabs";
 import { useCachedQuery } from "~/hooks/use-app-query";
+
+// Loading skeleton card used while agents are being fetched
+const MenuItemSkeleton: React.FC = () => (
+  <div className="overflow-hidden rounded-lg border bg-card">
+    <Skeleton className="h-24 w-full" />
+    <div className="space-y-2 p-4">
+      <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <div className="flex items-center justify-between pt-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-4 w-10" />
+      </div>
+    </div>
+  </div>
+);
 
 interface RestaurantAgentsTabProps {
   restaurantId: Id<"restaurants">;
@@ -42,21 +54,6 @@ export const RestaurantAgentsTab: React.FC<RestaurantAgentsTabProps> = ({
   // ~ ======= States ======= ~
   const [showCreateAgentPanel, setShowCreateAgentPanel] =
     useState<boolean>(false);
-
-  // Loading skeleton component
-  const MenuItemSkeleton = () => (
-    <div className="overflow-hidden rounded-lg border bg-card">
-      <Skeleton className="h-24 w-full" />
-      <div className="space-y-2 p-4">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <div className="flex items-center justify-between pt-2">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-4 w-10" />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <TabsContent className="space-y-6" value="agents">
@@ -91,7 +88,7 @@ export const RestaurantAgentsTab: React.FC<RestaurantAgentsTabProps> = ({
       {/* ~ =================================== ~ */}
       {agentsIsPending && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {[...Array(10)].map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <MenuItemSkeleton key={i} />
           ))}
         </div>
@@ -139,15 +136,16 @@ const AgentCard: React.FC<{ agent: Doc<"restaurant_agents"> }> = ({
   agent,
 }) => {
   const navigate = useNavigate();
-  // Format creation date
-  const creationDate = new Date(agent._creationTime).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }
-  );
+
+  // Determine badge status from the agent's connection status without nested ternaries
+  let badgeStatus: "warning" | "success" | "inactive";
+  if (agent.connection_status === "PENDING") {
+    badgeStatus = "warning";
+  } else if (agent.connection_status === "CONNECTED") {
+    badgeStatus = "success";
+  } else {
+    badgeStatus = "inactive";
+  }
 
   return (
     <Card className="group ring-primary/30 transition-all duration-300 ease-out hover:ring-1">
@@ -180,16 +178,7 @@ const AgentCard: React.FC<{ agent: Doc<"restaurant_agents"> }> = ({
             </CardDescription>
           </div>
 
-          <StatusBadge
-            status={
-              agent.connection_status === "PENDING"
-                ? "warning"
-                : agent.connection_status === "CONNECTED"
-                  ? "success"
-                  : "inactive"
-            }
-            text={agent.connection_status}
-          />
+          <StatusBadge status={badgeStatus} text={agent.connection_status} />
         </div>
       </CardHeader>
 

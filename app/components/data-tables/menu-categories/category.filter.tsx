@@ -5,7 +5,7 @@ import type { Doc, Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { ArchiveBox, Trash } from "iconsax-reactjs";
 import { Check, ChevronDown, LayoutList, Search } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import { CreateMenuCategoryPanel } from "~/components/panels/create.menu.category.panel";
 import { Button } from "~/components/ui/button";
@@ -48,11 +48,11 @@ const MenuCategoryDataTableFilter = ({ table }: FileDataTableFilterProps) => {
 
   // ~ ======= Handle delete documents ======= ~
   const handleDeleteCategories = async () => {
-    table.getSelectedRowModel().rows.forEach(async (row) => {
+    for (const row of table.getSelectedRowModel().rows) {
       await deleteCategory({
         id: row.original._id,
       });
-    });
+    }
   };
 
   return (

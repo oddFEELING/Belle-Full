@@ -11,7 +11,7 @@ export const authenticatedQuery = customQuery(query, {
     args
   ): Promise<{
     ctx: { user: (Partial<UserIdentity> & { id: Id<"users"> }) | null };
-    args: {};
+    args: Record<string, unknown>;
   }> => {
     const userIdentity = await ctx.auth.getUserIdentity();
     const userId = await getAuthUserId(ctx);

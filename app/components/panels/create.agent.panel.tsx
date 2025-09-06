@@ -15,7 +15,6 @@ import {
   PanelHeader,
   PanelTitle,
 } from "~/components/ui/panel";
-import { logger } from "~/lib/logger";
 import { PhoneInput } from "../custom-ui/phone.input";
 import {
   Form,

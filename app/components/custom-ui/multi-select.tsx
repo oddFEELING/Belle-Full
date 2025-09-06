@@ -177,6 +177,9 @@ const MultiSelector = ({
             setOpen(false);
           }
           break;
+
+        default:
+          break;
       }
     },
     [value, activeIndex, loop]

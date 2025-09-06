@@ -15,10 +15,10 @@ interface OverviewTabProps {
 }
 
 export const OverviewTab: React.FC<OverviewTabProps> = ({ restaurantId }) => {
-  const { data: menuAnalytics, isPending: menuAnalyticsIsPending } =
-    useCachedQuery(api.features.menus.functions.menuAnalytics, {
-      restaurant: restaurantId,
-    });
+  const { data: menuAnalytics } = useCachedQuery(
+    api.features.menus.functions.menuAnalytics,
+    { restaurant: restaurantId }
+  );
 
   return (
     <TabsContent value="overview">

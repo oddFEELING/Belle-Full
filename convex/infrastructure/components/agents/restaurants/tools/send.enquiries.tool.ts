@@ -12,13 +12,16 @@ export const askRestaurantQuestion = createTool({
       .describe("Well detailed question to be sent to the restaurant"),
   }),
   handler: async (ctx: RestaurantAgentCtx, args): Promise<string> => {
-    ctx.runMutation(internal.features.agents.agent_access.agentCreateEnquiry, {
-      threadId: ctx.threadId,
-      agentId: ctx.agentId,
-      restaurant: ctx.restaurantId,
-      enquiry: args.question,
-      chatId: ctx.chatId,
-    });
+    await ctx.runMutation(
+      internal.features.agents.agent_access.agentCreateEnquiry,
+      {
+        threadId: ctx.threadId,
+        agentId: ctx.agentId,
+        restaurant: ctx.restaurantId,
+        enquiry: args.question,
+        chatId: ctx.chatId,
+      }
+    );
 
     return "Enquiry sent";
   },

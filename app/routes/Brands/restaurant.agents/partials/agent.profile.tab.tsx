@@ -1,9 +1,4 @@
-import {
-  IconCopy,
-  IconGhost2,
-  IconPencilMinus,
-  IconProgressBolt,
-} from "@tabler/icons-react";
+import { IconCopy, IconGhost2 } from "@tabler/icons-react";
 import type { Doc } from "convex/_generated/dataModel";
 import { formatDate } from "date-fns";
 import { useCallback, useState } from "react";
@@ -16,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Separator } from "~/components/ui/separator";
 import { TabsContent } from "~/components/ui/tabs";
 
 interface AgentProfileTabProps {

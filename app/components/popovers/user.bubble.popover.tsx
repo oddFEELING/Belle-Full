@@ -27,7 +27,7 @@ const UserBubble = ({
   className,
 }: UserBubbleProps) => {
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { isAuthenticated } = useConvexAuth();
   const { signOut } = useAuthActions();
   const { user } = useUser();
 

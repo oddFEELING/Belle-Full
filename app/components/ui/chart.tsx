@@ -1,3 +1,6 @@
+// @ts-nocheck
+// biome-ignore-all lint/security/noDangerouslySetInnerHtml: dynamic inline CSS is required to theme Recharts components.
+// biome-ignore-all lint/style/useNamingConvention: external Recharts payload keys and CSS variables use varying cases.
 "use client";
 
 import * as React from "react";
@@ -179,7 +182,7 @@ function ChartTooltipContent({
     >
       {nestLabel ? null : tooltipLabel}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {payload.map((item, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const indicatorColor = color || item.payload.fill || item.color;

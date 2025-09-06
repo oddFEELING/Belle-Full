@@ -18,7 +18,7 @@ export const AgentEnquiryResponsePanel: React.FC<
   const [response, setResponse] = useState("");
 
   // ~ ======= Queries ======= ~
-  const { data: enquiry, isPending: enquiryIsPending } = useCachedQuery(
+  const { data: enquiry } = useCachedQuery(
     api.features.agent_enquiries.functions.getAgentEnquiryById,
     { enquiryId }
   );

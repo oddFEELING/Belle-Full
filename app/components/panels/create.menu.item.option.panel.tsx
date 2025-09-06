@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AllergenEnum, DietaryTagEnum } from "convex/types/enums";
-import type { MenuItemOption, Money } from "convex/types/shared";
+import type { MenuItemOption } from "convex/types/shared";
 import { Trash } from "iconsax-reactjs";
 import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from "lucide-react";
 import type React from "react";
@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Input as AriaInput, Group, NumberField } from "react-aria-components";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { logger } from "~/lib/logger";
 import {
   MultiSelector,
   MultiSelectorContent,

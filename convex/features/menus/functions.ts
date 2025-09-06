@@ -14,7 +14,7 @@ export const create = authenticatedMutation({
     name: v.string(),
     description: v.optional(v.string()),
   },
-  handler: async (ctx, args): Promise<Id<"menus">> => {
+  handler: (ctx, args): Promise<Id<"menus">> => {
     return ctx.db.insert("menus", {
       ...args,
       isActive: false,
@@ -39,7 +39,7 @@ export const deleteMenu = authenticatedMutation({
 // ~ =============================================>
 export const getMenuByRestaurant = authenticatedQuery({
   args: { restaurant: v.id("restaurants") },
-  handler: async (ctx, args): Promise<Doc<"menus">[]> => {
+  handler: (ctx, args): Promise<Doc<"menus">[]> => {
     return getManyFrom(ctx.db, "menus", "by_restaurant", args.restaurant);
   },
 });

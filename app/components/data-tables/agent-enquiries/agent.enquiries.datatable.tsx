@@ -1,4 +1,4 @@
-import { IconCategoryMinus, IconMessageX } from "@tabler/icons-react";
+import { IconMessageX } from "@tabler/icons-react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -21,9 +21,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { AgentEnquiriesTableColumns } from "./agent.enquiries.columns";
 import type { AgentEnquiriesDatatableDto } from "./agent.enquiries.datable.dto";
 import AgentEnquiriesDataTableFilter from "./agent.enquiries.filter";
+
+export { AgentEnquiriesTableColumns } from "./agent.enquiries.columns";
 
 interface DataTableProps {
   columns: ColumnDef<AgentEnquiriesDatatableDto, unknown>[];
@@ -140,4 +141,4 @@ const AgentEnquiriesDataTable = ({ columns, data }: DataTableProps) => {
   );
 };
 
-export { AgentEnquiriesDataTable, AgentEnquiriesTableColumns };
+export { AgentEnquiriesDataTable };

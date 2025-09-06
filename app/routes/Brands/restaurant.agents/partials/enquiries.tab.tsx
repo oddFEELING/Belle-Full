@@ -14,7 +14,7 @@ interface RestaurantAgentsOverviewTabProps {
 export const RestaurantAgentsEnquiriesTab: React.FC<
   RestaurantAgentsOverviewTabProps
 > = ({ restaurantId }) => {
-  const { data: enquiries, isPending: enquiriesIsPending } = useCachedQuery(
+  const { data: enquiries } = useCachedQuery(
     api.features.agent_enquiries.functions.getAgentEnquiriesByRestaurant,
     { restaurant: restaurantId }
   );

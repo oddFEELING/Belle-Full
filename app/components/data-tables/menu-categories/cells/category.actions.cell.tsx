@@ -1,9 +1,8 @@
-import { IconList } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Doc } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { ArchiveBox, TextalignLeft, Trash } from "iconsax-reactjs";
-import { Download, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,

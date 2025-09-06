@@ -1,13 +1,8 @@
 import {
-  IconBubbleText,
-  IconClipboardText,
   IconGrain,
   IconMessageChatbot,
   IconMushroom,
-  IconPennant,
   IconShoppingCart,
-  IconSoup,
-  IconSquareRoundedPercentage,
 } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
@@ -22,10 +17,12 @@ interface RestaurantAgentsOverviewTabProps {
 export const RestaurantAgentsOverviewTab: React.FC<
   RestaurantAgentsOverviewTabProps
 > = ({ restaurantId }) => {
-  const { data: menuAnalytics, isPending: menuAnalyticsIsPending } =
-    useCachedQuery(api.features.menus.functions.menuAnalytics, {
+  const { data: menuAnalytics } = useCachedQuery(
+    api.features.menus.functions.menuAnalytics,
+    {
       restaurant: restaurantId,
-    });
+    }
+  );
 
   return (
     <TabsContent value="overview">

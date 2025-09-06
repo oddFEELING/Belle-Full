@@ -16,7 +16,7 @@ export const { syncMetadata } = r2.clientApi({
 // ~ =============================================>
 export const generateCustomFileKey = authenticatedMutation({
   args: {},
-  handler: async (ctx) => {
+  handler: (ctx) => {
     const key = `${PREFIX}_${crypto.randomUUID()}`;
     return r2.generateUploadUrl(key);
   },

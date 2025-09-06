@@ -1,12 +1,9 @@
 import {
-  IconBug,
-  IconDeviceFloppy,
   IconDeviceLaptop,
   IconMessage,
   IconMoon,
   IconSun,
 } from "@tabler/icons-react";
-import React from "react";
 import { useTheme } from "../providers/theme.provider";
 import { Button } from "../ui/button";
 import {

@@ -5,16 +5,10 @@ import { IconCheck } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import {
-  AlertCircleIcon,
-  FileUpIcon,
-  Loader,
-  Loader2,
-  XIcon,
-} from "lucide-react";
+import { AlertCircleIcon, FileUpIcon, Loader2, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { z } from "zod";
 import { getFileIcon } from "~/helpers/get-file-icon";
 import { formatBytes, useFileUpload } from "~/hooks/use-file-upload";
@@ -35,14 +29,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "../ui/drawer";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -123,7 +110,6 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
   open,
   onOpenChange,
 }) => {
-  const navigate = useNavigate();
   const restaurant = useParams().restaurantId as Id<"restaurants">;
   const createDocument = useMutation(
     api.features.restaurants.documents.createUploadedDocument
@@ -269,8 +255,15 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                     <FormLabel>Files</FormLabel>
                     <FormControl>
                       <div className="flex flex-col gap-2">
+                        {/* Hidden file input for uploads */}
+                        <Input
+                          {...getInputProps()}
+                          aria-label="Upload files"
+                          className="sr-only"
+                        />
+
                         {/* Drop area */}
-                        <div
+                        <button
                           className={`flex flex-col items-center justify-center rounded-xl border border-input border-dashed p-4 transition-colors hover:bg-accent/50 has-disabled:pointer-events-none has-[input:focus]:border-ring has-disabled:opacity-50 has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50 ${isMobile ? "min-h-32" : "min-h-40"}`}
                           data-dragging={isDragging || undefined}
                           onClick={openFileDialog}
@@ -278,14 +271,8 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                           onDragLeave={handleDragLeave}
                           onDragOver={handleDragOver}
                           onDrop={handleDrop}
-                          role="button"
+                          type="button"
                         >
-                          <Input
-                            {...getInputProps()}
-                            aria-label="Upload files"
-                            className="sr-only"
-                          />
-
                           <div className="flex flex-col items-center justify-center text-center">
                             <div
                               aria-hidden="true"
@@ -307,7 +294,7 @@ const UploadRestaurantDocumentsPanel: React.FC<PanelContentProps> = ({
                               <span>Up to {formatBytes(maxSize)}</span>
                             </div>
                           </div>
-                        </div>
+                        </button>
 
                         {errors.length > 0 && (
                           <div

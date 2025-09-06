@@ -22,8 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { RestaurantDocumentTableColumns } from "./restaurant.documents.columns";
 import RestaurantDocumentDataTableFilter from "./restaurant.documents.filter";
+
+export { RestaurantDocumentTableColumns } from "./restaurant.documents.columns";
 
 interface DataTableProps {
   columns: ColumnDef<Doc<"restaurant_documents">, unknown>[];
@@ -139,4 +140,4 @@ const RestaurantDocumentDataTable = ({ columns, data }: DataTableProps) => {
   );
 };
 
-export { RestaurantDocumentDataTable, RestaurantDocumentTableColumns };
+export { RestaurantDocumentDataTable };

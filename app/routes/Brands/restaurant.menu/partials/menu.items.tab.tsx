@@ -1,13 +1,8 @@
-import {
-  IconAlertCircle,
-  IconPhoto,
-  IconPlus,
-  IconSoup,
-} from "@tabler/icons-react";
+import { IconPlus, IconSoup } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import type React from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -35,21 +30,6 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
     { restaurant: restaurantId }
   );
 
-  // Loading skeleton component
-  const MenuItemSkeleton = () => (
-    <div className="overflow-hidden rounded-lg border bg-card">
-      <Skeleton className="h-24 w-full" />
-      <div className="space-y-2 p-4">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <div className="flex items-center justify-between pt-2">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-4 w-10" />
-        </div>
-      </div>
-    </div>
-  );
-
   // ~ ======= Render ======= ~
   return (
     <TabsContent className="space-y-6" value="menu-items">
@@ -72,7 +52,7 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
       {/* ~ ======= Loading state ======= ~ */}
       {menuItemsIsPending && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {[...Array(10)].map((_, i) => (
+          {[...new Array(10)].map((_, i) => (
             <MenuItemSkeleton key={i} />
           ))}
         </div>
@@ -182,3 +162,18 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
     </TabsContent>
   );
 };
+
+// Loading skeleton component
+const MenuItemSkeleton = () => (
+  <div className="overflow-hidden rounded-lg border bg-card">
+    <Skeleton className="h-24 w-full" />
+    <div className="space-y-2 p-4">
+      <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <div className="flex items-center justify-between pt-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-4 w-10" />
+      </div>
+    </div>
+  </div>
+);

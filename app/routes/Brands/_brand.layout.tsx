@@ -18,7 +18,7 @@ const BrandLayout = () => {
       </AuthLoading>
 
       <Authenticated>
-        <Outlet />;
+        <Outlet />
       </Authenticated>
     </>
   );

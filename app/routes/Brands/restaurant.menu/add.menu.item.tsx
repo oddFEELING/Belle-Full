@@ -1,6 +1,6 @@
 import { useUploadFile } from "@convex-dev/r2/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconCamera, IconChevronDown, IconSettings } from "@tabler/icons-react";
+import { IconCamera, IconSettings } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
@@ -12,7 +12,6 @@ import {
 } from "convex/types/enums";
 import type { MenuItemOption, Money } from "convex/types/shared";
 import {
-  ArrowLeftIcon,
   BanknoteIcon,
   ChevronDownIcon,
   ChevronUpIcon,
@@ -58,6 +57,12 @@ import { useFileUpload } from "~/hooks/use-file-upload";
 import { logger } from "~/lib/logger";
 import { cn } from "~/lib/utils";
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  GBP: "£",
+  USD: "$",
+  NGN: "₦",
+};
+
 const createMenuItemSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
@@ -89,12 +94,12 @@ const AddMenuItem = () => {
       accept: "image/*",
     });
   const previewUrl = files[0]?.preview || null;
-  const fileName = files[0]?.file.name || null;
+  // const fileName = files[0]?.file.name || null;
 
-  const { data: menus } = useCachedQuery(
-    api.features.menus.functions.getMenuByRestaurant,
-    { restaurant: restaurantId }
-  );
+  // const { data: menus } = useCachedQuery(
+  //   api.features.menus.functions.getMenuByRestaurant,
+  //   { restaurant: restaurantId }
+  // );
 
   // Build select options once for value-based multi selectors
   const dietaryOptions = useMemo(
@@ -178,7 +183,7 @@ const AddMenuItem = () => {
       options: processedOptions,
     });
 
-    console.log({ menuItem });
+    logger.info({ menuItem });
     setIsLoading(false);
   };
 
@@ -237,7 +242,7 @@ const AddMenuItem = () => {
                     >
                       {previewUrl ? (
                         <img
-                          alt="Preview of uploaded image"
+                          alt="upload-preview"
                           className="size-full object-cover"
                           height={128}
                           src={previewUrl}
@@ -565,13 +570,8 @@ const AddMenuItem = () => {
                                   <div className="flex items-center gap-1">
                                     <BanknoteIcon className="h-3 w-3 text-muted-foreground" />
                                     <span className="font-medium text-sm">
-                                      {pick.price.currency === "GBP"
-                                        ? "£"
-                                        : pick.price.currency === "USD"
-                                          ? "$"
-                                          : pick.price.currency === "NGN"
-                                            ? "₦"
-                                            : pick.price.currency}
+                                      {CURRENCY_SYMBOLS[pick.price.currency] ??
+                                        pick.price.currency}
                                       {pick.price.amount.toFixed(2)}
                                     </span>
                                   </div>

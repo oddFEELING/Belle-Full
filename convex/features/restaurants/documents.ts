@@ -1,10 +1,7 @@
 import { v } from "convex/values";
-import {
-  getManyFrom,
-  getOneFromOrThrow,
-} from "convex-helpers/server/relationships";
+
 import { authenticatedMutation } from "../../_custom/mutation";
-import { authenticatedQuery } from "../../_custom/query";
+
 import type { Doc, Id } from "../../_generated/dataModel";
 import { query } from "../../_generated/server";
 import { r2 } from "../../infrastructure/components/r2";
@@ -25,7 +22,7 @@ export const { syncMetadata } = r2.clientApi({
 // ~ =============================================>
 export const generateUploadUrl = authenticatedMutation({
   args: {},
-  handler: async (ctx) => {
+  handler: (ctx) => {
     const key = `${PREFIX}_${crypto.randomUUID()}_${Date.now()}`;
     return r2.generateUploadUrl(key);
   },
@@ -43,7 +40,7 @@ export const createUploadedDocument = authenticatedMutation({
     type: DocumentType,
     category: RestaurantLegalDocuments,
   },
-  handler: async (ctx, args): Promise<Id<"restaurant_documents">> => {
+  handler: (ctx, args): Promise<Id<"restaurant_documents">> => {
     return ctx.db.insert("restaurant_documents", {
       ...args,
       status: "IN_REVIEW",
@@ -71,7 +68,7 @@ export const listDocuments = query({
     if (!id && slug) {
       const rest = await ctx.db
         .query("restaurants")
-        .withIndex("by_slug", (q: any) => q.eq("slug", slug))
+        .withIndex("by_slug", (q) => q.eq("slug", slug))
         .first();
       if (!rest) return [];
       restaurantId = rest._id as Id<"restaurants">;

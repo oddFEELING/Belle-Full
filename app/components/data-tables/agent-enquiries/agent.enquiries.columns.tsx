@@ -1,5 +1,4 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Doc } from "convex/_generated/dataModel";
 import { format } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";

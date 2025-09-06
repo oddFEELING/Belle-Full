@@ -1,32 +1,23 @@
 import {
-  IconAdjustmentsBolt,
   IconCategoryPlus,
   IconChefHat,
   IconChevronDown,
   IconClipboardText,
   IconFolders,
   IconSoup,
-  IconSquareRoundedPercentage,
   IconTransitionRight,
-  IconTrash,
 } from "@tabler/icons-react";
-import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { Plus } from "lucide-react";
 import { useQueryState } from "nuqs";
-import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import CreateMenuPanel from "~/components/panels/create.menu.panel";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { useCachedQuery } from "~/hooks/use-app-query";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { CategoriesTab } from "./partials/category.tab";
 import { MenuItemsTab } from "./partials/menu.items.tab";
 import { MenusTab } from "./partials/menus.tab";
@@ -38,7 +29,6 @@ const RestaurantMenu = () => {
   const [activeTab, setActiveTab] = useQueryState("activeTab", {
     defaultValue: "overview",
   });
-  const [createMenuOpen, setCreateMenuOpen] = useState(false);
 
   return (
     <div className="restaurant-dashboard--page">

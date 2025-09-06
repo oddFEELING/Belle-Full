@@ -1,9 +1,7 @@
-import pino, {
-  type TransportBaseOptions,
-  type TransportTargetOptions,
-} from "pino";
+import pino from "pino";
 
 const logger = pino({
+  base: null,
   level: import.meta.env.VITE_NODE_ENV === "development" ? "debug" : "info",
   transport:
     import.meta.env.VITE_NODE_ENV === "development"
@@ -16,12 +14,6 @@ const logger = pino({
       : undefined,
   browser: {
     asObject: true,
-    transmit: {
-      send: (level, event) => {
-        // TODO: Send to External Logger
-        // console.log(event.messages);
-      },
-    },
   },
 });
 

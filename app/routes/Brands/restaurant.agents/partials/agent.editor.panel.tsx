@@ -34,6 +34,9 @@ import {
 import { Separator } from "~/components/ui/separator";
 import { Toggle } from "~/components/ui/toggle";
 
+const MAX_WORD_COUNT = 100;
+const MIN_WORD_COUNT = 0;
+
 interface AgentEditorPanelProps {
   agent: Doc<"restaurant_agents">;
 }
@@ -71,8 +74,9 @@ const MenuBar = ({
   agent: Doc<"restaurant_agents"> | null;
   view: "persona" | "goals";
 }) => {
-  const updateAgent = useMutation(api.features.agents.functions.updateAgent);
-  if (!editor) return null;
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="flex h-[3.5rem] w-full items-center justify-between border-b px-5">
@@ -141,8 +145,8 @@ const MenuBar = ({
         {agent && (
           <Button
             disabled={
-              editor.storage.characterCount.words() === 0 ||
-              editor.storage.characterCount.words() > 100 ||
+              editor.storage.characterCount.words() === MIN_WORD_COUNT ||
+              editor.storage.characterCount.words() > MAX_WORD_COUNT ||
               // @ts-expect-error
               editor.storage.markdown?.getMarkdown() === agent[view]
             }
@@ -180,7 +184,9 @@ export const AgentEditorPanel: React.FC<AgentEditorPanelProps> = ({
 
   const [, setRerenderTick] = useState(0);
   useEffect(() => {
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
 
     const triggerRerender = () => setRerenderTick((tick) => tick + 1);
     editor.on("transaction", triggerRerender);

@@ -14,7 +14,7 @@ export class TwilioAPiService {
   }
 
   async sendMessage(data: TwilioDTO.SendMessageRequest) {
-    return this.client.messages.create({
+    return await this.client.messages.create({
       from: "whatsapp:+14155238886",
       ...data,
     });

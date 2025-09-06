@@ -1,4 +1,3 @@
-import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { ConvexQueryCacheProvider } from "convex-helpers/react/cache";
 import type React from "react";
 

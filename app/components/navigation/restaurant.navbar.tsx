@@ -1,9 +1,4 @@
-import {
-  IconDeviceLaptop,
-  IconMessage,
-  IconMoon,
-  IconSun,
-} from "@tabler/icons-react";
+import { IconDeviceLaptop, IconMoon, IconSun } from "@tabler/icons-react";
 import { UserBubble } from "../popovers/user.bubble.popover";
 import { useTheme } from "../providers/theme.provider";
 import { Button } from "../ui/button";

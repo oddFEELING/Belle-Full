@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Get current directory for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const Filename = fileURLToPath(import.meta.url);
+const Dirname = path.dirname(Filename);
 
 // Define paths relative to project root
-const projectRoot = path.resolve(__dirname, "..");
+const projectRoot = path.resolve(Dirname, "..");
 const schemasDir = path.join(projectRoot, "convex", "schemas");
 const barrelFile = path.join(schemasDir, "index.ts");
 
@@ -54,7 +54,9 @@ function generateBarrelFile() {
       fs.writeFileSync(barrelFile, content, "utf8");
       console.log("✅ Updated barrel file with the following exports:");
       console.log();
-      schemaFiles.forEach((file) => console.log(`   📄 ${file}`));
+      for (const file of schemaFiles) {
+        console.log(`   📄 ${file}`);
+      }
       console.log();
       console.log(
         `📁 Generated ${schemaFiles.length} export${
@@ -157,10 +159,10 @@ function generateDBTypeFile() {
       "✅ Generated db.types.ts in project root with the following types:"
     );
     console.log();
-    typeDefinitions.forEach((typeDef) => {
+    for (const typeDef of typeDefinitions) {
       const typeName = typeDef.match(/export type (\w+)/)[1];
       console.log(`   🔷 ${typeName}`);
-    });
+    }
     console.log();
     console.log(
       `📁 Generated ${typeDefinitions.length} type${typeDefinitions.length === 1 ? "" : "s"} in db.types.ts`

@@ -1,13 +1,13 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Get current directory for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const Filename = fileURLToPath(import.meta.url);
+const Dirname = path.dirname(Filename);
 
 // Define paths relative to project root
-const projectRoot = path.resolve(__dirname, "..");
+const projectRoot = path.resolve(Dirname, "..");
 const toolsDir = path.join(
   projectRoot,
   "convex",
@@ -45,7 +45,9 @@ function generateBarrelFile() {
       fs.writeFileSync(barrelFile, content, "utf8");
       console.log("✅ Updated barrel file with the following exports:");
       console.log();
-      toolFiles.forEach((file) => console.log(`🛠️  ${file}`));
+      for (const file of toolFiles) {
+        console.log(`🛠️  ${file}`);
+      }
       console.log();
       console.log(
         `🛠️ Generated ${toolFiles.length} export${

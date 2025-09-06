@@ -3,7 +3,6 @@ import {
   PostHogErrorBoundary,
   PostHogProvider as PostHogProviderBase,
 } from "posthog-js/react";
-import react from "react";
 
 type PostHogProviderProps = {
   children: React.ReactNode;

@@ -1,28 +1,25 @@
 import {
   IconArrowBackUp,
   IconChartLine,
-  IconError404,
   IconMessage,
   IconPencilMinus,
   IconPhoneSpark,
   IconRecharging,
   IconRobot,
   IconRobotOff,
-  IconSofa,
 } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { useAction, useMutation } from "convex/react";
+import { useAction } from "convex/react";
 import { Loader2 } from "lucide-react";
 import { parseAsString, useQueryState } from "nuqs";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import StatusBadge from "~/components/custom-ui/status.badge";
 import AgentConnectionQRCodePanel from "~/components/panels/agent.connection.qrcode.panel";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { Separator } from "~/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { AgentChatsTab } from "./partials/agent.chats.tab";
@@ -54,7 +51,9 @@ const RestaurantAgentPage = () => {
 
   // ~ ======= Handle connect agent ======= ~
   const handleConnectAgent = async () => {
-    if (!agent) return toast.error("Agent not found");
+    if (!agent) {
+      return toast.error("Agent not found");
+    }
     setLoadingConnectionQRCode(true);
     try {
       await generateWhatsappAgentCode({
@@ -62,7 +61,7 @@ const RestaurantAgentPage = () => {
         restaurant: agent?.restaurant,
       });
       setShowConnectionQRCode(true);
-    } catch (error) {
+    } catch {
       toast.error("Failed to connect agent");
     } finally {
       setLoadingConnectionQRCode(false);
@@ -70,10 +69,12 @@ const RestaurantAgentPage = () => {
   };
 
   // ~ ======= Loading state ======= ~
-  if (agentIsPending) return <div>Loading...</div>;
+  if (agentIsPending) {
+    return <div>Loading...</div>;
+  }
 
   // ~ ======= Empty state ======= ~
-  if (!agent)
+  if (!agent) {
     return (
       <div className="restaurant-dashboard--page">
         <div className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-20">
@@ -96,6 +97,7 @@ const RestaurantAgentPage = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <div className="restaurant-dashboard--page">

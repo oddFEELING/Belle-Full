@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { z } from "zod";
@@ -37,7 +37,7 @@ const RestaurantAgentEditor = () => {
   const agentId = useParams().agentId as Id<"restaurant_agents">;
 
   // ~ ======= Queries ======= ~
-  const { data: agent, isPending: agentIsPending } = useCachedQuery(
+  const { data: agent } = useCachedQuery(
     api.features.agents.functions.getSingleAgent,
     { agent: agentId }
   );
@@ -53,7 +53,7 @@ const RestaurantAgentEditor = () => {
 
   // ~ ======= Handle submit  ======= ~
   const onSubmit = async (data: AgentFormSchema) => {
-    console.log(data);
+    logger.info(data);
     await updateAgent({
       agent: agentId,
       updateData: {

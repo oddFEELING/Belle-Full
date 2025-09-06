@@ -9,7 +9,6 @@ import type { Doc, Id } from "convex/_generated/dataModel";
 import { Chart } from "iconsax-reactjs";
 import { parseAsString, useQueryState } from "nuqs";
 import { useParams } from "react-router";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -33,7 +32,7 @@ const RestaurantAgents = () => {
   );
 
   // ~ ======= Queries ======= ~
-  const { data: enquiries, isPending: enquiriesIsPending } = useCachedQuery(
+  const { data: enquiries } = useCachedQuery(
     api.features.agent_enquiries.functions.getAgentEnquiriesByRestaurant,
     { restaurant: restaurantId }
   );

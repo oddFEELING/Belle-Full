@@ -14,7 +14,7 @@ export const agentCreateEnquiry = internalMutation({
     chatId: v.string(),
   },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
-    ctx.db.insert("agent_enquiries", {
+    await ctx.db.insert("agent_enquiries", {
       ...args,
       status: "PENDING",
       chatId: args.chatId,

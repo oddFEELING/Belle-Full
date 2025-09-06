@@ -1,7 +1,6 @@
 import { TableAggregate } from "@convex-dev/aggregate";
 import { components } from "../../_generated/api";
-import type { DataModel, Id } from "../../_generated/dataModel";
-import { mutation as rawMutation } from "../../_generated/server";
+import type { DataModel } from "../../_generated/dataModel";
 
 export const RestaurantMenuAnalytics = new TableAggregate<{
   Key: [string, string];

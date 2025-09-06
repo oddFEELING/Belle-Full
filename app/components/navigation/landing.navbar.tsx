@@ -21,7 +21,7 @@ import {
 
 const LandingNavbar = () => {
   const { user } = useUser();
-  const { data: brands, isPending: brandsIsPending } = useCachedQuery(
+  const { data: brands } = useCachedQuery(
     api.features.brands.functions.getUserBrands
   );
 

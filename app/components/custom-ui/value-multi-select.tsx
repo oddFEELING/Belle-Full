@@ -1,4 +1,7 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+
+export type { MultiSelectValue } from "~/components/custom-ui/multi-select";
+
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -78,5 +81,3 @@ export function ValueMultiSelector({
     </MultiSelector>
   );
 }
-
-export type { MultiSelectValue };

@@ -1,9 +1,9 @@
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import type { Table } from "@tanstack/react-table";
 import { api } from "convex/_generated/api";
 import type { Doc } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import { ArchiveBox, SearchStatus, Trash } from "iconsax-reactjs";
+import { ArchiveBox, Trash } from "iconsax-reactjs";
 import {
   Check,
   ChevronDown,
@@ -12,7 +12,7 @@ import {
   Search,
   Share,
 } from "lucide-react";
-import React, { type FormEvent, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import UploadRestaurantDocumentsPanel from "~/components/panels/upload.restaurant.documents.panel";
 import { Button } from "~/components/ui/button";
 import {
@@ -38,7 +38,6 @@ import {
 } from "~/components/ui/popover";
 import { toSentenceCase } from "~/helpers/to-sentence-case";
 import { useIsMobile } from "~/hooks/use-mobile";
-import { useUser } from "~/hooks/use-user/use-user";
 import { cn } from "~/lib/utils";
 
 type FileDataTableFilterProps = {
@@ -49,18 +48,19 @@ const RestaurantDocumentDataTableFilter = ({
   table,
 }: FileDataTableFilterProps) => {
   const isMobile = useIsMobile();
-  const { user } = useUser();
   const [openUploadPanel, setOpenUploadPanel] = useState<boolean>(false);
   const selectedCount = table.getSelectedRowModel().rows.length;
-  const deleteDocument = useMutation(api.restaurants.documents.deleteDocument);
+  const deleteDocument = useMutation(
+    api.features.restaurants.documents.deleteDocument
+  );
 
   // ~ ======= Handle delete documents ======= ~
-  const handleDeleteDocuments = async () => {
-    table.getSelectedRowModel().rows.forEach(async (row) => {
-      await deleteDocument({
+  const handleDeleteDocuments = () => {
+    for (const row of table.getSelectedRowModel().rows) {
+      deleteDocument({
         document: row.original._id,
       });
-    });
+    }
   };
 
   return (

@@ -1,15 +1,12 @@
 import {
   IconAdjustmentsBolt,
   IconChecks,
-  IconList,
   IconMessageReply,
   IconProgressX,
 } from "@tabler/icons-react";
-import { api } from "convex/_generated/api";
-import type { Doc, Id } from "convex/_generated/dataModel";
-import { useMutation } from "convex/react";
-import { ArchiveBox, TextalignLeft, Trash } from "iconsax-reactjs";
-import { Download, MoreVertical } from "lucide-react";
+
+import type { Id } from "convex/_generated/dataModel";
+import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { AgentEnquiryResponsePanel } from "~/components/panels/agent.enquiry.response.panel";
 import { Button } from "~/components/ui/button";

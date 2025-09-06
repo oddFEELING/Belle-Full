@@ -1,11 +1,10 @@
 import { IconPoint } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { parseAsString, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
 import React, { useMemo } from "react";
 import { Link, useLocation, useParams } from "react-router";
 import { useCachedQuery } from "~/hooks/use-app-query";
-import { cn } from "~/lib/utils";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,10 +13,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
-import { Button } from "../ui/button";
-import { DropdownMenu } from "../ui/dropdown-menu";
-
-const MAX_LENGTH = 3;
 
 export const RestaurantHubBreadcrumb = () => {
   const pathname = useLocation().pathname;

@@ -2,10 +2,9 @@
 
 import { v } from "convex/values";
 import { UnipileClient } from "unipile-node-sdk";
-import z from "zod";
 import { r2 } from "@/infrastructure/components/r2";
 import { api } from "../../../_generated/api";
-import { action, internalAction } from "../../../_generated/server";
+import { action } from "../../../_generated/server";
 
 const unipileClient = new UnipileClient(
   `https://${process.env.UNIPILE_DSN}`,
@@ -81,7 +80,7 @@ export const disconnectAccount = action({
       { agent: args.agentId }
     );
 
-    if (!(toDelete && toDelete.unipile_id)) {
+    if (!toDelete?.unipile_id) {
       throw new Error("Agent not found");
     }
 

@@ -74,7 +74,6 @@ function PanelDescription(
 // PanelFooter - footer section for actions
 function PanelFooter(props: React.ComponentProps<"div">) {
   const isMobile = useIsMobile();
-  const Component = isMobile ? DrawerFooter : DialogFooter;
 
   return (
     <div

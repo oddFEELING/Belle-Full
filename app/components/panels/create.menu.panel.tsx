@@ -6,8 +6,6 @@ import { useMutation } from "convex/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useIsMobile } from "~/hooks/use-mobile";
-import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import {
@@ -41,7 +39,6 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
   restaurant,
   onOpenChange,
 }) => {
-  const isMobile = useIsMobile();
   const createMenu = useMutation(api.features.menus.functions.create);
 
   // ~ ======= Form instance ======= ~

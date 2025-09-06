@@ -1,16 +1,9 @@
-import {
-  IconAffiliate,
-  IconBuildingStore,
-  IconChefHat,
-  IconLockBolt,
-  IconPlus,
-} from "@tabler/icons-react";
+import { IconBuildingStore, IconLockBolt, IconPlus } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CreateRestaurantPanel } from "~/components/panels/create.restaurant.panel";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -22,6 +15,8 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { useIsMobile } from "~/hooks/use-mobile";
+
+const SKELETON_COUNT = 6;
 
 const BrandRestaurantsPage = () => {
   const isMobile = useIsMobile();
@@ -73,7 +68,7 @@ const BrandRestaurantsPage = () => {
       {/* ~ =================================== ~ */}
       {restaurantsIsPending && (
         <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {new Array(6).fill(0).map((_, idk: number) => (
+          {new Array(SKELETON_COUNT).fill(0).map((_, idk: number) => (
             <Skeleton
               className="h-20 w-full animate-pulse rounded-xl bg-muted-foreground/10"
               key={idk}

@@ -1,23 +1,12 @@
-import {
-  IconCopy,
-  IconGhost2,
-  IconPencilMinus,
-  IconProgressBolt,
-} from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Doc } from "convex/_generated/dataModel";
-import { formatDate } from "date-fns";
-import { useCallback, useState } from "react";
-import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
+
 import {
   Card,
-  CardAction,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Separator } from "~/components/ui/separator";
 import { TabsContent } from "~/components/ui/tabs";
 import { useCachedQuery } from "~/hooks/use-app-query";
 

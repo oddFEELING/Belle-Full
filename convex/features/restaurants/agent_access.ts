@@ -1,7 +1,7 @@
-import { Infer, v } from "convex/values";
+import { v } from "convex/values";
 import { parse } from "convex-helpers/validators";
 import type { Doc } from "../../_generated/dataModel";
-import { internalQuery, query } from "../../_generated/server";
+import { internalQuery } from "../../_generated/server";
 import {
   type AgentRestaurantReturn,
   agentRestaurantReturn,
@@ -50,7 +50,7 @@ export const getAgentGetAllFoodItems = internalQuery({
 export const agentGetRestaurantMenuItems = internalQuery({
   args: { restaurant: v.id("restaurants") },
   handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
-    return ctx.db
+    return await ctx.db
       .query("menu_items")
       .withIndex("by_restaurant", (q) => q.eq("restaurant", args.restaurant))
       .order("desc")
