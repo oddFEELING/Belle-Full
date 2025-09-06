@@ -1,16 +1,13 @@
+import { v } from "convex/values";
+import { partial } from "convex-helpers/validators";
 import { authenticatedAction } from "../../_custom/action";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
-import { api } from "../../_generated/api";
-import {
-  createAgentDto,
-  createDBAgentDto,
-} from "./interfaces/restaurant.agents.dto";
-import { v } from "convex/values";
-import { partial } from "convex-helpers/validators";
-import schema, { vv } from "../../schema";
-import { action } from "../../_generated/server";
+import { api, components } from "../../_generated/api";
 import type { Doc } from "../../_generated/dataModel";
+import { action } from "../../_generated/server";
+import schema from "../../schema";
+import { createDBAgentDto } from "./interfaces/restaurant.agents.dto";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
@@ -77,7 +74,7 @@ export const disconnectAgent = action({
       api.infrastructure.services.unipile.functions.disconnectAccount,
       {
         agentId: args.agent,
-      },
+      }
     );
 
     return { success: true };
@@ -92,7 +89,7 @@ export const generateWhatsappAgentCode = authenticatedAction({
   handler: async (ctx, args): Promise<{ success: boolean }> => {
     const data = await ctx.runAction(
       api.infrastructure.services.unipile.functions.createWhatsappAgent,
-      { agent: args.agent, restaurant: args.restaurant },
+      { agent: args.agent, restaurant: args.restaurant }
     );
 
     await ctx.runMutation(api.features.agents.functions.updateAgent, {
@@ -116,5 +113,20 @@ export const updateRestaurantAgent = authenticatedMutation({
     await ctx.db.patch(args.agent, args.updateData);
 
     return await ctx.db.get(args.agent);
+  },
+});
+
+// ~ =============================================>
+// ~ ======= Get chats for an agent
+// ~ =============================================>
+export const getAgentThreads = authenticatedQuery({
+  args: { agent: v.id("restaurant_agents") },
+  handler: async (ctx, args) => {
+    const threads = await ctx.runQuery(
+      components.agent.threads.listThreadsByUserId,
+      { userId: args.agent }
+    );
+
+    return threads;
   },
 });

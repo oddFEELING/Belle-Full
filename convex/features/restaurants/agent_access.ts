@@ -1,7 +1,7 @@
-import { query } from "../../_generated/server";
-import { Infer, v } from "convex/values";
-import type { Doc } from "../../_generated/dataModel";
+import { v } from "convex/values";
 import { parse } from "convex-helpers/validators";
+import type { Doc } from "../../_generated/dataModel";
+import { internalQuery } from "../../_generated/server";
 import {
   type AgentRestaurantReturn,
   agentRestaurantReturn,
@@ -10,7 +10,7 @@ import {
 // ~ =============================================>
 // ~ ======= Get restaurant by id
 // ~ =============================================>
-export const getRestaurant = query({
+export const getRestaurant = internalQuery({
   args: { restaurant: v.id("restaurants") },
   handler: async (ctx, args): Promise<AgentRestaurantReturn | null> => {
     const restaurant = await ctx.db.get(args.restaurant);
@@ -19,7 +19,7 @@ export const getRestaurant = query({
   },
 });
 
-export const getAgentMenuItemsByRestaurantId = query({
+export const getAgentMenuItemsByRestaurantId = internalQuery({
   args: {
     restaurantId: v.id("restaurants"),
   },
@@ -36,7 +36,7 @@ export const getAgentMenuItemsByRestaurantId = query({
 // ~ =============================================>
 // ~ ======= Get all ffood items from the platform
 // ~ =============================================>
-export const getAgentGetAllFoodItems = query({
+export const getAgentGetAllFoodItems = internalQuery({
   args: {},
   handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
     const menuItems = await ctx.db.query("menu_items").order("desc").collect();
@@ -47,10 +47,10 @@ export const getAgentGetAllFoodItems = query({
 // ~ =============================================>
 // ~ ======= Get all food items for a restaurant
 // ~ =============================================>
-export const agentGetRestaurantMenuItems = query({
+export const agentGetRestaurantMenuItems = internalQuery({
   args: { restaurant: v.id("restaurants") },
   handler: async (ctx, args): Promise<Doc<"menu_items">[]> => {
-    return ctx.db
+    return await ctx.db
       .query("menu_items")
       .withIndex("by_restaurant", (q) => q.eq("restaurant", args.restaurant))
       .order("desc")

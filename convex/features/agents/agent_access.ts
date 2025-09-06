@@ -1,20 +1,15 @@
 import { v } from "convex/values";
-import {
-  internalMutation,
-  internalQuery,
-  mutation,
-  query,
-} from "../../_generated/server";
 import { partial } from "convex-helpers/validators";
-import schema from "../../schema";
 import type { Doc } from "../../_generated/dataModel";
+import { internalMutation, internalQuery } from "../../_generated/server";
+import schema from "../../schema";
 
 const agentSchema = schema.tables.restaurant_agents.validator;
 
 // ~ =============================================>
 // ~ ======= Update agent by unipile id
 // ~ =============================================>
-export const updateAgentByUnipileId = mutation({
+export const updateAgentByUnipileId = internalMutation({
   args: {
     unipileId: v.string(),
     updateData: partial(agentSchema),
@@ -37,7 +32,7 @@ export const updateAgentByUnipileId = mutation({
 // ~ =============================================>
 // ~ ======= Get agent by unipile id
 // ~ =============================================>
-export const getAgentByUnipileId = query({
+export const getAgentByUnipileId = internalQuery({
   args: { unipileId: v.string() },
   handler: async (ctx, args) => {
     return await ctx.db
@@ -50,19 +45,36 @@ export const getAgentByUnipileId = query({
 // ~ =============================================>
 // ~ ======= Create agent enquiry
 // ~ =============================================>
-export const agentCreateEnquiry = mutation({
+export const agentCreateEnquiry = internalMutation({
   args: {
     threadId: v.string(),
     agentId: v.id("restaurant_agents"),
     enquiry: v.string(),
     restaurant: v.id("restaurants"),
+    chatId: v.string(),
   },
   handler: async (ctx, args): Promise<{ success: boolean }> => {
-    ctx.db.insert("agent_enquiries", {
+    await ctx.db.insert("agent_enquiries", {
       ...args,
       status: "PENDING",
+      chatId: args.chatId,
     });
 
     return { success: true };
+  },
+});
+
+// ~ =============================================>
+// ~ ======= get agent by agent_id
+// ~ =============================================>
+export const getAgentByAgentId = internalQuery({
+  args: { agentId: v.string() },
+  handler: async (ctx, args): Promise<Doc<"restaurant_agents"> | null> => {
+    const agentId = args.agentId.split("@")[0];
+
+    return await ctx.db
+      .query("restaurant_agents")
+      .withIndex("by_agent_id", (q) => q.eq("agent_id", `+${agentId}`))
+      .first();
   },
 });

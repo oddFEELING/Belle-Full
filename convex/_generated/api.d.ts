@@ -12,6 +12,8 @@ import type * as _custom_action from "../_custom/action.js";
 import type * as _custom_mutation from "../_custom/mutation.js";
 import type * as _custom_query from "../_custom/query.js";
 import type * as auth from "../auth.js";
+import type * as features_agent_enquiries_agent_access from "../features/agent_enquiries/agent_access.js";
+import type * as features_agent_enquiries_functions from "../features/agent_enquiries/functions.js";
 import type * as features_agents_agent_access from "../features/agents/agent_access.js";
 import type * as features_agents_functions from "../features/agents/functions.js";
 import type * as features_brands_functions from "../features/brands/functions.js";
@@ -59,6 +61,8 @@ declare const fullApi: ApiFromModules<{
   "_custom/mutation": typeof _custom_mutation;
   "_custom/query": typeof _custom_query;
   auth: typeof auth;
+  "features/agent_enquiries/agent_access": typeof features_agent_enquiries_agent_access;
+  "features/agent_enquiries/functions": typeof features_agent_enquiries_functions;
   "features/agents/agent_access": typeof features_agents_agent_access;
   "features/agents/functions": typeof features_agents_functions;
   "features/brands/functions": typeof features_brands_functions;

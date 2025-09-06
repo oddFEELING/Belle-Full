@@ -1,0 +1,161 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "extends": ["ultracite"],
+  "linter": {
+    "rules": {
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noUselessSwitchCase": "off",
+        "noUselessTernary": "warn",
+        "noExcessiveCognitiveComplexity": {
+          "options": {
+            "maxAllowedComplexity": 30
+          }
+        }
+      },
+
+      "a11y": {
+        "useMediaCaption": "off",
+        "useButtonType": "off",
+        "noSvgWithoutTitle": "off",
+        "noStaticElementInteractions": "off",
+        "noNoninteractiveElementInteractions": "off",
+        "useKeyWithClickEvents": "off",
+        "useSemanticElements": "off",
+        "useFocusableInteractive": "off",
+        "noRedundantRoles": "off"
+      },
+      "suspicious": {
+        "noImplicitAnyLet": "off",
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "off",
+        "noUnknownAtRules": "off",
+        "noEvolvingTypes": "off",
+        "useIterableCallbackReturn": "off",
+        "noAssignInExpressions": "off",
+        "noDocumentCookie": "off",
+        "noEmptyBlockStatements": "off"
+      },
+      "nursery": {
+        "useConsistentTypeDefinitions": "off",
+        "useMaxParams": "off",
+        "noShadow": "off",
+        "noUnnecessaryConditions": "off",
+        "useAnchorHref": "off",
+        "useImageSize": "off",
+        "noMisusedPromises": "off"
+      },
+      "performance": {
+        "noImgElement": "off",
+        "useTopLevelRegex": "off",
+        "noNamespaceImport": "off",
+        "noBarrelFile": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noUnusedFunctionParameters": "off",
+        "useParseIntRadix": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn",
+        "noConstantCondition": "off"
+      },
+      "style": {
+        "useFilenamingConvention": "off",
+        "useCollapsedElseIf": "off",
+        "useConsistentMemberAccessibility": "off",
+        "useReadonlyClassProperties": "off",
+        "noNestedTernary": "warn",
+        "noParameterAssign": "off",
+        "useAtIndex": "off",
+        "useTemplate": "off",
+        "noEnum": "off",
+        "useBlockStatements": "off",
+        "noNonNullAssertion": "off",
+        "noMagicNumbers": "off",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "variable",
+                  "scope": "global"
+                },
+                "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
+              },
+              {
+                "selector": {
+                  "kind": "class"
+                },
+                "formats": ["PascalCase"]
+              },
+              {
+                "selector": {
+                  "kind": "classMember"
+                },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": {
+                  "kind": "functionParameter"
+                },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": {
+                  "kind": "objectLiteralProperty"
+                },
+                "match": "_?(.+)",
+                "formats": [
+                  "camelCase",
+                  "snake_case",
+                  "CONSTANT_CASE",
+                  "PascalCase"
+                ]
+              },
+
+              {
+                "selector": {
+                  "kind": "typeProperty"
+                },
+                "match": "_?(.+)",
+                "formats": ["camelCase", "snake_case", "PascalCase"]
+              },
+
+              {
+                "selector": {
+                  "kind": "enumMember"
+                },
+                "formats": ["CONSTANT_CASE"]
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "overrides": [
+    // ~ ======= Convex overrides ======= ~
+    {
+      "includes": ["convex/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          },
+          "suspicious": {
+            "noUnknownAtRules": "off",
+            "noConsole": "off"
+          },
+          "correctness": {
+            "noUnusedFunctionParameters": "off"
+          }
+        }
+      }
+    }
+  ]
+}

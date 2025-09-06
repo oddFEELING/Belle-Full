@@ -1,5 +1,5 @@
+import { type Infer, v } from "convex/values";
 import { DeliveryZone, Money, RestaurantStatus } from "@/types";
-import { Infer, v } from "convex/values";
 
 export const agentRestaurantReturn = v.object({
   name: v.string(),
@@ -16,7 +16,7 @@ export const agentRestaurantReturn = v.object({
       defaultPrepMinutes: v.number(),
       avgCourierPickupSlackMins: v.optional(v.number()),
       minOrderSubTotal: Money,
-    }),
+    })
   ),
 
   deliveryZones: v.optional(v.array(DeliveryZone)),

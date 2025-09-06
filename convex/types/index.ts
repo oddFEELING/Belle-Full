@@ -1,2 +1,2 @@
-export * from "./shared";
 export * from "./enums";
+export * from "./shared";

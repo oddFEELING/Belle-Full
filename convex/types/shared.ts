@@ -7,8 +7,8 @@ This prevents circular dependencies.
 🌹 Cheers.
 */
 
-import { Infer, v } from "convex/values";
-import { Allergen, Currency, DietaryTag } from "./";
+import { type Infer, v } from "convex/values";
+import { Allergen, Currency, DietaryTag } from "./enums";
 
 export const Money = v.object({
   currency: Currency,
@@ -34,7 +34,7 @@ export const MenuItemOption = v.object({
       calories: v.optional(v.number()),
       allergens: v.optional(v.array(Allergen)),
       dietaryTags: v.optional(v.array(DietaryTag)),
-    }),
+    })
   ),
   isAvailable: v.boolean(),
   position: v.number(),

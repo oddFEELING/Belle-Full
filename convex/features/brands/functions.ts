@@ -1,11 +1,10 @@
-import { query, mutation } from "../../_generated/server";
-import { authenticatedMutation } from "../../_custom/mutation";
-import { createBrandDto } from "./brands.dto";
-import { Doc, Id } from "../../_generated/dataModel";
 import { v } from "convex/values";
+import { getAll, getManyFrom } from "convex-helpers/server/relationships";
+import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
-import { getAuthUserId } from "@convex-dev/auth/server";
-import { getManyFrom, getAll } from "convex-helpers/server/relationships";
+import type { Doc, Id } from "../../_generated/dataModel";
+import { mutation } from "../../_generated/server";
+import { createBrandDto } from "./brands.dto";
 
 // ~ =============================================>
 // ~ ======= Create a brand
@@ -20,7 +19,7 @@ export const createBrand = authenticatedMutation({
     ctx.db.patch(ctx.user.id, { hasBrand: true });
     ctx.db.insert("users_x_brands", {
       user: ctx.user.id,
-      brand: brand,
+      brand,
       role: "PRIMARY_OWNER",
     });
     return brand;
@@ -34,15 +33,15 @@ export const generateBrandSlug = mutation({
   args: { brandName: v.string(), currentSlug: v.optional(v.string()) },
   handler: async (
     ctx,
-    { brandName },
+    { brandName }
   ): Promise<{ data?: string; error?: string }> => {
     if (brandName.length < 3) return { error: "Name too short." };
 
     const threeLetterCode = brandName.substring(0, 3).toLowerCase();
 
     // ~ ======= Set pin boundaries ======= ~
-    const min = 10000;
-    const max = 99999;
+    const min = 10_000;
+    const max = 99_999;
 
     let isUnique = false;
     let slug = "";
@@ -71,7 +70,7 @@ export const generateBrandSlug = mutation({
 export const getBrand = authenticatedQuery({
   args: { id: v.optional(v.id("brands")), slug: v.optional(v.string()) },
   handler: async (ctx, { id, slug }): Promise<Doc<"brands"> | null> => {
-    if (!id && !slug) throw new Error("Either id or slug is required");
+    if (!(id || slug)) throw new Error("Either id or slug is required");
     let brand: Doc<"brands"> | null = null;
 
     if (id) brand = await ctx.db.get(id);
@@ -96,12 +95,12 @@ export const getUserBrands = authenticatedQuery({
       ctx.db,
       "users_x_brands",
       "by_user",
-      ctx.user?.id,
+      ctx.user?.id
     );
 
     const brands = await getAll(
       ctx.db,
-      brandAffiliations.map((affiliation) => affiliation.brand),
+      brandAffiliations.map((affiliation) => affiliation.brand)
     );
 
     return brands;

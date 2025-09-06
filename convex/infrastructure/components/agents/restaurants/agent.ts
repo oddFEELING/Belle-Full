@@ -1,19 +1,16 @@
-import { components, api } from "../../../../_generated/api";
-import {
-  createThread as createThreadAction,
-  createTool,
-  Agent,
-  ToolCtx,
-} from "@convex-dev/agent";
 import { openai } from "@ai-sdk/openai";
-import { z } from "zod";
+import {
+  Agent,
+  createThread as createThreadAction,
+  type ToolCtx,
+} from "@convex-dev/agent";
 import { v } from "convex/values";
-import { query, action } from "../../../../_generated/server";
-import type { Doc, Id } from "../../../../_generated/dataModel";
-import { restaurantAgentPrompt } from "./prompt";
+import { components, internal } from "@/_generated/api";
+import type { Doc, Id } from "@/_generated/dataModel";
+import { action, query } from "@/_generated/server";
+import schema from "@/schema";
 import { humanTone } from "../tone.prompt";
-import schema from "../../../../schema";
-import { AgentRestaurantReturn } from "@/features/restaurants/interfaces/restaurants.dto";
+import { restaurantAgentPrompt } from "./prompt";
 import * as restaurantAgentTools from "./tools";
 
 export type RestaurantAgentCtx = ToolCtx & {
@@ -58,8 +55,8 @@ export const chat = action({
       agentId: args.agentId,
     };
     const restaurant = await ctx.runQuery(
-      api.features.restaurants.agent_access.getRestaurant,
-      { restaurant: args.restaurantId },
+      internal.features.restaurants.agent_access.getRestaurant,
+      { restaurant: args.restaurantId }
     );
 
     const { thread } = await restaurantAgent.continueThread(agentCtx, {
@@ -76,7 +73,7 @@ export const chat = action({
         agentName: args.agentName,
       }),
       prompt: args.prompt,
-      temperature: 0.5,
+      temperature: 0.3,
     });
 
     return response.text;
@@ -92,11 +89,16 @@ export const createRestaurantAgentThread = action({
     senderName: v.string(),
     agentId: v.id("restaurant_agents"),
   },
-  handler: async (ctx, args) => {
+  handler: (ctx, args) => {
+    /**
+     * The userId is the agentId from the db
+     * The title is the senderId_x_agentId
+     * The summary is just a text to persist the users username as at time of first message
+     */
     return createThreadAction(ctx, components.agent, {
-      title: `${args.senderName}'s chat`,
-      summary: `Restaurant bot chat between ${args.senderId} and ${args.agentId}`,
-      userId: `${args.senderId}_x_${args.agentId}`,
+      title: `${args.senderId}_x_${args.agentId}`,
+      summary: `Restaurant bot chat between ${args.senderName} and ${args.agentId}`,
+      userId: args.agentId,
     });
   },
 });
@@ -110,8 +112,13 @@ export const getRestaurantAgentThread = query({
     agentId: v.id("restaurant_agents"),
   },
   handler: async (ctx, args) => {
-    return ctx.runQuery(components.agent.threads.listThreadsByUserId, {
-      userId: `${args.userId}_x_${args.agentId}`,
-    });
+    const agentThreads = await ctx.runQuery(
+      components.agent.threads.listThreadsByUserId,
+      { userId: args.agentId }
+    );
+
+    return agentThreads.page.find((thread) =>
+      thread.title?.toLocaleLowerCase().includes(args.userId)
+    );
   },
 });

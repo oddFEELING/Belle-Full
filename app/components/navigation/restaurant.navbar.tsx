@@ -1,9 +1,5 @@
-import {
-  IconDeviceLaptop,
-  IconMessage,
-  IconMoon,
-  IconSun,
-} from "@tabler/icons-react";
+import { IconDeviceLaptop, IconMoon, IconSun } from "@tabler/icons-react";
+import { UserBubble } from "../popovers/user.bubble.popover";
 import { useTheme } from "../providers/theme.provider";
 import { Button } from "../ui/button";
 import {
@@ -13,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarTrigger } from "../ui/sidebar";
-import { UserBubble } from "../popovers/user.bubble.popover";
 import { RestaurantHubBreadcrumb } from "./restaurant.hub.breadcrumb";
 
 const RestaurantNavbar = () => {
@@ -29,13 +24,13 @@ const RestaurantNavbar = () => {
       <div className="flex w-max items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button size="icon" variant="ghost">
               {theme === "light" && <IconSun />}
               {theme === "dark" && <IconMoon />}
               {theme === "system" && <IconDeviceLaptop />}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end" className="w-28">
+          <DropdownMenuContent align="end" className="w-28" side="bottom">
             <DropdownMenuItem onClick={() => setTheme("light")}>
               <IconSun />
               <span>Light</span>

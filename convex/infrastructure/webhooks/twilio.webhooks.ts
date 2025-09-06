@@ -1,6 +1,5 @@
 import { api } from "../../_generated/api";
 import { httpAction } from "../../_generated/server";
-import { sendMessage } from "../services/twilio/twilio";
 
 export default httpAction(async (ctx, request) => {
   const body = await request.text();

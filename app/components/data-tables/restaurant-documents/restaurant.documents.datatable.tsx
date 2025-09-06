@@ -1,15 +1,19 @@
 import {
   type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  type SortingState,
-  getSortedRowModel,
-  getPaginationRowModel,
-  type ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
+import type { Doc } from "convex/_generated/dataModel";
+import { FileMinus2 } from "lucide-react";
+import { useState } from "react";
+import DataTablePagination from "~/components/data-tables/pagination.datatables";
 import {
   Table,
   TableBody,
@@ -18,12 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { RestaurantDocumentTableColumns } from "./restaurant.documents.columns";
-import DataTablePagination from "~/components/data-tables/pagination.datatables";
-import { useState } from "react";
 import RestaurantDocumentDataTableFilter from "./restaurant.documents.filter";
-import { FileMinus2 } from "lucide-react";
-import type { Doc } from "convex/_generated/dataModel";
+
+export { RestaurantDocumentTableColumns } from "./restaurant.documents.columns";
 
 interface DataTableProps {
   columns: ColumnDef<Doc<"restaurant_documents">, unknown>[];
@@ -71,12 +72,12 @@ const RestaurantDocumentDataTable = ({ columns, data }: DataTableProps) => {
           {/* ~ =================================== ~ */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-muted/50">
+              <TableRow className="bg-muted/50" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {flexRender(
                       header.column.columnDef.header,
-                      header.getContext(),
+                      header.getContext()
                     )}
                   </TableHead>
                 ))}
@@ -91,14 +92,14 @@ const RestaurantDocumentDataTable = ({ columns, data }: DataTableProps) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  key={row.id}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -107,16 +108,16 @@ const RestaurantDocumentDataTable = ({ columns, data }: DataTableProps) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
                   className="h-24 text-center"
+                  colSpan={columns.length}
                 >
                   <div className="flex flex-col items-center justify-center space-y-3 py-5">
                     <FileMinus2
+                      className="text-muted-foreground"
                       size={26}
                       strokeWidth={1.5}
-                      className="text-muted-foreground"
                     />
-                    <span className="text-muted-foreground text-lg font-medium">
+                    <span className="font-medium text-lg text-muted-foreground">
                       No Results Found
                     </span>
                     <span className="text-muted-foreground text-sm">
@@ -139,4 +140,4 @@ const RestaurantDocumentDataTable = ({ columns, data }: DataTableProps) => {
   );
 };
 
-export { RestaurantDocumentDataTable, RestaurantDocumentTableColumns };
+export { RestaurantDocumentDataTable };

@@ -1,21 +1,21 @@
-import { z } from "zod";
-import React, { useState } from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
-  FormItem,
-  FormLabel,
   FormControl,
   FormField,
+  FormItem,
+  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
-import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Separator } from "~/components/ui/separator";
-import { useAuthActions } from "@convex-dev/auth/react";
 
 const formSchema = z.object({
   email: z.email(),
@@ -48,23 +48,23 @@ const SignInPage = () => {
   return (
     <div className="relative flex h-full w-full items-center justify-center p-5 lg:p-20">
       <Button
-        variant="ghost"
         className="absolute top-4 right-20"
         onClick={() => navigate("/register")}
+        variant="ghost"
       >
         <span>Register</span>
       </Button>
 
       <div className="flex h-max w-full max-w-md flex-col items-center gap-y-3">
-        <h2 className="text-2xl font-semibold">Welcome back!</h2>
-        <p className="text-muted-foreground -mt-2 text-center">
+        <h2 className="font-semibold text-2xl">Welcome back!</h2>
+        <p className="-mt-2 text-center text-muted-foreground">
           Enter your email below to sign in to your account.
         </p>
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid w-full grid-cols-2 gap-x-3 gap-y-5"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             {/* ~ ======= Email field ======= ~ */}
             <FormField
@@ -96,23 +96,23 @@ const SignInPage = () => {
                     <div className="relative flex items-center">
                       {showPassword ? (
                         <IconEye
+                          className="absolute right-3 cursor-pointer text-muted-foreground"
+                          onClick={() => setShowPassword(false)}
                           size={20}
                           strokeWidth={1.5}
-                          onClick={() => setShowPassword(false)}
-                          className="text-muted-foreground absolute right-3 cursor-pointer"
                         />
                       ) : (
                         <IconEyeOff
+                          className="absolute right-3 cursor-pointer text-muted-foreground"
+                          onClick={() => setShowPassword(true)}
                           size={20}
                           strokeWidth={1.5}
-                          onClick={() => setShowPassword(true)}
-                          className="text-muted-foreground absolute right-3 cursor-pointer"
                         />
                       )}
 
                       <Input
-                        type={showPassword ? "text" : "password"}
                         required
+                        type={showPassword ? "text" : "password"}
                         {...field}
                         className="pr-8"
                         placeholder="* * * * * * * *"
@@ -125,19 +125,19 @@ const SignInPage = () => {
             />
 
             <div className="col-span-2 flex w-full flex-col gap-y-3">
-              <Button type="submit" size="lg">
+              <Button size="lg" type="submit">
                 Sign in
               </Button>
 
               <div className="flex w-full items-center justify-center gap-5 overflow-hidden">
                 <Separator className="max-w-25" />
-                <span className="text-muted-foreground text-center text-sm">
+                <span className="text-center text-muted-foreground text-sm">
                   OR
                 </span>
                 <Separator className="max-w-25" />
               </div>
 
-              <Button type="button" variant="outline" size="lg">
+              <Button size="lg" type="button" variant="outline">
                 <span>Continue With Google</span>
               </Button>
             </div>

@@ -1,16 +1,9 @@
-import {
-  IconAffiliate,
-  IconBuildingStore,
-  IconChefHat,
-  IconLockBolt,
-  IconPlus,
-} from "@tabler/icons-react";
+import { IconBuildingStore, IconLockBolt, IconPlus } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CreateRestaurantPanel } from "~/components/panels/create.restaurant.panel";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -23,13 +16,15 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { useCachedQuery } from "~/hooks/use-app-query";
 import { useIsMobile } from "~/hooks/use-mobile";
 
+const SKELETON_COUNT = 6;
+
 const BrandRestaurantsPage = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const brandId = useParams().brandId as Id<"brands">;
   const { data: restaurants, isPending: restaurantsIsPending } = useCachedQuery(
     api.features.restaurants.functions.getBrandRestaurants,
-    { brandId },
+    { brandId }
   );
 
   const [showCreateRestaurantPanel, setShowCreateRestaurantPanel] =
@@ -39,22 +34,22 @@ const BrandRestaurantsPage = () => {
     <div className="brand-hub--page">
       {isMobile && (
         <Button
-          size="lg"
           className="fixed right-4 bottom-4 z-20"
           onClick={() => setShowCreateRestaurantPanel(true)}
+          size="lg"
         >
           <IconPlus size={20} strokeWidth={2.5} />
         </Button>
       )}
       <CreateRestaurantPanel
-        open={showCreateRestaurantPanel}
         onOpenChange={setShowCreateRestaurantPanel}
+        open={showCreateRestaurantPanel}
       />
       {/* ~ =================================== ~ */}
       {/* -- Header  -- */}
       {/* ~ =================================== ~ */}
       <div className="flex w-full flex-col gap-2">
-        <h2 className="text-2xl font-semibold">Restaurants</h2>
+        <h2 className="font-semibold text-2xl">Restaurants</h2>
         <div className="-mt-1 flex items-center justify-between gap-3">
           <span className="text-muted-foreground">
             Manage your restaurants and their details.
@@ -73,10 +68,10 @@ const BrandRestaurantsPage = () => {
       {/* ~ =================================== ~ */}
       {restaurantsIsPending && (
         <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {new Array(6).fill(0).map((_, idk: number) => (
+          {new Array(SKELETON_COUNT).fill(0).map((_, idk: number) => (
             <Skeleton
+              className="h-20 w-full animate-pulse rounded-xl bg-muted-foreground/10"
               key={idk}
-              className="bg-muted-foreground/10 h-20 w-full animate-pulse rounded-xl"
             />
           ))}
         </div>
@@ -87,8 +82,8 @@ const BrandRestaurantsPage = () => {
       {/* ~ =================================== ~ */}
       {!restaurantsIsPending && restaurants && restaurants.length === 0 && (
         <div className="mt-10 flex h-48 w-full items-center justify-center rounded-xl border-2 border-dashed">
-          <div className="text-muted-foreground flex w-full flex-col items-center gap-2">
-            <span className="bg-muted/50 rounded-lg p-2">
+          <div className="flex w-full flex-col items-center gap-2 text-muted-foreground">
+            <span className="rounded-lg bg-muted/50 p-2">
               <IconBuildingStore size={25} strokeWidth={1.5} />
             </span>
             <span className="w-full max-w-2/3 text-center">
@@ -112,15 +107,15 @@ const BrandRestaurantsPage = () => {
         <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {restaurants.map((restaurant) => (
             <Card
+              className="cursor-pointer justify-between ring-primary/40 transition-all duration-200 ease-out hover:ring-1"
               key={restaurant._id}
               onClick={() =>
                 navigate(`/brands/${brandId}/restaurants/${restaurant._id}`)
               }
-              className="ring-primary/40 cursor-pointer justify-between transition-all duration-200 ease-out hover:ring-1"
             >
               <CardHeader>
                 <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="line-clamp-1 text-lg font-semibold">
+                  <CardTitle className="line-clamp-1 font-semibold text-lg">
                     {restaurant.name}
                   </CardTitle>
                   <span className="text-muted-foreground text-xs">
@@ -133,14 +128,14 @@ const BrandRestaurantsPage = () => {
               </CardHeader>
 
               <CardFooter>
-                <div className="text-muted-foreground flex items-center space-x-2 text-sm">
+                <div className="flex items-center space-x-2 text-muted-foreground text-sm">
                   <IconLockBolt
+                    className="text-muted-foreground"
                     size={16}
                     strokeWidth={1.5}
-                    className="text-muted-foreground"
                   />
 
-                  <span className="hover:text-primary/70 cursor-pointer underline-offset-4 transition-all duration-100 ease-out hover:underline">
+                  <span className="cursor-pointer underline-offset-4 transition-all duration-100 ease-out hover:text-primary/70 hover:underline">
                     {restaurant.slug}
                   </span>
                 </div>

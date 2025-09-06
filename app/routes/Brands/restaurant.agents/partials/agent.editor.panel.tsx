@@ -1,15 +1,3 @@
-import type { Doc } from "convex/_generated/dataModel";
-import React, { useEffect, useState } from "react";
-import {
-  type Editor,
-  EditorContent,
-  Extension,
-  useEditor,
-} from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { TextStyleKit } from "@tiptap/extension-text-style";
-import CharacterCount from "@tiptap/extension-character-count";
-import { Toggle } from "~/components/ui/toggle";
 import {
   IconBold,
   IconH1,
@@ -18,20 +6,36 @@ import {
   IconTarget,
   IconUserBolt,
 } from "@tabler/icons-react";
+import CharacterCount from "@tiptap/extension-character-count";
+import { TextStyleKit } from "@tiptap/extension-text-style";
+import {
+  type Editor,
+  EditorContent,
+  type Extension,
+  useEditor,
+} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { api } from "convex/_generated/api";
+import type { Doc } from "convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Markdown } from "tiptap-markdown";
+import { Button } from "~/components/ui/button";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Select,
-  SelectItem,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { Button } from "~/components/ui/button";
-import { useMutation } from "convex/react";
-import { api } from "convex/_generated/api";
-import { toast } from "sonner";
-import { Markdown } from "tiptap-markdown";
+import { Toggle } from "~/components/ui/toggle";
+
+const MAX_WORD_COUNT = 100;
+const MIN_WORD_COUNT = 0;
 
 interface AgentEditorPanelProps {
   agent: Doc<"restaurant_agents">;
@@ -70,32 +74,33 @@ const MenuBar = ({
   agent: Doc<"restaurant_agents"> | null;
   view: "persona" | "goals";
 }) => {
-  const updateAgent = useMutation(api.features.agents.functions.updateAgent);
-  if (!editor) return null;
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="flex h-[3.5rem] w-full items-center justify-between border-b px-5">
       <div className="flex items-center gap-2">
         <Toggle
-          size="sm"
           onClick={() => editor.chain().focus().toggleBold().run()}
           pressed={editor.isActive("bold")}
+          size="sm"
         >
           <IconBold size={16} strokeWidth={1.5} />
         </Toggle>
 
         <Toggle
-          size="sm"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           pressed={editor.isActive("italic")}
+          size="sm"
         >
           <IconItalic size={16} strokeWidth={1.5} />
         </Toggle>
 
         <Toggle
-          size="sm"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           pressed={editor.isActive("strike")}
+          size="sm"
         >
           <IconStrikethrough size={16} strokeWidth={1.5} />
         </Toggle>
@@ -103,8 +108,8 @@ const MenuBar = ({
         <Separator orientation="vertical" />
 
         <Toggle
-          size="sm"
           onClick={() => editor.chain().focus().setHeading({ level: 1 }).run()}
+          size="sm"
         >
           <IconH1 size={16} strokeWidth={1.5} />
         </Toggle>
@@ -120,18 +125,18 @@ const MenuBar = ({
           onValueChange={(value) => setView(value as "persona" | "goals")}
         >
           <SelectTrigger
+            className="cursor-pointer [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0 [&>span_svg]:text-muted-foreground/80"
             size="sm"
-            className="[&>span_svg]:text-muted-foreground/80 cursor-pointer [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
           >
             <SelectValue placeholder="Select view" />
           </SelectTrigger>
-          <SelectContent className="[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]>span]:flex [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0">
+          <SelectContent className="[&_*[role=option]>span>svg]:shrink-0 [&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]>span]:flex [&_*[role=option]>span]:gap-2">
             <SelectItem value="persona">
-              <IconUserBolt size={16} aria-hidden="true" />
+              <IconUserBolt aria-hidden="true" size={16} />
               <span className="truncate">Persona</span>
             </SelectItem>
             <SelectItem value="goals">
-              <IconTarget size={16} aria-hidden="true" />
+              <IconTarget aria-hidden="true" size={16} />
               <span className="truncate">Goals</span>
             </SelectItem>
           </SelectContent>
@@ -140,13 +145,13 @@ const MenuBar = ({
         {agent && (
           <Button
             disabled={
-              editor.storage.characterCount.words() === 0 ||
-              editor.storage.characterCount.words() > 100 ||
-              // @ts-ignore
+              editor.storage.characterCount.words() === MIN_WORD_COUNT ||
+              editor.storage.characterCount.words() > MAX_WORD_COUNT ||
+              // @ts-expect-error
               editor.storage.markdown?.getMarkdown() === agent[view]
             }
-            size="xs"
             onClick={onSave}
+            size="xs"
           >
             Save
           </Button>
@@ -179,7 +184,9 @@ export const AgentEditorPanel: React.FC<AgentEditorPanelProps> = ({
 
   const [, setRerenderTick] = useState(0);
   useEffect(() => {
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
 
     const triggerRerender = () => setRerenderTick((tick) => tick + 1);
     editor.on("transaction", triggerRerender);
@@ -196,27 +203,27 @@ export const AgentEditorPanel: React.FC<AgentEditorPanelProps> = ({
   return (
     <div className="h-full w-full">
       <MenuBar
-        editor={editor}
         agent={agent}
-        view={view}
-        setView={(view) => {
-          setView(view);
-          editor?.commands.setContent(agent[view] || "");
-        }}
+        editor={editor}
         onSave={async () => {
           await updateAgent({
             agent: agent._id,
             updateData: {
-              // @ts-ignore
+              // @ts-expect-error
               [view]: editor?.storage.markdown?.getMarkdown() || agent[view],
             },
           });
           toast.success(`${view} updated successfully`);
         }}
+        setView={(view) => {
+          setView(view);
+          editor?.commands.setContent(agent[view] || "");
+        }}
+        view={view}
       />
       <ScrollArea
+        className="relative h-[calc(100%-3.5rem)] w-full cursor-text overflow-y-auto overflow-x-hidden px-5 py-4"
         onClick={() => editor?.chain().focus().run()}
-        className="relative h-[calc(100%-3.5rem)] w-full cursor-text overflow-x-hidden overflow-y-auto px-5 py-4"
       >
         <EditorContent editor={editor} />
       </ScrollArea>

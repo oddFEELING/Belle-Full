@@ -1,9 +1,9 @@
-import { v } from "convex/values";
 import { defineTable } from "convex/server";
+import { v } from "convex/values";
 import {
   DocumentType,
-  ReviewableItemStatus,
   RestaurantLegalDocuments,
+  ReviewableItemStatus,
 } from "../types/enums";
 
 export const restaurant_documents = defineTable({

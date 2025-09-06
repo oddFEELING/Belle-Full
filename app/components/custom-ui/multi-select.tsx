@@ -1,23 +1,23 @@
 "use client";
 
-import { Badge } from "~/components/ui/badge";
-import {
-  Command,
-  CommandItem,
-  CommandEmpty,
-  CommandList,
-} from "~/components/ui/command";
-import { cn } from "~/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
-import { X as RemoveIcon, Check } from "lucide-react";
+import { Check, X as RemoveIcon } from "lucide-react";
 import React, {
-  type KeyboardEvent,
   createContext,
   forwardRef,
+  type KeyboardEvent,
   useCallback,
   useContext,
   useState,
 } from "react";
+import { Badge } from "~/components/ui/badge";
+import {
+  Command,
+  CommandEmpty,
+  CommandItem,
+  CommandList,
+} from "~/components/ui/command";
+import { cn } from "~/lib/utils";
 
 export type MultiSelectValue = {
   value: string;
@@ -92,7 +92,7 @@ const MultiSelector = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value],
+    [value]
   );
 
   const handleKeyDown = useCallback(
@@ -113,7 +113,7 @@ const MultiSelector = ({
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
         setActiveIndex(
-          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex,
+          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex
         );
       };
 
@@ -138,10 +138,8 @@ const MultiSelector = ({
             if (value.length > 0 && (activeIndex !== -1 || loop)) {
               moveNext();
             }
-          } else {
-            if (value.length > 0 && target.selectionStart === 0) {
-              movePrev();
-            }
+          } else if (value.length > 0 && target.selectionStart === 0) {
+            movePrev();
           }
           break;
 
@@ -150,10 +148,8 @@ const MultiSelector = ({
             if (value.length > 0 && target.selectionStart === 0) {
               movePrev();
             }
-          } else {
-            if (value.length > 0 && (activeIndex !== -1 || loop)) {
-              moveNext();
-            }
+          } else if (value.length > 0 && (activeIndex !== -1 || loop)) {
+            moveNext();
           }
           break;
 
@@ -163,10 +159,8 @@ const MultiSelector = ({
             if (activeIndex !== -1 && activeIndex < value.length) {
               onValueChangeHandler(value[activeIndex]);
               moveCurrent();
-            } else {
-              if (target.selectionStart === 0) {
-                onValueChangeHandler(value[value.length - 1]);
-              }
+            } else if (target.selectionStart === 0) {
+              onValueChangeHandler(value[value.length - 1]);
             }
           }
           break;
@@ -183,9 +177,12 @@ const MultiSelector = ({
             setOpen(false);
           }
           break;
+
+        default:
+          break;
       }
     },
-    [value, activeIndex, loop],
+    [value, activeIndex, loop]
   );
 
   return (
@@ -203,12 +200,12 @@ const MultiSelector = ({
       }}
     >
       <Command
-        onKeyDown={handleKeyDown}
         className={cn(
           "flex flex-col space-y-2 overflow-visible bg-transparent",
-          className,
+          className
         )}
         dir={dir}
+        onKeyDown={handleKeyDown}
         {...props}
       >
         {children}
@@ -230,35 +227,35 @@ const MultiSelectorTrigger = forwardRef<
 
   return (
     <div
-      ref={ref}
       className={cn(
-        "ring-input dark:bg-input/30 flex flex-wrap gap-1 rounded-lg bg-transparent p-1 py-2 ring-1",
+        "flex flex-wrap gap-1 rounded-lg bg-transparent p-1 py-2 ring-1 ring-input dark:bg-input/30",
         {
-          "focus-within:ring-ring ring-1": activeIndex === -1,
+          "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
-        className,
+        className
       )}
+      ref={ref}
       {...props}
     >
       {value.map((item, index) => (
         <Badge
-          key={item.value}
           className={cn(
             "flex items-center gap-1 rounded-md px-1.5",
-            activeIndex === index && "ring-muted-foreground ring-2",
+            activeIndex === index && "ring-2 ring-muted-foreground"
           )}
+          key={item.value}
           variant={"secondary"}
         >
           <span className="text-xs">{item.label}</span>
           <button
             aria-label={`Remove ${item} option`}
             aria-roledescription="button to remove option"
-            type="button"
-            onMouseDown={mousePreventDefault}
             onClick={() => onValueChange(item)}
+            onMouseDown={mousePreventDefault}
+            type="button"
           >
             <span className="sr-only">Remove {item.label} option</span>
-            <RemoveIcon className="hover:stroke-destructive h-4 w-4" />
+            <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
           </button>
         </Badge>
       ))}
@@ -285,21 +282,21 @@ const MultiSelectorInput = forwardRef<
   return (
     <CommandPrimitive.Input
       {...props}
-      tabIndex={0}
-      ref={inputRef}
-      value={inputValue}
-      onValueChange={activeIndex === -1 ? setInputValue : undefined}
+      className={cn(
+        "ml-1 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground",
+        className,
+        activeIndex !== -1 && "caret-transparent"
+      )}
       onBlur={() => {
         setInputValue("");
         setOpen(false);
       }}
-      onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
-      className={cn(
-        "placeholder:text-muted-foreground ml-1 flex-1 bg-transparent text-sm outline-none",
-        className,
-        activeIndex !== -1 && "caret-transparent",
-      )}
+      onFocus={() => setOpen(true)}
+      onValueChange={activeIndex === -1 ? setInputValue : undefined}
+      ref={inputRef}
+      tabIndex={0}
+      value={inputValue}
     />
   );
 });
@@ -312,7 +309,7 @@ const MultiSelectorContent = forwardRef<
 >(({ children }, ref) => {
   const { open } = useMultiSelect();
   return (
-    <div ref={ref} className="relative">
+    <div className="relative" ref={ref}>
       {open ? children : null}
     </div>
   );
@@ -326,11 +323,11 @@ const MultiSelectorList = forwardRef<
 >(({ className, children }, ref) => {
   return (
     <CommandList
-      ref={ref}
       className={cn(
-        "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg bg-background border-muted absolute top-0 z-10 flex w-full flex-col gap-2 rounded-md border p-2 shadow-md transition-colors",
-        className,
+        "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg absolute top-0 z-10 flex w-full flex-col gap-2 rounded-md border border-muted bg-background p-2 shadow-md transition-colors",
+        className
       )}
+      ref={ref}
     >
       {children}
       <CommandEmpty>
@@ -357,28 +354,28 @@ const MultiSelectorItem = forwardRef<
 
   const isIncluded =
     searchForValue(Options, {
-      value: value,
-      label: label,
+      value,
+      label,
     }) !== -1;
 
   return (
     <CommandItem
       ref={ref}
       {...props}
-      onSelect={() => {
-        onValueChange({
-          value: value,
-          label: label,
-        });
-        setInputValue("");
-      }}
       className={cn(
         "flex cursor-pointer justify-between rounded-md px-2 py-1 transition-colors",
         className,
         isIncluded && "cursor-default opacity-50",
-        props.disabled && "cursor-not-allowed opacity-50",
+        props.disabled && "cursor-not-allowed opacity-50"
       )}
       onMouseDown={mousePreventDefault}
+      onSelect={() => {
+        onValueChange({
+          value,
+          label,
+        });
+        setInputValue("");
+      }}
     >
       {children}
       {isIncluded && <Check className="h-4 w-4" />}

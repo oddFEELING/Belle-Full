@@ -1,5 +1,12 @@
 "use client";
 
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Textarea } from "~/components/ui/textarea";
 import {
   Tooltip,
@@ -8,13 +15,6 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 
 type PromptInputContextType = {
   isLoading: boolean;
@@ -29,7 +29,9 @@ type PromptInputContextType = {
 const PromptInputContext = createContext<PromptInputContextType>({
   isLoading: false,
   value: "",
-  setValue: () => {},
+  setValue: () => {
+    // No initial value
+  },
   maxHeight: 240,
   onSubmit: undefined,
   disabled: false,
@@ -85,8 +87,8 @@ function PromptInput({
       >
         <div
           className={cn(
-            "border-input bg-background cursor-text rounded-3xl border p-2 shadow-xs",
-            className,
+            "cursor-text rounded-3xl border border-input bg-background p-2 shadow-xs",
+            className
           )}
           onClick={() => textareaRef.current?.focus()}
         >
@@ -131,16 +133,16 @@ function PromptInputTextarea({
 
   return (
     <Textarea
-      ref={textareaRef}
-      value={value}
+      className={cn(
+        "min-h-[44px] w-full resize-none border-none bg-transparent text-foreground shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent",
+        className
+      )}
+      disabled={disabled}
       onChange={(e) => setValue(e.target.value)}
       onKeyDown={handleKeyDown}
-      className={cn(
-        "text-foreground min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent",
-        className,
-      )}
+      ref={textareaRef}
       rows={1}
-      disabled={disabled}
+      value={value}
       {...props}
     />
   );
@@ -185,7 +187,7 @@ function PromptInputAction({
       >
         {children}
       </TooltipTrigger>
-      <TooltipContent side={side} className={className}>
+      <TooltipContent className={className} side={side}>
         {tooltip}
       </TooltipContent>
     </Tooltip>

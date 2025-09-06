@@ -15,7 +15,7 @@ export const restaurant_agents = defineTable({
     v.object({
       status: v.union(v.literal("SUCCESS"), v.literal("FAILED")),
       timestamp: v.number(),
-    }),
+    })
   ),
   type: v.union(v.literal("whatsapp"), v.literal("instagram")),
 

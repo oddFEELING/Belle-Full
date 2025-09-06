@@ -1,20 +1,10 @@
-import { useMutation } from "convex/react";
-import type { PanelProps } from "./panel.types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { logger } from "~/lib/logger";
-import { z } from "zod";
+import { useMutation } from "convex/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Panel,
-  PanelActionButton,
-  PanelCancelButton,
-  PanelContent,
-  PanelFooter,
-  PanelHeader,
-  PanelTitle,
-} from "../ui/panel";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -24,9 +14,17 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import {
+  Panel,
+  PanelActionButton,
+  PanelCancelButton,
+  PanelContent,
+  PanelFooter,
+  PanelHeader,
+  PanelTitle,
+} from "../ui/panel";
 import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { useEffect } from "react";
+import type { PanelProps } from "./panel.types";
 
 interface CreateMenuCategoryPanelProps extends PanelProps {
   restaurant: Id<"restaurants">;
@@ -49,7 +47,7 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
   onOpenChange,
 }) => {
   const createCategory = useMutation(
-    api.features.menu_categories.functions.create,
+    api.features.menu_categories.functions.create
   );
 
   // ~ ======= Form instance ======= ~
@@ -74,7 +72,7 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
   }, [open]);
 
   return (
-    <Panel open={open} onOpenChange={onOpenChange}>
+    <Panel onOpenChange={onOpenChange} open={open}>
       <PanelContent className="[&>button]:hidden">
         <PanelHeader>
           <PanelTitle>Create Category</PanelTitle>
@@ -82,13 +80,13 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid space-y-5 px-4 md:px-0"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             {/* ~ ======= Name field ======= ~ */}
             <FormField
-              name="name"
               control={form.control}
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category name</FormLabel>
@@ -102,8 +100,8 @@ const CreateMenuCategoryPanel: React.FC<CreateMenuCategoryPanelProps> = ({
 
             {/* ~ ======= Desciption field ======= ~ */}
             <FormField
-              name="description"
               control={form.control}
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>

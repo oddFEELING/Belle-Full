@@ -1,5 +1,5 @@
-import { v } from "convex/values";
 import { defineTable } from "convex/server";
+import { v } from "convex/values";
 import { FulfilmentType, OrderStatus } from "../types/enums";
 import { DateTime, Money } from "../types/shared";
 
@@ -9,7 +9,7 @@ export const orders = defineTable({
   brand: v.id("brands"),
 
   status: OrderStatus,
-  FulfilmentType: FulfilmentType,
+  FulfilmentType,
   itemsSubtotal: Money,
   scheduledFor: DateTime,
   deliveryAddress: v.id("addresses"),

@@ -1,4 +1,34 @@
 import {
+  IconArrowLeft,
+  IconBasket,
+  IconBowlChopsticks,
+  IconBuildingStore,
+  IconCheck,
+  IconClipboardText,
+  IconGavel,
+  IconGhost2,
+  IconLayoutDashboard,
+  IconMapCheck,
+  IconPlus,
+  IconRobot,
+  IconUsers,
+  IconWallet,
+} from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { CardCoin } from "iconsax-reactjs";
+import { ChevronDown } from "lucide-react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { useIsMobile } from "~/hooks/use-mobile";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -7,49 +37,12 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
   useSidebar,
 } from "../ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import {
-  IconArrowLeft,
-  IconBasket,
-  IconBowlChopsticks,
-  IconBuildingArch,
-  IconBuildingStore,
-  IconCheck,
-  IconClipboardText,
-  IconCoinPound,
-  IconCooker,
-  IconGavel,
-  IconGhost2,
-  IconHome,
-  IconLayoutDashboard,
-  IconMapCheck,
-  IconPlus,
-  IconRobot,
-  IconSettings,
-  IconTransactionPound,
-  IconUsers,
-  IconWallet,
-} from "@tabler/icons-react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { useCachedQuery } from "~/hooks/use-app-query";
-import { api } from "convex/_generated/api";
-import type { Id } from "convex/_generated/dataModel";
-import { CardCoin } from "iconsax-reactjs";
-import { useIsMobile } from "~/hooks/use-mobile";
 
 const RestaurantSidebar = () => {
   const isMobile = useIsMobile();
@@ -59,14 +52,13 @@ const RestaurantSidebar = () => {
   const { toggleSidebar } = useSidebar();
 
   // ~ ======= Queries ======= ~
-  const { data: brandRestaurants, isPending: brandRestaurantsIsPending } =
-    useCachedQuery(
-      api.features.restaurants.functions.getBrandRestaurants,
-      brandId ? { brandId: brandId as Id<"brands"> } : "skip",
-    );
+  const { data: brandRestaurants } = useCachedQuery(
+    api.features.restaurants.functions.getBrandRestaurants,
+    brandId ? { brandId: brandId as Id<"brands"> } : "skip"
+  );
   const { data: restaurant, isPending: restaurantIsPending } = useCachedQuery(
     api.features.restaurants.functions.getRestaurant,
-    restaurantId ? { id: restaurantId as Id<"restaurants"> } : "skip",
+    restaurantId ? { id: restaurantId as Id<"restaurants"> } : "skip"
   );
 
   const handleToggleSidebar = () => {
@@ -89,7 +81,7 @@ const RestaurantSidebar = () => {
   };
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
+    <Sidebar collapsible="icon" variant="inset">
       {/* ~ =================================== ~ */}
       {/* -- Header -- */}
       {/* ~ =================================== ~ */}
@@ -109,22 +101,22 @@ const RestaurantSidebar = () => {
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="ring-muted/50 w-[var(--radix-popper-anchor-width)] ring-1">
+              <DropdownMenuContent className="w-[var(--radix-popper-anchor-width)] ring-1 ring-muted/50">
                 {brandRestaurants?.map((restaurant) => (
                   <DropdownMenuItem
                     key={restaurant._id}
                     onClick={() =>
                       navigate(
-                        `/brands/${brandId}/restaurants/${restaurant._id}`,
+                        `/brands/${brandId}/restaurants/${restaurant._id}`
                       )
                     }
                   >
                     <span>{restaurant.name}</span>
                     {restaurant._id === restaurantId && (
                       <IconCheck
+                        className="ml-auto"
                         size={18}
                         strokeWidth={1.5}
-                        className="ml-auto"
                       />
                     )}
                   </DropdownMenuItem>
@@ -217,7 +209,7 @@ const RestaurantSidebar = () => {
                   <span>Belle bot</span>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>
-                  <span className="bg-destructive h-2 w-2 rounded-full" />
+                  <span className="h-2 w-2 rounded-full bg-destructive" />
                 </SidebarMenuBadge>
               </SidebarMenuItem>
 
@@ -331,7 +323,7 @@ const RestaurantSidebar = () => {
       {/* ~ =================================== ~ */}
       {/* -- Footer -- */}
       {/* ~ =================================== ~ */}
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter />
     </Sidebar>
   );
 };

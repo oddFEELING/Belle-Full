@@ -1,7 +1,7 @@
-import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { MenuItemOption, Money } from "../types/shared";
+import { v } from "convex/values";
 import { Allergen, DietaryTag } from "../types/enums";
+import { MenuItemOption, Money } from "../types/shared";
 
 export const order_items = defineTable({
   order: v.id("orders"),

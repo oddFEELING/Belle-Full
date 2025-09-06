@@ -1,19 +1,13 @@
-import {
-  IconPlus,
-  IconSoup,
-  IconPhoto,
-  IconAlertCircle,
-} from "@tabler/icons-react";
+import { IconPlus, IconSoup } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import React from "react";
-import { useNavigate, useParams } from "react-router";
+import type React from "react";
+import { useNavigate } from "react-router";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { Skeleton } from "~/components/ui/skeleton";
 import { TabsContent } from "~/components/ui/tabs";
 import { useCachedQuery } from "~/hooks/use-app-query";
-
-import { Badge } from "~/components/ui/badge";
-import { Skeleton } from "~/components/ui/skeleton";
 import { cn } from "~/lib/utils";
 
 interface MenuItemsTabProps {
@@ -33,31 +27,16 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
 
   const { data: menuItems, isPending: menuItemsIsPending } = useCachedQuery(
     api.features.menu_items.functions.getMenuItemsByRestaurant,
-    { restaurant: restaurantId },
-  );
-
-  // Loading skeleton component
-  const MenuItemSkeleton = () => (
-    <div className="bg-card overflow-hidden rounded-lg border">
-      <Skeleton className="h-24 w-full" />
-      <div className="space-y-2 p-4">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <div className="flex items-center justify-between pt-2">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-4 w-10" />
-        </div>
-      </div>
-    </div>
+    { restaurant: restaurantId }
   );
 
   // ~ ======= Render ======= ~
   return (
-    <TabsContent value="menu-items" className="space-y-6">
+    <TabsContent className="space-y-6" value="menu-items">
       {/* Header with Add button */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">All Menu Items</h3>
+          <h3 className="font-semibold text-lg">All Menu Items</h3>
           <p className="text-muted-foreground text-sm">
             {menuItemsIsPending
               ? "Loading..."
@@ -73,7 +52,7 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
       {/* ~ ======= Loading state ======= ~ */}
       {menuItemsIsPending && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {[...Array(10)].map((_, i) => (
+          {[...new Array(10)].map((_, i) => (
             <MenuItemSkeleton key={i} />
           ))}
         </div>
@@ -85,12 +64,12 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
       {!menuItemsIsPending && menuItems?.length === 0 && (
         <div className="flex flex-col items-center rounded-xl border-2 border-dashed px-4 py-10">
           <IconSoup
+            className="mb-4 text-muted-foreground"
             size={40}
             strokeWidth={1.5}
-            className="text-muted-foreground mb-4"
           />
-          <h3 className="mb-2 text-lg font-medium">No menu items yet</h3>
-          <p className="text-muted-foreground mb-6 max-w-sm text-center">
+          <h3 className="mb-2 font-medium text-lg">No menu items yet</h3>
+          <p className="mb-6 max-w-sm text-center text-muted-foreground">
             Get started by creating your first menu item. You can add menu items
             to menus after creating them here.
           </p>
@@ -104,30 +83,30 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {menuItems.map((menuItem) => (
             <div
-              key={menuItem._id}
               className={cn(
-                "group bg-card cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 ease-out hover:shadow-md",
-                !menuItem.isAvailable && "opacity-60",
+                "group cursor-pointer overflow-hidden rounded-lg border bg-card transition-all duration-300 ease-out hover:shadow-md",
+                !menuItem.isAvailable && "opacity-60"
               )}
+              key={menuItem._id}
               onClick={() => navigate(`add-menu-item?id=${menuItem._id}`)}
             >
               {/* ~ ======= Compact image section - flush with top ======= ~ */}
-              <div className="bg-muted relative h-24 overflow-hidden">
+              <div className="relative h-24 overflow-hidden bg-muted">
                 {menuItem.image ? (
                   <img
-                    src={menuItem.image}
                     alt={menuItem.name}
                     className="h-full w-full object-cover"
+                    src={menuItem.image}
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center">
-                    <IconSoup size={24} className="text-muted-foreground" />
+                    <IconSoup className="text-muted-foreground" size={24} />
                   </div>
                 )}
                 {!menuItem.isAvailable && (
                   <Badge
-                    variant="destructive"
                     className="absolute top-2 right-2"
+                    variant="destructive"
                   >
                     Unavailable
                   </Badge>
@@ -138,10 +117,10 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
               {/* -- Content Section -- */}
               {/* ~ =================================== ~ */}
               <div className="space-y-2 p-4">
-                <h4 className="line-clamp-1 text-sm font-semibold">
+                <h4 className="line-clamp-1 font-semibold text-sm">
                   {menuItem.name}
                 </h4>
-                <p className="text-muted-foreground line-clamp-2 text-xs">
+                <p className="line-clamp-2 text-muted-foreground text-xs">
                   {menuItem.description || "No description"}
                 </p>
 
@@ -164,13 +143,13 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
                     )}
                   </div>
                   <Button
-                    variant="link"
-                    size="sm"
                     className="h-auto p-0 text-xs"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`add-menu-item?id=${menuItem._id}`);
                     }}
+                    size="sm"
+                    variant="link"
                   >
                     Edit →
                   </Button>
@@ -183,3 +162,18 @@ export const MenuItemsTab: React.FC<MenuItemsTabProps> = ({ restaurantId }) => {
     </TabsContent>
   );
 };
+
+// Loading skeleton component
+const MenuItemSkeleton = () => (
+  <div className="overflow-hidden rounded-lg border bg-card">
+    <Skeleton className="h-24 w-full" />
+    <div className="space-y-2 p-4">
+      <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <div className="flex items-center justify-between pt-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-4 w-10" />
+      </div>
+    </div>
+  </div>
+);

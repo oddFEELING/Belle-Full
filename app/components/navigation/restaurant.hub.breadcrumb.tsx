@@ -1,4 +1,10 @@
+import { IconPoint } from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { useQueryState } from "nuqs";
 import React, { useMemo } from "react";
+import { Link, useLocation, useParams } from "react-router";
+import { useCachedQuery } from "~/hooks/use-app-query";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,18 +13,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
-import { DropdownMenu } from "../ui/dropdown-menu";
-import { Link, useLocation } from "react-router";
-import { useParams } from "react-router";
-import { useCachedQuery } from "~/hooks/use-app-query";
-import { api } from "convex/_generated/api";
-import type { Id } from "convex/_generated/dataModel";
-import { cn } from "~/lib/utils";
-import { Button } from "../ui/button";
-import { parseAsString, useQueryState } from "nuqs";
-import { IconPoint } from "@tabler/icons-react";
-
-const MAX_LENGTH = 3;
 
 export const RestaurantHubBreadcrumb = () => {
   const pathname = useLocation().pathname;
@@ -30,12 +24,12 @@ export const RestaurantHubBreadcrumb = () => {
   // ~ ======= Queries ======= ~
   const { data: agent } = useCachedQuery(
     api.features.agents.functions.getSingleAgent,
-    agentId ? { agent: agentId as Id<"restaurant_agents"> } : "skip",
+    agentId ? { agent: agentId as Id<"restaurant_agents"> } : "skip"
   );
 
   const replacements = useMemo(
     () => [[agent?._id, agent?.name]],
-    [agent?.name],
+    [agent?.name]
   );
 
   const checkReplacement = (key: string) => {
@@ -65,7 +59,7 @@ export const RestaurantHubBreadcrumb = () => {
         ))}
 
         {activeTab && (
-          <div className="text-muted-foreground/60 flex cursor-default items-center gap-1 text-xs">
+          <div className="flex cursor-default items-center gap-1 text-muted-foreground/60 text-xs">
             <IconPoint size={12} strokeWidth={1.5} />
             <span>{activeTab}</span>
           </div>

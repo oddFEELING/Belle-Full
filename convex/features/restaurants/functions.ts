@@ -1,11 +1,10 @@
+import { v } from "convex/values";
+import { getAll, getManyFrom } from "convex-helpers/server/relationships";
 import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
-import { v } from "convex/values";
-import type { Id } from "../../_generated/dataModel";
-import { mutation, query } from "../../_generated/server";
-import type { Doc } from "../../_generated/dataModel";
 import { api } from "../../_generated/api";
-import { getAll, getManyFrom } from "convex-helpers/server/relationships";
+import type { Doc, Id } from "../../_generated/dataModel";
+import { mutation, query } from "../../_generated/server";
 
 // ~ =============================================>
 // ~ ======= Get brand restaurants
@@ -18,7 +17,7 @@ export const getBrandRestaurants = authenticatedQuery({
       "restaurants",
       "by_brand",
       brandId,
-      "brand",
+      "brand"
     );
     return restaurants as Doc<"restaurants">[];
   },
@@ -36,7 +35,7 @@ export const create = authenticatedMutation({
   handler: async (ctx, args): Promise<Id<"restaurants">> => {
     const slug = await ctx.runMutation(
       api.features.restaurants.functions.generateRestaurantSlug,
-      { restaurantName: args.name },
+      { restaurantName: args.name }
     );
     const restaurant = await ctx.db.insert("restaurants", {
       ...args,
@@ -56,8 +55,8 @@ export const generateRestaurantSlug = mutation({
     const threeLetterCode = restaurantName.substring(0, 3).toLowerCase();
 
     // ~ ======= Set pin boundaries ======= ~
-    const min = 10000;
-    const max = 99999;
+    const min = 10_000;
+    const max = 99_999;
 
     let isUnique = false;
     let slug = "";

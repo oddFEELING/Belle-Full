@@ -1,22 +1,16 @@
-import {
-  IconCopy,
-  IconGhost2,
-  IconPencilMinus,
-  IconProgressBolt,
-} from "@tabler/icons-react";
-import { useCallback, useState } from "react";
+import { IconCopy, IconGhost2 } from "@tabler/icons-react";
 import type { Doc } from "convex/_generated/dataModel";
 import { formatDate } from "date-fns";
+import { useCallback, useState } from "react";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
-  CardDescription,
   CardAction,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Badge } from "~/components/ui/badge";
-import { Separator } from "~/components/ui/separator";
 import { TabsContent } from "~/components/ui/tabs";
 
 interface AgentProfileTabProps {
@@ -35,7 +29,7 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
   const handleCopy = useCallback(
     async (
       value: string,
-      key: "persona" | "goals" | "identifier" | "supervisor",
+      key: "persona" | "goals" | "identifier" | "supervisor"
     ) => {
       if (!value) return;
       try {
@@ -46,11 +40,11 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
         // Silently ignore copy failures to keep UI minimal and unobtrusive
       }
     },
-    [],
+    []
   );
 
   return (
-    <TabsContent value="profile" className="space-y-6">
+    <TabsContent className="space-y-6" value="profile">
       {/* ~ =================================== ~ */}
       {/* -- Profile Info -- */}
       {/* ~ =================================== ~ */}
@@ -60,27 +54,27 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
             <CardDescription>Identifier</CardDescription>
             <CardAction>
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
                 aria-label={
                   copiedField === "identifier" ? "Copied" : "Copy identifier"
                 }
+                className="h-7 w-7"
                 onClick={() => handleCopy(agent.unipile_id ?? "", "identifier")}
+                size="icon"
+                variant="ghost"
               >
                 <IconCopy
-                  size={14}
-                  strokeWidth={1.6}
                   className={
                     copiedField === "identifier"
                       ? "text-foreground"
                       : "text-muted-foreground"
                   }
+                  size={14}
+                  strokeWidth={1.6}
                 />
               </Button>
             </CardAction>
             <CardTitle
-              className="line-clamp-2 w-full max-w-full font-mono text-sm break-words whitespace-normal"
+              className="line-clamp-2 w-full max-w-full whitespace-normal break-words font-mono text-sm"
               title={agent.unipile_id ?? ""}
             >
               {agent.unipile_id}
@@ -94,24 +88,24 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
             <CardAction>
               {agent.supervisor_number ? (
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7"
                   aria-label={
                     copiedField === "supervisor" ? "Copied" : "Copy supervisor"
                   }
+                  className="h-7 w-7"
                   onClick={() =>
                     handleCopy(agent.supervisor_number ?? "", "supervisor")
                   }
+                  size="icon"
+                  variant="ghost"
                 >
                   <IconCopy
-                    size={14}
-                    strokeWidth={1.6}
                     className={
                       copiedField === "supervisor"
                         ? "text-foreground"
                         : "text-muted-foreground"
                     }
+                    size={14}
+                    strokeWidth={1.6}
                   />
                 </Button>
               ) : null}
@@ -132,12 +126,12 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
                     {formatDate(agent?.lastSync?.timestamp, "MMM d, yyyy")}
                   </span>
                   <Badge
-                    variant="outline"
                     className={
                       agent.lastSync?.status === "SUCCESS"
                         ? "border-emerald-200 bg-emerald-500/10 text-emerald-600 dark:border-emerald-900 dark:text-emerald-400"
                         : "border-rose-200 bg-rose-500/10 text-rose-600 dark:border-rose-900 dark:text-rose-400"
                     }
+                    variant="outline"
                   >
                     {agent.lastSync?.status === "SUCCESS"
                       ? "Success"
@@ -164,35 +158,35 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
       {/* ~ =================================== ~ */}
       {/* -- Persona (minimal callout with copy + expand) -- */}
       {/* ~ =================================== ~ */}
-      <section className="bg-muted/20 flex w-full flex-col gap-2 rounded-xl border p-4">
+      <section className="flex w-full flex-col gap-2 rounded-xl border bg-muted/20 p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-muted-foreground text-sm font-medium">Persona</h3>
+          <h3 className="font-medium text-muted-foreground text-sm">Persona</h3>
           {agent.persona ? (
             <div className="flex items-center gap-1.5">
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
                 aria-label={
                   copiedField === "persona" ? "Copied" : "Copy persona"
                 }
+                className="h-7 w-7"
                 onClick={() => handleCopy(agent.persona ?? "", "persona")}
+                size="icon"
+                variant="ghost"
               >
                 <IconCopy
-                  size={14}
-                  strokeWidth={1.6}
                   className={
                     copiedField === "persona"
                       ? "text-foreground"
                       : "text-muted-foreground"
                   }
+                  size={14}
+                  strokeWidth={1.6}
                 />
               </Button>
               <Button
-                variant="ghost"
-                size="sm"
                 className="h-7 px-2 text-xs"
                 onClick={() => setPersonaExpanded((v) => !v)}
+                size="sm"
+                variant="ghost"
               >
                 {personaExpanded ? "Show less" : "Show more"}
               </Button>
@@ -210,9 +204,9 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
           </div>
         ) : (
           <div className="flex w-full flex-col items-center justify-center gap-2 rounded-lg py-14 text-center">
-            <IconGhost2 size={18} className="text-muted-foreground" />
-            <p className="text-sm font-medium">No persona specified</p>
-            <span className="text-muted-foreground w-full max-w-2xl text-xs">
+            <IconGhost2 className="text-muted-foreground" size={18} />
+            <p className="font-medium text-sm">No persona specified</p>
+            <span className="w-full max-w-2xl text-muted-foreground text-xs">
               Setting a persona gives your agent a distinct, human-friendly
               identity used to guide tone and behavior.
             </span>
@@ -223,33 +217,33 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
       {/* ~ =================================== ~ */}
       {/* -- Goals (minimal callout with copy + expand) -- */}
       {/* ~ =================================== ~ */}
-      <section className="bg-muted/20 flex w-full flex-col gap-2 rounded-xl border p-4">
+      <section className="flex w-full flex-col gap-2 rounded-xl border bg-muted/20 p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-muted-foreground text-sm font-medium">Goals</h3>
+          <h3 className="font-medium text-muted-foreground text-sm">Goals</h3>
           {agent.goals ? (
             <div className="flex items-center gap-1.5">
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
                 aria-label={copiedField === "goals" ? "Copied" : "Copy goals"}
+                className="h-7 w-7"
                 onClick={() => handleCopy(agent.goals ?? "", "goals")}
+                size="icon"
+                variant="ghost"
               >
                 <IconCopy
-                  size={14}
-                  strokeWidth={1.6}
                   className={
                     copiedField === "goals"
                       ? "text-foreground"
                       : "text-muted-foreground"
                   }
+                  size={14}
+                  strokeWidth={1.6}
                 />
               </Button>
               <Button
-                variant="ghost"
-                size="sm"
                 className="h-7 px-2 text-xs"
                 onClick={() => setGoalsExpanded((v) => !v)}
+                size="sm"
+                variant="ghost"
               >
                 {goalsExpanded ? "Show less" : "Show more"}
               </Button>
@@ -267,9 +261,9 @@ export const AgentProfileTab: React.FC<AgentProfileTabProps> = ({ agent }) => {
           </div>
         ) : (
           <div className="flex w-full flex-col items-center justify-center gap-2 rounded-lg py-14 text-center">
-            <IconGhost2 size={18} className="text-muted-foreground" />
-            <p className="text-sm font-medium">No goals specified</p>
-            <span className="text-muted-foreground w-full max-w-2xl text-xs">
+            <IconGhost2 className="text-muted-foreground" size={18} />
+            <p className="font-medium text-sm">No goals specified</p>
+            <span className="w-full max-w-2xl text-muted-foreground text-xs">
               Setting goals gives your agent a clear purpose and concrete
               outcomes to optimize for.
             </span>

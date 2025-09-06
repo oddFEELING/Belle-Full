@@ -1,26 +1,24 @@
-import { z } from "zod";
-import type { PanelContentProps } from "./panel.types";
-import {
-  Panel,
-  PanelHeader,
-  PanelContent,
-  PanelTitle,
-  PanelFooter,
-  PanelCancelButton,
-  PanelActionButton,
-} from "../ui/panel";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconClipboardText } from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import { api } from "convex/_generated/api";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
+import {
+  Panel,
+  PanelActionButton,
+  PanelCancelButton,
+  PanelContent,
+  PanelFooter,
+  PanelHeader,
+  PanelTitle,
+} from "../ui/panel";
 import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { IconClipboardText } from "@tabler/icons-react";
-import { useEffect } from "react";
-import { useIsMobile } from "~/hooks/use-mobile";
+import type { PanelContentProps } from "./panel.types";
 
 interface CreateMenuProviderProps extends PanelContentProps {
   brand: Id<"brands">;
@@ -41,7 +39,6 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
   restaurant,
   onOpenChange,
 }) => {
-  const isMobile = useIsMobile();
   const createMenu = useMutation(api.features.menus.functions.create);
 
   // ~ ======= Form instance ======= ~
@@ -66,7 +63,7 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
   }, [open]);
 
   return (
-    <Panel open={open} onOpenChange={onOpenChange}>
+    <Panel onOpenChange={onOpenChange} open={open}>
       <PanelContent className="px-4 [&>button]:hidden">
         <PanelHeader>
           <PanelTitle className="flex items-center gap-1">
@@ -76,8 +73,8 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
         </PanelHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 grid gap-y-5"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             {/* ~ ======= Name ======= ~ */}
             <FormField
@@ -104,8 +101,8 @@ const CreateMenuPanel: React.FC<CreateMenuProviderProps> = ({
                     <Textarea
                       required
                       {...field}
-                      placeholder="Enter a description for your menu"
                       className="h-28 resize-none"
+                      placeholder="Enter a description for your menu"
                     />
                   </FormControl>
                 </FormItem>

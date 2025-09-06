@@ -7,11 +7,11 @@ This prevents circular dependencies.
 🌹 Cheers.
 */
 
-import { v, Infer } from "convex/values";
+import { type Infer, v } from "convex/values";
 
 export const BrandRole = v.union(
   v.literal("PRIMARY_OWNER"),
-  v.literal("SECONDARY_OWNER"),
+  v.literal("SECONDARY_OWNER")
 );
 export type BrandRole = Infer<typeof BrandRole>;
 
@@ -22,7 +22,7 @@ export const WeekDay = v.union(
   v.literal("Thursday"),
   v.literal("Friday"),
   v.literal("Saturday"),
-  v.literal("Sunday"),
+  v.literal("Sunday")
 );
 export type WeekDay = Infer<typeof WeekDay>;
 
@@ -31,7 +31,7 @@ export const RestaurantStatus = v.union(
   v.literal("PENDING_APPROVAL"),
   v.literal("ACTIVE"),
   v.literal("SUSPENDED"),
-  v.literal("CLOSED"),
+  v.literal("CLOSED")
 );
 export type RestaurantStatus = Infer<typeof RestaurantStatus>;
 
@@ -51,7 +51,7 @@ export const DietaryTag = v.union(
   v.literal("NutFreeVegetarian"),
   v.literal("GlutenFreeVegan"),
   v.literal("DiaryFreeVegan"),
-  v.literal("NutFreeVegan"),
+  v.literal("NutFreeVegan")
 );
 export type DietaryTag = Infer<typeof DietaryTag>;
 export enum DietaryTagEnum {
@@ -93,7 +93,7 @@ export const CuisineTag = v.union(
   v.literal("Zambian"),
   v.literal("Zimbabwean"),
   v.literal("Namibian"),
-  v.literal("Botswana"),
+  v.literal("Botswana")
 );
 export type CuisineTag = Infer<typeof CuisineTag>;
 
@@ -113,7 +113,7 @@ export const Allergen = v.union(
   v.literal("SulphorDioxideAndSulphites"),
   v.literal("TreeNuts"),
   v.literal("Wheat"),
-  v.literal("Other"),
+  v.literal("Other")
 );
 export type Allergen = Infer<typeof Allergen>;
 
@@ -138,7 +138,7 @@ export enum AllergenEnum {
 
 export const AddressType = v.union(
   v.literal("Restaurant"),
-  v.literal("Customer"),
+  v.literal("Customer")
 );
 export type AddressType = Infer<typeof AddressType>;
 
@@ -150,13 +150,13 @@ export const Currency = v.union(
   v.literal("ZAR"),
   v.literal("TZS"),
   v.literal("UGX"),
-  v.literal("RWF"),
+  v.literal("RWF")
 );
 export type Currency = Infer<typeof Currency>;
 
 export const FulfilmentType = v.union(
   v.literal("DELIVERY"),
-  v.literal("PICKUP"),
+  v.literal("PICKUP")
 );
 export type FulfilmentType = Infer<typeof FulfilmentType>;
 
@@ -169,7 +169,7 @@ export const OrderStatus = v.union(
   v.literal("DELIVERED"),
   v.literal("CANCELLED"),
   v.literal("PENDING_REFUND"),
-  v.literal("REFUNDED"),
+  v.literal("REFUNDED")
 );
 export type OrderStatus = Infer<typeof OrderStatus>;
 
@@ -179,7 +179,7 @@ export const RestaurantLegalDocuments = v.union(
   v.literal("FOOD_SAFETY_MANAGEMENT"),
   v.literal("ALLERGEN_COMPLIANCE"),
   v.literal("PREMISIS_LICENSE"),
-  v.literal("ALCOHOL_LIQUOR_LICENSE"),
+  v.literal("ALCOHOL_LIQUOR_LICENSE")
 );
 export type RestaurantLegalDocuments = Infer<typeof RestaurantLegalDocuments>;
 
@@ -188,7 +188,7 @@ export const DocumentType = v.union(
   v.literal("PDF"),
   v.literal("VIDEO"),
   v.literal("AUDIO"),
-  v.literal("OTHER"),
+  v.literal("OTHER")
 );
 export type DocumentType = Infer<typeof DocumentType>;
 
@@ -196,12 +196,12 @@ export const ReviewableItemStatus = v.union(
   v.literal("IN_REVIEW"),
   v.literal("ACTION_REQUIRED"),
   v.literal("APPROVED"),
-  v.literal("REJECTED"),
+  v.literal("REJECTED")
 );
 export type ReviewableItemStatus = Infer<typeof ReviewableItemStatus>;
 
 export const AgentConnectionStatus = v.union(
   v.literal("CONNECTED"),
   v.literal("PENDING"),
-  v.literal("DISCONNECTED"),
+  v.literal("DISCONNECTED")
 );

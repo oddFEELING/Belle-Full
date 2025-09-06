@@ -1,5 +1,5 @@
-import { customAction } from "convex-helpers/server/customFunctions";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { customAction } from "convex-helpers/server/customFunctions";
 import { action } from "../_generated/server";
 
 export const authenticatedAction = customAction(action, {

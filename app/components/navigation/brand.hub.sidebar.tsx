@@ -1,4 +1,27 @@
 import {
+  IconBuildingStore,
+  IconCheck,
+  IconLayoutDashboard,
+  IconPlus,
+  IconSettings,
+  IconSofa,
+  IconSparkles,
+  IconUsers,
+} from "@tabler/icons-react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+import { ChevronDown } from "lucide-react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { useCachedQuery } from "~/hooks/use-app-query";
+import { cn } from "~/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -7,53 +30,24 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
 } from "../ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import {
-  IconBuildingStore,
-  IconBurger,
-  IconCheck,
-  IconChefHat,
-  IconLayoutDashboard,
-  IconPlus,
-  IconSettings,
-  IconSofa,
-  IconSparkles,
-  IconUsers,
-} from "@tabler/icons-react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { useCachedQuery } from "~/hooks/use-app-query";
-import { api } from "convex/_generated/api";
-import type { Id } from "convex/_generated/dataModel";
-import { cn } from "~/lib/utils";
-import { useUser } from "~/hooks/use-user/use-user";
-import { use } from "react";
 
 const BrandHubSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useUser();
   const { brandId } = useParams();
 
   // ~ ======= Queries  ======= ~
   const { data: brand, isPending: brandIsPending } = useCachedQuery(
     api.features.brands.functions.getBrand,
-    brandId ? { id: brandId as Id<"brands"> } : "skip",
+    brandId ? { id: brandId as Id<"brands"> } : "skip"
   );
   const { data: brands, isPending: brandsIsPending } = useCachedQuery(
-    api.features.brands.functions.getUserBrands,
+    api.features.brands.functions.getUserBrands
   );
 
   const paths = {
@@ -65,7 +59,7 @@ const BrandHubSidebar = () => {
   };
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
+    <Sidebar collapsible="icon" variant="inset">
       {/* ~ =================================== ~ */}
       {/* -- Header -- */}
       {/* ~ =================================== ~ */}
@@ -75,7 +69,7 @@ const BrandHubSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <IconLayoutDashboard strokeWidth={2} size={20} />
+                  <IconLayoutDashboard size={20} strokeWidth={2} />
                   {brandIsPending ? (
                     <span>Loading...</span>
                   ) : (
@@ -92,17 +86,16 @@ const BrandHubSidebar = () => {
                   </DropdownMenuItem>
                 ) : (
                   <>
-                    {brands &&
-                      brands?.map((brd) => (
-                        <DropdownMenuItem key={brd!._id}>
-                          <span>{brd?.name}</span>
-                          <IconCheck
-                            size={18}
-                            strokeWidth={1.5}
-                            className={cn("ml-auto")}
-                          />
-                        </DropdownMenuItem>
-                      ))}
+                    {brands?.map((brd) => (
+                      <DropdownMenuItem key={brd!._id}>
+                        <span>{brd?.name}</span>
+                        <IconCheck
+                          className={cn("ml-auto")}
+                          size={18}
+                          strokeWidth={1.5}
+                        />
+                      </DropdownMenuItem>
+                    ))}
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
@@ -187,7 +180,7 @@ const BrandHubSidebar = () => {
                   <span>AI Description</span>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>
-                  <span className="bg-destructive h-2 w-2 rounded-full" />
+                  <span className="h-2 w-2 rounded-full bg-destructive" />
                 </SidebarMenuBadge>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -198,7 +191,7 @@ const BrandHubSidebar = () => {
       {/* ~ =================================== ~ */}
       {/* -- Footer -- */}
       {/* ~ =================================== ~ */}
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter />
     </Sidebar>
   );
 };

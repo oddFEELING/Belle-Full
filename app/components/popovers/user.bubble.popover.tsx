@@ -1,9 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { IconLogout2, IconSettings, IconUser } from "@tabler/icons-react";
-import { cn } from "~/lib/utils";
-import { useNavigate } from "react-router";
 import { useConvexAuth } from "convex/react";
+import { Like1 } from "iconsax-reactjs";
+import { useNavigate } from "react-router";
 import { useUser } from "~/hooks/use-user/use-user";
+import { cn } from "~/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { Like1 } from "iconsax-reactjs";
 
 type UserBubbleProps = {
   side?: "top" | "bottom" | "left" | "right";
@@ -27,7 +27,7 @@ const UserBubble = ({
   className,
 }: UserBubbleProps) => {
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { isAuthenticated } = useConvexAuth();
   const { signOut } = useAuthActions();
   const { user } = useUser();
 
@@ -35,7 +35,7 @@ const UserBubble = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar
-          className="ring-muted-foreground/50 cursor-pointer transition-all duration-200 ease-out hover:ring"
+          className="cursor-pointer ring-muted-foreground/50 transition-all duration-200 ease-out hover:ring"
           onClick={(event) => {
             if (!isAuthenticated) {
               event.stopPropagation();
@@ -53,12 +53,12 @@ const UserBubble = ({
       {isAuthenticated && (
         <DropdownMenuContent
           align={align}
-          side={side}
           className={cn("w-56", className)}
+          side={side}
         >
           <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
-              <p className="text-sm leading-none font-medium">
+              <p className="font-medium text-sm leading-none">
                 {user?.name || "User"}
               </p>
               <p className="text-muted-foreground text-xs leading-none">

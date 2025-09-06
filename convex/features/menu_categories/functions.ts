@@ -1,8 +1,8 @@
 import { v } from "convex/values";
-import { authenticatedMutation } from "../../_custom/mutation";
-import { Doc, Id } from "../../_generated/dataModel";
 import { getManyFrom } from "convex-helpers/server/relationships";
+import { authenticatedMutation } from "../../_custom/mutation";
 import { authenticatedQuery } from "../../_custom/query";
+import type { Doc, Id } from "../../_generated/dataModel";
 
 // ~ =============================================>
 // ~ ======= Create Category
@@ -15,7 +15,7 @@ export const create = authenticatedMutation({
     description: v.optional(v.string()),
   },
   handler: async (ctx, args): Promise<Id<"categories">> => {
-    return ctx.db.insert("categories", args);
+    return await ctx.db.insert("categories", args);
   },
 });
 
@@ -27,7 +27,7 @@ export const getByRestaurant = authenticatedQuery({
     restaurant: v.id("restaurants"),
   },
   handler: async (ctx, { restaurant }): Promise<Doc<"categories">[]> => {
-    return getManyFrom(ctx.db, "categories", "by_restaurant", restaurant);
+    return await getManyFrom(ctx.db, "categories", "by_restaurant", restaurant);
   },
 });
 
@@ -37,6 +37,6 @@ export const getByRestaurant = authenticatedQuery({
 export const deleteCategory = authenticatedMutation({
   args: { id: v.id("categories") },
   handler: async (ctx, { id }): Promise<void> => {
-    ctx.db.delete(id);
+    await ctx.db.delete(id);
   },
 });

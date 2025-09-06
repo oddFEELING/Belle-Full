@@ -11,16 +11,16 @@ export default function StatusBadge({
   className?: string;
 }) {
   return (
-    <Badge variant="outline" className={cn("gap-1.5", className)}>
+    <Badge className={cn("gap-1.5", className)} variant="outline">
       <span
+        aria-hidden="true"
         className={cn("size-1.5 rounded-full", {
           "bg-emerald-500": status === "success",
           "bg-amber-500": status === "warning",
           "bg-red-500": status === "error",
           "bg-muted-foreground": status === "inactive",
         })}
-        aria-hidden="true"
-      ></span>
+      />
       {text}
     </Badge>
   );

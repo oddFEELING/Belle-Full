@@ -9,12 +9,12 @@ export class TwilioAPiService {
   constructor() {
     this.client = Twilio(
       process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN,
+      process.env.TWILIO_AUTH_TOKEN
     );
   }
 
   async sendMessage(data: TwilioDTO.SendMessageRequest) {
-    return this.client.messages.create({
+    return await this.client.messages.create({
       from: "whatsapp:+14155238886",
       ...data,
     });

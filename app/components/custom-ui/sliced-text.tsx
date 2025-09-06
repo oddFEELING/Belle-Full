@@ -10,8 +10,8 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { cn } from "~/lib/utils";
 import { motion } from "motion/react";
+import { cn } from "~/lib/utils";
 
 interface SlicedTextProps {
   text: string;
@@ -30,13 +30,14 @@ const SlicedText: React.FC<SlicedTextProps> = ({
     <motion.div
       className={cn(
         "relative inline-block w-full text-center",
-        containerClassName,
+        containerClassName
       )}
-      whileHover="hover"
       initial="default"
+      whileHover="hover"
     >
       <motion.div
-        className={cn("absolute -ml-0.5 w-full text-4xl", className)}
+        className={cn("-ml-0.5 absolute w-full text-4xl", className)}
+        transition={{ duration: 0.1 }}
         variants={{
           default: {
             clipPath: "inset(0 0 50% 0)",
@@ -49,12 +50,12 @@ const SlicedText: React.FC<SlicedTextProps> = ({
             opacity: 0,
           },
         }}
-        transition={{ duration: 0.1 }}
       >
         {text}
       </motion.div>
       <motion.div
         className={cn("absolute w-full text-4xl", className)}
+        transition={{ duration: 0.1 }}
         variants={{
           default: {
             clipPath: "inset(50% 0 0 0)",
@@ -67,7 +68,6 @@ const SlicedText: React.FC<SlicedTextProps> = ({
             opacity: 1,
           },
         }}
-        transition={{ duration: 0.1 }}
       >
         {text}
       </motion.div>

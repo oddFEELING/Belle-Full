@@ -1,9 +1,8 @@
-import { IconList } from "@tabler/icons-react";
 import { api } from "convex/_generated/api";
 import type { Doc } from "convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { ArchiveBox, TextalignLeft, Trash } from "iconsax-reactjs";
-import { Download, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -19,32 +18,32 @@ type ActionCellProps = {
 
 export const ActionCell: React.FC<ActionCellProps> = ({ rowCategory }) => {
   const deleteCategory = useMutation(
-    api.menus.categories.functions.deleteCategory,
+    api.features.menu_categories.functions.deleteCategory
   );
 
   return (
     <span className="w-max items-center justify-center gap-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="group-hover:opacity-0">
+          <Button className="group-hover:opacity-0" size="icon" variant="ghost">
             <MoreVertical />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" side="bottom">
           <DropdownMenuItem>
             <TextalignLeft
+              className="mr-1 text-muted-foreground"
               size={16}
               strokeWidth={1.5}
-              className="text-muted-foreground mr-1"
             />
             <span>Details</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <ArchiveBox
+              className="mr-1 text-muted-foreground"
               size={16}
               strokeWidth={1.5}
-              className="text-muted-foreground mr-1"
             />
             <span>Archive</span>
           </DropdownMenuItem>
@@ -52,9 +51,9 @@ export const ActionCell: React.FC<ActionCellProps> = ({ rowCategory }) => {
             onClick={() => deleteCategory({ id: rowCategory._id })}
           >
             <Trash
+              className="mr-1 text-muted-foreground"
               size={16}
               strokeWidth={1.5}
-              className="text-muted-foreground mr-1"
             />
             <span>Delete</span>
           </DropdownMenuItem>

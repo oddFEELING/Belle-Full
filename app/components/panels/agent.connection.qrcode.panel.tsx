@@ -1,6 +1,7 @@
 import type { Doc } from "convex/_generated/dataModel";
-import React, { useEffect } from "react";
-import type { PanelProps } from "./panel.types";
+import { QRCodeCanvas } from "qrcode.react";
+import type React from "react";
+import { useEffect } from "react";
 import {
   Panel,
   PanelCancelButton,
@@ -10,7 +11,7 @@ import {
   PanelHeader,
   PanelTitle,
 } from "../ui/panel";
-import { QRCodeCanvas } from "qrcode.react";
+import type { PanelProps } from "./panel.types";
 
 interface AgentConnectionQRCodePanelProps extends PanelProps {
   agent: Doc<"restaurant_agents">;
@@ -28,7 +29,7 @@ const AgentConnectionQRCodePanel: React.FC<AgentConnectionQRCodePanelProps> = ({
   }, [agent.connection_status]);
 
   return (
-    <Panel open={open} onOpenChange={onOpenChange}>
+    <Panel onOpenChange={onOpenChange} open={open}>
       <PanelContent className="">
         <PanelHeader>
           <PanelTitle>Agent Connection QR Code</PanelTitle>
@@ -40,12 +41,12 @@ const AgentConnectionQRCodePanel: React.FC<AgentConnectionQRCodePanelProps> = ({
           {agent.auth_code && (
             <div className="flex h-max w-full items-center justify-center">
               <QRCodeCanvas
-                value={agent.auth_code}
+                className="rounded-lg border"
                 level="H"
+                marginSize={2}
                 size={300}
                 title={`Agent: ${agent.name}`}
-                marginSize={2}
-                className="rounded-lg border"
+                value={agent.auth_code}
               />
             </div>
           )}
